@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0c1020" />
   <meta name="description" content="وش نازل؟ آيتم شوب وأخبار ألعابك في مكان واحد." />
   <title>وش نازل؟</title>
@@ -65,7 +65,7 @@
       transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .app-shell { max-width:620px; margin:auto; padding:28px 18px 112px; } 
+    .app-shell { max-width:620px; margin:auto; padding:28px 18px 120px; } 
     .topbar,.date-row,.section-heading,.shop-date,.rocket-notice { display:flex; align-items:center; justify-content:space-between; gap:12px; } 
     h1,h2,h3,p { margin:0; } 
     h1 { font-size:29px; font-weight:800; letter-spacing:-.5px; } 
@@ -170,14 +170,14 @@
     }
     .item-card:active { transform:scale(.97); border-color:var(--lime); } 
 
-    .item-art { height:126px; display:grid; place-items:center; overflow:hidden; background:var(--art); } 
-    .item-art img { width:100%; height:100%; object-fit:cover; display:block; transition: transform 0.3s ease; } 
-    .item-card:hover .item-art img { transform: scale(1.06); }
+    .item-art { height:126px; display:grid; place-items:center; overflow:hidden; background:var(--art); position:relative; } 
+    .item-art img { width:100%; height:100%; object-fit:contain; padding:8px; display:block; transition: transform 0.3s ease; } 
+    .item-card:hover .item-art img { transform: scale(1.08); }
 
     .item-info { position:relative; min-height:76px; padding:12px 38px 12px 11px; } 
     .item-title { display:block; } 
     .item-title h3 { 
-      font-size:16px; line-height:1.35; font-weight:800; overflow:hidden; 
+      font-size:15px; line-height:1.35; font-weight:800; overflow:hidden; 
       display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; 
     } 
     .save-button { flex:none; border:0; background:transparent; padding:0; color:var(--muted); font-size:22px; line-height:1; transition: transform 0.2s ease, color 0.2s ease; } 
@@ -223,6 +223,7 @@
       position:fixed; z-index:3; bottom:0; left:0; right:0; 
       display:flex; justify-content:center; gap:3px; 
       padding:10px max(16px,calc((100vw - 620px)/2)); 
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
       background:rgba(12,16,32,.85); 
       border-top:1px solid var(--line); 
       backdrop-filter:blur(20px); 
@@ -243,7 +244,7 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     } 
     .details-dialog::backdrop { background:rgba(0,0,0,.75); backdrop-filter: blur(4px); } 
-    .details-dialog > img { width:100%; height:260px; object-fit:cover; display:block; background:var(--panel-2); } 
+    .details-dialog > img { width:100%; height:260px; object-fit:contain; padding:15px; display:block; background:var(--panel-2); } 
     .detail-body { padding:20px; } 
     .detail-body h2 { margin:4px 0 12px; font-size:24px; } 
     .detail-price { color:var(--muted); font-size:16px; } 
@@ -286,7 +287,7 @@
     <section id="home-view" class="view active" aria-labelledby="today-title">
       <div class="date-row">
         <div>
-          <p class="eyebrow">الثلاثاء، ٢١ سبتمبر</p>
+          <p class="eyebrow">اليوم المتجدد</p>
           <h2 id="today-title">نازل اليوم</h2>
         </div>
         <span class="live-label"><i></i> يتحدث يومياً</span>
@@ -311,10 +312,10 @@
     <section id="shop-view" class="view" aria-labelledby="shop-title">
       <div class="page-heading"><p class="eyebrow">يتم التحديث يومياً</p><h2 id="shop-title">آيتم شوب اليوم</h2><p>اختَر لعبة وشوف العناصر المتاحة الآن.</p></div>
       <div class="game-tabs" id="game-tabs" role="tablist" aria-label="اختيار اللعبة"></div>
-      <div class="shop-date"><span>اليوم، ٢١ سبتمبر</span><span class="count" id="items-count"></span></div>
+      <div class="shop-date"><span>متجر اليوم</span><span class="count" id="items-count"></span></div>
       <div class="item-grid" id="item-grid"></div>
       <div class="rocket-shop" id="rocket-shop" hidden>
-        <div class="rocket-notice"><strong>متجر Rocket League الكامل</strong><a href="https://rlshop.gg/" target="_blank" rel="noopener">فتحه في صفحة مستقلة ↗</a></div>
+        <div class="rocket-notice"><strong>متجر Rocket League المباشر</strong><a href="https://rlshop.gg/" target="_blank" rel="noopener">فتح في نافذة جديدة ↗</a></div>
         <iframe title="متجر Rocket League اليوم" src="https://rlshop.gg/" loading="lazy"></iframe>
       </div>
     </section>
@@ -332,7 +333,7 @@
     </section>
   </main>
 
-  <!-- زر الملاحظات والطلبات تحت يمين -->
+  <!-- زر الملاحظات والطلبات -->
   <button type="button" onclick="openFeedback()" style="position:fixed; bottom:80px; right:18px; z-index:99; display:flex; align-items:center; gap:6px; padding:10px 16px; border:1px solid rgba(255,255,255,.1); border-radius:30px; background:#202a48; color:#caff45; font-size:13px; font-weight:700; box-shadow:0 8px 20px rgba(0,0,0,0.4); cursor:pointer;">
     💬 طلب لعبة / ملاحظة
   </button>
@@ -366,13 +367,22 @@
   <script>
     const games = {
       fortnite: { name: 'Fortnite', icon: '🏝️', className: 'fortnite', items: [
-        ['جلد سبايدرمان زيرو', 'https://www.hoyfortnite.com/images/skins/Spider-Man%20Zero_2.png', '1,500', '#d6293d'], ['حزمة سبايدرمان زيرو', 'https://e-fortnite.pl/images/skiny/big/spectacle_bundle.webp', '1,800', '#6e69b9'], ['جلد سبايدرمان زيرو', 'https://production-gameflipusercontent.fingershock.com/us-east-1%3A37cf7dd5-7c13-452e-abf9-f56cd28fc622/1a3e373e-07e6-419e-ad3a-fe6f2143a560/b775c55a-faa4-446e-83e9-5bb2702b8ff9', '1,500', '#2f80d2'], ['حزمة سبايدرمان', 'https://e-fortnite.pl/images/skiny/big/spectacle_bundle.webp', '2,000', '#da9b3b']
+        ['جلد سبايدرمان زيرو', 'https://www.hoyfortnite.com/images/skins/Spider-Man%20Zero_2.png', '1,500', '#d6293d'], 
+        ['حزمة سبايدرمان زيرو', 'https://e-fortnite.pl/images/skiny/big/spectacle_bundle.webp', '1,800', '#6e69b9']
       ]},
       rocket: { name: 'Rocket League', icon: '🚙', className: 'rocket', items: [
-        ['Octane — أزرق سماوي', 'https://rlshop.gg/_app/immutable/assets/23.CUhGKIwA.webp', '700', '#0b6fa6'], ['Affluenter — أصفر', 'https://rlshop.gg/_app/immutable/assets/7598.BYSyG1De.webp', '2,200', '#7d2d9c'], ['Octane: Tinted Formal', 'https://rlshop.gg/_app/immutable/assets/4965.DdTaIWHo.webp', '100', '#2572c3'], ['Cristiano: Infinite — أبيض', 'https://rlshop.gg/_app/immutable/assets/4712.DgOIauN5.webp', '400', '#4a6585'], ['Octane: Ultraheat', 'https://rlshop.gg/_app/immutable/assets/8879.DRPtJw2K.webp', '300', '#dd6d36'], ['Lotus Bloom — أبيض', 'https://rlshop.gg/_app/immutable/assets/8815.CUObRRYf.webp', '1,100', '#2c9a77']
+        ['Octane — أزرق سماوي', 'https://rlshop.gg/_app/immutable/assets/23.CUhGKIwA.webp', '700', '#0b6fa6'],
+        ['Affluenter — أصفر', 'https://rlshop.gg/_app/immutable/assets/7598.BYSyG1De.webp', '2,200', '#7d2d9c'],
+        ['Octane: Tinted Formal', 'https://rlshop.gg/_app/immutable/assets/4965.DdTaIWHo.webp', '100', '#2572c3'],
+        ['Cristiano: Infinite — أبيض', 'https://rlshop.gg/_app/immutable/assets/4712.DgOIauN5.webp', '400', '#4a6585'],
+        ['Octane: Ultraheat', 'https://rlshop.gg/_app/immutable/assets/8879.DRPtJw2K.webp', '300', '#dd6d36'],
+        ['Lotus Bloom — أبيض', 'https://rlshop.gg/_app/immutable/assets/8815.CUObRRYf.webp', '1,100', '#2c9a77']
       ]},
       overwatch: { name: 'Overwatch', icon: '⚡', className: 'overwatch', items: [
-        ['جلد كيريكو', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/blt90a4e90b36f42953/Support_-_Kiriko.png?format=webply&quality=90', '1,900', '#e58f3c'], ['حزمة كيريكو', 'https://catalog.blzstatic.com//53/89777c65e891e626acf44f30175e1fb5-mediaItem?imdensity=2.625&imwidth=1920', '1,900', '#4b657f'], ['جلد كيريكو OWCS', 'https://esports.overwatch.com/_next/image?q=75&url=https%3A%2F%2Fa.storyblok.com%2Ff%2F267720%2F1536x1536%2Fcc3a354760%2Fhero-kiriko_home-1-1.png&w=1080', '1,900', '#d65d9c'], ['جلد كيريكو', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/blt90a4e90b36f42953/Support_-_Kiriko.png?format=webply&quality=90', '1,900', '#ad7d55']
+        ['جلد كيريكو - الراهبة', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/blt90a4e90b36f42953/Support_-_Kiriko.png?format=webply&quality=90', '1,900', '#e58f3c'],
+        ['حزمة كيريكو الخاصة', 'https://catalog.blzstatic.com//53/89777c65e891e626acf44f30175e1fb5-mediaItem?imdensity=2.625&imwidth=1920', '2,200', '#2b4b6f'],
+        ['جلد جينجي - الساموراي', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/blt364fe06859ed6045/Damage_-_Genji.png?format=webply&quality=90', '1,500', '#187042'],
+        ['جلد ميرسي - الملاك', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltb0caeb5538eec8ed/Support_-_Mercy.png?format=webply&quality=90', '1,900', '#b53f60']
       ]}
     };
 
@@ -448,10 +458,7 @@
       $('#item-dialog').showModal();
     }
 
-    function closeDetails() { 
-      $('#item-dialog').close(); 
-    }
-
+    function closeDetails() { $('#item-dialog').close(); }
     function openFeedback() { $('#feedback-dialog').showModal(); }
     function closeFeedback() { $('#feedback-dialog').close(); }
 
@@ -476,7 +483,7 @@
     }
 
     function render() {
-      $('#shop-preview').innerHTML = Object.entries(games).map(([key,g]) => `<button class="game-row" data-open-game="${key}" type="button"><span class="game-cover ${g.className}">${g.icon}</span><span class="game-info"><h3>${g.name}</h3><p>متوفر الآن ${g.items.length * 2} عناصر جديدة</p></span><span>شوف الشوب ←</span></button>`).join('');
+      $('#shop-preview').innerHTML = Object.entries(games).map(([key,g]) => `<button class="game-row" data-open-game="${key}" type="button"><span class="game-cover ${g.className}">${g.icon}</span><span class="game-info"><h3>${g.name}</h3><p>متوفر الآن ${g.items.length} عناصر جديدة</p></span><span>شوف الشوب ←</span></button>`).join('');
       $('#news-preview').innerHTML = news.slice(0,2).map(n => newsCard(n,true)).join('');
       $('#game-tabs').innerHTML = Object.entries(games).map(([key,g]) => `<button role="tab" class="${activeGame===key?'active':''}" onclick="chooseGame('${key}')">${g.icon} ${g.name}</button>`).join('');
       
@@ -485,9 +492,9 @@
       $('#item-grid').innerHTML = game.items.map((x,i)=>itemCard(x,activeGame,i)).join('');
       
       const rocketView = activeGame === 'rocket';
-      $('#item-grid').hidden = rocketView;
+      $('#item-grid').hidden = false;
       $('#rocket-shop').hidden = !rocketView;
-      if (rocketView) $('#items-count').textContent = 'كل الأقسام متاحة';
+      if (rocketView) $('#items-count').textContent = 'عرض المتجر المباشر ومستعرض المنتجات';
       
       $('#news-filters').innerHTML = [['all','الكل'],...Object.entries(games).map(([k,g])=>[k,g.name])].map(([k,n])=>`<button class="${activeFilter===k?'active':''}" onclick="chooseFilter('${k}')">${n}</button>`).join('');
       $('#news-list').innerHTML = news.filter(n=>activeFilter==='all'||n.game===activeFilter).map(n=>newsCard(n)).join('');

@@ -129,7 +129,7 @@
     .game-list { display:grid; gap:11px; } 
     .game-row { 
       display:flex; align-items:center; gap:13px; padding:12px; border:1px solid var(--line); 
-      background:var(--panel); border-radius:18px; 
+      background:var(--panel); border-radius:18px; width: 100%; text-align: right;
       transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
     } 
     .game-row:hover, .game-row:active {
@@ -144,7 +144,7 @@
     .game-info { flex:1; min-width:0; } 
     .game-info h3 { font-size:16px; } 
     .game-info p { color:var(--muted); font-size:12px; margin-top:2px; } 
-    .game-row > span { color:var(--lime); font-size:13px; white-space:nowrap; } 
+    .game-row > span:last-child { color:var(--lime); font-size:13px; white-space:nowrap; } 
 
     .page-heading { margin:14px 0 23px; } 
     .page-heading h2 { margin:5px 0 7px; font-size:27px; } 
@@ -162,7 +162,7 @@
     .item-card { 
       overflow:hidden; background:var(--panel); border-radius:20px; border:1px solid var(--line); 
       transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
-      display: flex; flex-direction: column;
+      display: flex; flex-direction: column; cursor: pointer; text-align: right;
     } 
     .item-card:hover {
       transform: translateY(-5px) scale(1.02);
@@ -196,7 +196,7 @@
       font-size:15px; line-height:1.3; font-weight:800; overflow:hidden; 
       display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; color:#fff;
     } 
-    .save-button { flex:none; border:0; background:transparent; padding:0; color:var(--muted); font-size:22px; line-height:1; transition: transform 0.2s ease, color 0.2s ease; } 
+    .save-button { flex:none; border:0; background:transparent; padding:0; color:var(--muted); font-size:22px; line-height:1; transition: transform 0.2s ease, color 0.2s ease; cursor: pointer; } 
     .save-button:hover { transform: scale(1.2); }
     .item-info .save-button { position:absolute; top:12px; left:10px; } 
     .save-button.saved { color:var(--lime); } 
@@ -206,7 +206,7 @@
     .news-list { display:grid; gap:12px; } 
     .news-card { 
       display:flex; gap:12px; align-items:stretch; padding:11px; border:1px solid var(--line); 
-      border-radius:18px; background:var(--panel); 
+      border-radius:18px; background:var(--panel); width: 100%; text-align: right; cursor: pointer;
       transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
     } 
     .news-card:hover {
@@ -369,7 +369,6 @@
   </dialog>
 
   <script>
-    // قائمة روكيت وأوفرواتش بروابط صور عالية الدقة ومع خلفيات ملونة فائقة الوضوح
     const games = {
       fortnite: { name: 'Fortnite', icon: '🏝️', className: 'fortnite', items: [] },
       rocket: { name: 'Rocket League', icon: '🚙', className: 'rocket', items: [
@@ -475,7 +474,7 @@
     }
 
     function newsCard(n, compact=false) { 
-      return `<article class="news-card ${compact ? 'compact-card':''}" role="button" tabindex="0" onclick="showNewsDetails('${n.id}')" onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')" style="cursor:pointer;"><div class="news-image" style="background:${n.art}">${n.icon}</div><div class="news-copy"><span class="news-meta">${n.gameName} · ${n.time}</span><h3>${n.title}</h3><p>${n.text}</p></div><div class="news-actions">${saveBtn(n.id)}</div></article>`; 
+      return `<article class="news-card ${compact ? 'compact-card':''}" role="button" tabindex="0" onclick="showNewsDetails('${n.id}')" onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')"><div class="news-image" style="background:${n.art}">${n.icon}</div><div class="news-copy"><span class="news-meta">${n.gameName} · ${n.time}</span><h3>${n.title}</h3><p>${n.text}</p></div><div class="news-actions">${saveBtn(n.id)}</div></article>`; 
     }
 
     function render() {

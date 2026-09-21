@@ -65,7 +65,7 @@
       transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .app-shell { max-width:620px; margin:auto; padding:28px 18px 120px; } 
+    .app-shell { max-width:680px; margin:auto; padding:28px 18px 120px; } 
     .topbar,.date-row,.section-heading,.shop-date { display:flex; align-items:center; justify-content:space-between; gap:12px; } 
     h1,h2,h3,p { margin:0; } 
     h1 { font-size:29px; font-weight:800; letter-spacing:-.5px; } 
@@ -158,33 +158,51 @@
     .shop-date { margin:12px 0; color:var(--muted); font-size:13px; } 
     .count { color:var(--lime); } 
 
-    .item-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; } 
+    /* شبكة العناصر القوية والواضحة */
+    .item-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; } 
     .item-card { 
-      overflow:hidden; background:var(--panel); border-radius:18px; border:1px solid var(--line); 
+      overflow:hidden; background:var(--panel); border-radius:20px; border:1px solid var(--line); 
       transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+      display: flex; flex-direction: column;
     } 
     .item-card:hover {
-      transform: translateY(-4px) scale(1.01);
-      border-color: rgba(202, 255, 69, 0.4);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      transform: translateY(-5px) scale(1.02);
+      border-color: rgba(202, 255, 69, 0.6);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.5);
     }
     .item-card:active { transform:scale(.97); border-color:var(--lime); } 
 
-    .item-art { height:135px; display:grid; place-items:center; overflow:hidden; background:var(--art); position:relative; } 
-    .item-art img { width:100%; height:100%; object-fit:contain; padding:8px; display:block; transition: transform 0.3s ease; } 
-    .item-card:hover .item-art img { transform: scale(1.08); }
+    /* كادر الصورة المحسن والممتاز لكل الألعاب */
+    .item-art { 
+      height: 180px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      overflow: hidden; 
+      background: var(--art); 
+      position: relative; 
+      padding: 10px;
+    } 
+    .item-art img { 
+      max-width: 100%; 
+      max-height: 100%; 
+      object-fit: contain; 
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+      transition: transform 0.35s ease; 
+    } 
+    .item-card:hover .item-art img { transform: scale(1.1); }
 
-    .item-info { position:relative; min-height:76px; padding:12px 38px 12px 11px; } 
+    .item-info { position:relative; min-height:80px; padding:12px 38px 12px 12px; background: var(--panel); flex: 1; display: flex; flex-direction: column; justify-content: space-between; } 
     .item-title { display:block; } 
     .item-title h3 { 
-      font-size:14px; line-height:1.35; font-weight:800; overflow:hidden; 
-      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; 
+      font-size:15px; line-height:1.3; font-weight:800; overflow:hidden; 
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; color:#fff;
     } 
     .save-button { flex:none; border:0; background:transparent; padding:0; color:var(--muted); font-size:22px; line-height:1; transition: transform 0.2s ease, color 0.2s ease; } 
     .save-button:hover { transform: scale(1.2); }
-    .item-info .save-button { position:absolute; top:13px; left:10px; } 
+    .item-info .save-button { position:absolute; top:12px; left:10px; } 
     .save-button.saved { color:var(--lime); } 
-    .price { margin-top:5px; color:var(--muted); font-size:13px; } 
+    .price { margin-top:6px; color:var(--muted); font-size:13px; font-weight:bold; } 
     .coin { color:var(--orange); margin-left:3px; } 
 
     .news-list { display:grid; gap:12px; } 
@@ -217,7 +235,7 @@
     .bottom-nav { 
       position:fixed; z-index:3; bottom:0; left:0; right:0; 
       display:flex; justify-content:center; gap:3px; 
-      padding:10px max(16px,calc((100vw - 620px)/2)); 
+      padding:10px max(16px,calc((100vw - 680px)/2)); 
       padding-bottom: max(10px, env(safe-area-inset-bottom));
       background:rgba(12,16,32,.85); 
       border-top:1px solid var(--line); 
@@ -234,12 +252,12 @@
     .nav-item.active span { transform: scale(1.15); }
 
     .details-dialog { 
-      width:min(92vw,420px); padding:0; overflow:hidden; border:1px solid var(--line); 
+      width:min(92vw,440px); padding:0; overflow:hidden; border:1px solid var(--line); 
       border-radius:24px; color:var(--text); background:var(--panel); 
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
     } 
-    .details-dialog::backdrop { background:rgba(0,0,0,.75); backdrop-filter: blur(4px); } 
-    .details-dialog > img { width:100%; height:260px; object-fit:contain; padding:15px; display:block; background:var(--panel-2); } 
+    .details-dialog::backdrop { background:rgba(0,0,0,.8); backdrop-filter: blur(5px); } 
+    .details-dialog > img { width:100%; height:280px; object-fit:contain; padding:15px; display:block; background:radial-gradient(circle, #202a48, #0c1020); } 
     .detail-body { padding:20px; } 
     .detail-body h2 { margin:4px 0 12px; font-size:24px; } 
     .detail-price { color:var(--muted); font-size:16px; } 
@@ -264,7 +282,7 @@
       to { opacity:1; } 
     } 
 
-    @media (min-width:560px) { 
+    @media (min-width:580px) { 
       .item-grid { grid-template-columns:repeat(3,1fr); } 
     }
   </style>
@@ -324,7 +342,6 @@
     </section>
   </main>
 
-  <!-- زر الملاحظات والطلبات -->
   <button type="button" onclick="openFeedback()" style="position:fixed; bottom:80px; right:18px; z-index:99; display:flex; align-items:center; gap:6px; padding:10px 16px; border:1px solid rgba(255,255,255,.1); border-radius:30px; background:#202a48; color:#caff45; font-size:13px; font-weight:700; box-shadow:0 8px 20px rgba(0,0,0,0.4); cursor:pointer;">
     💬 طلب لعبة / ملاحظة
   </button>
@@ -336,14 +353,12 @@
     <button class="nav-item" data-go="saved" type="button"><span>♡</span><b>المحفوظات</b></button>
   </nav>
 
-  <!-- نافذة التفاصيل -->
   <dialog class="details-dialog" id="item-dialog" aria-labelledby="detail-name">
     <button class="close-dialog" type="button" onclick="closeDetails()" aria-label="إغلاق">×</button>
     <img id="detail-image" src="" alt="" />
     <div class="detail-body"><p class="eyebrow" id="detail-game"></p><h2 id="detail-name"></h2><p class="detail-price" id="detail-price"></p><hr /><p class="detail-date" id="detail-date"></p></div>
   </dialog>
 
-  <!-- نافذة الطلبات والملاحظات -->
   <dialog class="details-dialog" id="feedback-dialog">
     <button class="close-dialog" type="button" onclick="closeFeedback()" aria-label="إغلاق">×</button>
     <div class="detail-body">
@@ -356,25 +371,24 @@
   </dialog>
 
   <script>
+    // قائمة روكيت وأوفرواتش بروابط صور عالية الدقة ومع خلفيات ملونة فائقة الوضوح
     const games = {
       fortnite: { name: 'Fortnite', icon: '🏝️', className: 'fortnite', items: [] },
       rocket: { name: 'Rocket League', icon: '🚙', className: 'rocket', items: [
-        ['Fennec — أبيض ناصع', 'https://raw.githubusercontent.com/Fortnite-API/assets/main/images/rocket_fennec.png', '800', '#156caa'],
-        ['Octane — أزرق سماوي', 'https://rlshop.gg/_app/immutable/assets/23.CUhGKIwA.webp', '700', '#0b6fa6'],
-        ['Zomba — أبيض Titanium', 'https://raw.githubusercontent.com/Fortnite-API/assets/main/images/zomba_white.png', '1,000', '#1e3c72'],
-        ['Mainframe — مظلمة', 'https://rlshop.gg/_app/immutable/assets/7598.BYSyG1De.webp', '2,200', '#7d2d9c'],
-        ['Cristiano: Infinite', 'https://rlshop.gg/_app/immutable/assets/4712.DgOIauN5.webp', '400', '#4a6585'],
-        ['Octane: Ultraheat', 'https://rlshop.gg/_app/immutable/assets/8879.DRPtJw2K.webp', '300', '#dd6d36'],
-        ['Lotus Bloom — أبيض', 'https://rlshop.gg/_app/immutable/assets/8815.CUObRRYf.webp', '1,100', '#2c9a77'],
-        ['Alpha Boost — ذهبي', 'https://rlshop.gg/_app/immutable/assets/4965.DdTaIWHo.webp', '5,000', '#d4af37']
+        ['Fennec — أبيض Titanium', 'https://images.squarespace-cdn.com/content/v1/55ef3a14e4b0931120a1752f/1598285519391-7L3N7E0L65R41D4T09O3/Fennec_TW.png', '800', 'linear-gradient(135deg, #1e3c72, #2a5298)'],
+        ['Octane — أزرق سماوي', 'https://images.squarespace-cdn.com/content/v1/55ef3a14e4b0931120a1752f/1598285520847-8T2829Z19X93N1B2V0I1/Octane_SB.png', '700', 'linear-gradient(135deg, #0288d1, #26c6da)'],
+        ['عجلات Zomba — Titanium White', 'https://rocket-league.com/content/media/items/avatar/220px/913b8dd0a31599824647.png', '1,000', 'linear-gradient(135deg, #4158D0, #C850C0)'],
+        ['Mainframe — Black Market', 'https://rocket-league.com/content/media/items/avatar/220px/2591e1d0871534346812.png', '2,200', 'linear-gradient(135deg, #43107a, #8e24aa)'],
+        ['Dominus — أبيض ناصع', 'https://images.squarespace-cdn.com/content/v1/55ef3a14e4b0931120a1752f/1598285518299-W0H83021D3M2E5A8N3X3/Dominus_TW.png', '1,100', 'linear-gradient(135deg, #d32f2f, #f57c00)'],
+        ['Alpha Boost — Gold Rush', 'https://rocket-league.com/content/media/items/avatar/220px/b8a4f61f5e1534346761.png', '5,000', 'linear-gradient(135deg, #f12711, #f5af19)']
       ]},
       overwatch: { name: 'Overwatch', icon: '⚡', className: 'overwatch', items: [
-        ['جلد كيريكو — الراهبة', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/blt90a4e90b36f42953/Support_-_Kiriko.png?format=webply&quality=90', '1,900', '#e58f3c'],
-        ['حزمة كيريكو الخاصة', 'https://catalog.blzstatic.com//53/89777c65e891e626acf44f30175e1fb5-mediaItem?imdensity=2.625&imwidth=1920', '2,200', '#2b4b6f'],
-        ['جلد جينجي — الساموراي', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/blt364fe06859ed6045/Damage_-_Genji.png?format=webply&quality=90', '1,500', '#187042'],
-        ['جلد ميرسي — الملاك', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltb0caeb5538eec8ed/Support_-_Mercy.png?format=webply&quality=90', '1,900', '#b53f60'],
-        ['جلد D.Va — الأكاديمية', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltfe26a79899fa0e88/Tank_-_DVa.png?format=webply&quality=90', '1,900', '#e0529c'],
-        ['جلد راينهارت — العملاق', 'https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/blt6d28909a8449c288/Tank_-_Reinhardt.png?format=webply&quality=90', '1,500', '#5b6275']
+        ['سكن كيريكو — Kiriko Rogue', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/47/Kiriko_Skin_Rogue.png', '1,900', 'linear-gradient(135deg, #8E2DE2, #4A00E0)'],
+        ['سكن جينجي — Genji Cyberdemon', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/4c/Genji_Skin_Cyberdemon.png', '2,200', 'linear-gradient(135deg, #11998e, #38ef7d)'],
+        ['سكن ميرسي — Mercy Pink', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f3/Mercy_Skin_Pink.png', '1,900', 'linear-gradient(135deg, #ff758c, #ff7eb3)'],
+        ['سكن D.Va — D.Va Officer', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/3/30/D.Va_Skin_Officer.png', '1,500', 'linear-gradient(135deg, #12c2e9, #c471ed)'],
+        ['سكن راينهارت — Reinhardt Minotaur', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/3/3b/Reinhardt_Skin_Minotaur.png', '1,900', 'linear-gradient(135deg, #f857a6, #ff5858)'],
+        ['سكن ترايسر — Tracer Slipstream', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f8/Tracer_Skin_Slipstream.png', '1,300', 'linear-gradient(135deg, #e65c00, #F9D423)']
       ]}
     };
 
@@ -412,7 +426,7 @@
 
     function itemCard(item, gameKey, i) { 
       const id=`${gameKey}-${i}`; 
-      return `<article class="item-card" role="button" tabindex="0" onclick="showDetails('${gameKey}',${i})" onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})"><div class="item-art" style="--art:${item[3]}"><img src="${item[1]}" alt="${item[0]}" loading="lazy" onError="this.src='https://via.placeholder.com/150/161d34/ffffff?text=Game+Item'" /></div><div class="item-info"><div class="item-title"><h3>${item[0]}</h3>${saveBtn(id)}</div><p class="price"><span class="coin">◉</span>${item[2]} عملة</p></div></article>`; 
+      return `<article class="item-card" role="button" tabindex="0" onclick="showDetails('${gameKey}',${i})" onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})"><div class="item-art" style="background:${item[3]}"><img src="${item[1]}" alt="${item[0]}" loading="lazy" onError="this.src='https://via.placeholder.com/300/161d34/ffffff?text=Game+Item'" /></div><div class="item-info"><div class="item-title"><h3>${item[0]}</h3>${saveBtn(id)}</div><p class="price"><span class="coin">◉</span>${item[2]} عملة</p></div></article>`; 
     }
 
     function showDetails(gameKey, index) { 
@@ -463,7 +477,7 @@
     }
 
     function newsCard(n, compact=false) { 
-      return `<article class="news-card ${compact ? 'compact-card':''}" role="button" tabindex="0" onclick="showNewsDetails('${n.id}')" onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')" style="cursor:pointer;"><div class="news-image" style="--art:${n.art}">${n.icon}</div><div class="news-copy"><span class="news-meta">${n.gameName} · ${n.time}</span><h3>${n.title}</h3><p>${n.text}</p></div><div class="news-actions">${saveBtn(n.id)}</div></article>`; 
+      return `<article class="news-card ${compact ? 'compact-card':''}" role="button" tabindex="0" onclick="showNewsDetails('${n.id}')" onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')" style="cursor:pointer;"><div class="news-image" style="background:${n.art}">${n.icon}</div><div class="news-copy"><span class="news-meta">${n.gameName} · ${n.time}</span><h3>${n.title}</h3><p>${n.text}</p></div><div class="news-actions">${saveBtn(n.id)}</div></article>`; 
     }
 
     function render() {
@@ -523,7 +537,7 @@
           const name = (entry.bundle || entry.items?.length > 1) && !/^حزمة(?:\s|$)/u.test(normalizedName) ? `حزمة ${normalizedName}` : normalizedName;
           const dates = (cosmetic.shopHistory || []).map(value => new Date(value)).filter(value => !Number.isNaN(value.getTime()));
           const firstSeen = dates.length ? new Date(Math.min(...dates)).toLocaleDateString('ar-SA') : cosmetic.introduction?.text;
-          return image ? [name || 'عنصر فورتنايت', image, String(entry.finalPrice ?? entry.regularPrice ?? '—'), '#2d67b9', `live-fortnite-${entry.offerId || i}`, firstSeen] : null;
+          return image ? [name || 'عنصر فورتنايت', image, String(entry.finalPrice ?? entry.regularPrice ?? '—'), 'linear-gradient(135deg, #1d3557, #457b9d)', `live-fortnite-${entry.offerId || i}`, firstSeen] : null;
         }).filter(Boolean);
         
         if (items.length) {

@@ -7,7 +7,6 @@
   <meta name="description" content="وش نازل؟ آيتم شوب وأخبار ألعابك في مكان واحد." />
   <title>وش نازل؟</title>
   
-  <!-- إعدادات PWA لتثبيت التطبيق من الموقع -->
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -80,9 +79,11 @@
     h3 { font-size:19px; font-weight:800; } 
     .eyebrow { color:var(--muted); font-size:13px; font-weight:500; } 
 
+    .top-actions { display: flex; align-items: center; gap: 8px; }
+
     .icon-button { 
       position:relative; width:43px; height:43px; border:1px solid var(--line); 
-      border-radius:14px; background:var(--panel); font-size:24px; 
+      border-radius:14px; background:var(--panel); font-size:20px; display: grid; place-items: center;
     } 
     .icon-button:hover { transform: translateY(-2px); border-color: var(--lime); }
     .notification-dot { position:absolute; top:9px; left:10px; width:7px; height:7px; border-radius:50%; background:var(--lime); } 
@@ -298,7 +299,15 @@
         <p class="eyebrow">كل جديد الألعاب</p>
         <h1>وش نازل؟ <span>✦</span></h1>
       </div>
-      <button class="icon-button" type="button" aria-label="الإشعارات">♧<span class="notification-dot"></span></button>
+      <div class="top-actions">
+        <!-- زر التحميل فوق يمين -->
+        <button class="icon-button" id="install-btn" type="button" title="تحميل التطبيق" aria-label="تحميل التطبيق" style="display:none; color: var(--lime); border-color: rgba(202,255,69,0.3);">
+          📥
+        </button>
+        <button class="icon-button" type="button" aria-label="الإشعارات">
+          ♧<span class="notification-dot"></span>
+        </button>
+      </div>
     </header>
 
     <section id="home-view" class="view active" aria-labelledby="today-title">
@@ -361,6 +370,20 @@
     <button class="close-dialog" type="button" onclick="closeDetails()" aria-label="إغلاق">×</button>
     <img id="detail-image" src="" alt="" />
     <div class="detail-body"><p class="eyebrow" id="detail-game"></p><h2 id="detail-name"></h2><p class="detail-price" id="detail-price"></p><hr /><p class="detail-date" id="detail-date"></p></div>
+  </dialog>
+
+  <dialog class="details-dialog" id="install-guide-dialog">
+    <button class="close-dialog" type="button" onclick="document.getElementById('install-guide-dialog').close()" aria-label="إغلاق">×</button>
+    <div class="detail-body">
+      <p class="eyebrow">تحميل التطبيق</p>
+      <h2>طريقة تثبيت "وش نازل؟"</h2>
+      <p style="color:#a7b0ca; font-size:13px; margin: 10px 0 15px; line-height: 1.6;">
+        أنت تفتح الموقع من متصفح سفاري (أيفون). لتثبيت التطبيق على شاشتك الرئيسية بسهولة:<br>
+        1. اضغط على زر <b>المشاركة (Share)</b> أسفل المتصفح.<br>
+        2. اختر <b>"إضافة إلى الشاشة الرئيسية" (Add to Home Screen)</b>.
+      </p>
+      <button type="button" onclick="document.getElementById('install-guide-dialog').close()" style="width:100%; padding:12px; border:0; border-radius:12px; background:#caff45; color:#10152a; font-weight:bold; cursor:pointer;">حسناً فهمت 👍</button>
+    </div>
   </dialog>
 
   <dialog class="details-dialog" id="feedback-dialog">
@@ -527,6 +550,36 @@
     }
 
     document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go))); 
+
+    // منطق تشغيل زر التحميل (PWA Install)
+    let deferredPrompt;
+    const installBtn = document.getElementById('install-btn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'grid'; // يظهر الزر فوق يمين في الأندرويد والكروم
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          installBtn.style.display = 'none';
+        }
+        deferredPrompt = null;
+      } else {
+        // لو كان المتصفح أيفون (سفاري) يفتح له نافذة التعليمات
+        document.getElementById('install-guide-dialog').showModal();
+      }
+    });
+
+    // في حال كان أيفون نظهر زر التحميل دائماً لأنه يدعم الإضافة من قائمة المشاركة
+    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+    if (isIos) {
+      installBtn.style.display = 'grid';
+    }
 
     render();
   </script>

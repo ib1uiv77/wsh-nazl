@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,311 +7,784 @@
   <meta name="theme-color" content="#0c1020" />
   <meta name="description" content="وش نازل؟ آيتم شوب وأخبار ألعابك في مكان واحد." />
   <title>وش نازل؟</title>
-  
+
   <link rel="manifest" href="manifest.webmanifest" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="وش نازل؟" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  
+
   <style>
-    :root { 
-      --bg:#0c1020; 
-      --panel:#161d34; 
-      --panel-2:#202a48; 
-      --text:#f7f8ff; 
-      --muted:#a7b0ca; 
-      --line:rgba(255,255,255,.1); 
-      --lime:#caff45; 
-      --purple:#a681ff; 
-      --orange:#ffad65; 
-      --blue:#6abaff; 
+    :root {
+      --bg:#0c1020;
+      --panel:#161d34;
+      --panel-2:#202a48;
+      --text:#f7f8ff;
+      --muted:#a7b0ca;
+      --line:rgba(255,255,255,.1);
+      --lime:#caff45;
+      --purple:#a681ff;
+      --orange:#ffad65;
+      --blue:#6abaff;
     }
 
     * { box-sizing:border-box; }
 
-    body { 
-      margin:0; 
-      background: var(--bg); 
-      color:var(--text); 
-      font-family:Tajawal,system-ui,sans-serif; 
-      min-height:100vh; 
-      position: relative;
-      overflow-x: hidden;
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Tajawal,system-ui,sans-serif;
+      min-height:100vh;
+      position:relative;
+      overflow-x:hidden;
     }
 
     body::before {
-      content: "";
-      position: fixed;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at 30% 30%, rgba(114, 60, 217, 0.18), transparent 40%),
-                  radial-gradient(circle at 70% 70%, rgba(202, 255, 69, 0.12), transparent 45%),
-                  radial-gradient(circle at 50% 20%, rgba(36, 100, 199, 0.15), transparent 50%);
-      animation: ambientGlow 18s ease-in-out infinite alternate;
-      z-index: -1;
-      pointer-events: none;
+      content:"";
+      position:fixed;
+      top:-50%;
+      left:-50%;
+      width:200%;
+      height:200%;
+      background:
+        radial-gradient(circle at 30% 30%,rgba(114,60,217,.18),transparent 40%),
+        radial-gradient(circle at 70% 70%,rgba(202,255,69,.12),transparent 45%),
+        radial-gradient(circle at 50% 20%,rgba(36,100,199,.15),transparent 50%);
+      animation:ambientGlow 18s ease-in-out infinite alternate;
+      z-index:-1;
+      pointer-events:none;
     }
 
     @keyframes ambientGlow {
-      0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-      50% { transform: translate(-3%, 4%) rotate(3deg) scale(1.05); }
-      100% { transform: translate(3%, -2%) rotate(-3deg) scale(0.98); }
+      0% { transform:translate(0,0) rotate(0) scale(1); }
+      50% { transform:translate(-3%,4%) rotate(3deg) scale(1.05); }
+      100% { transform:translate(3%,-2%) rotate(-3deg) scale(.98); }
     }
 
-    button { 
-      font:inherit; 
-      color:inherit; 
-      cursor:pointer; 
-      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    button {
+      font:inherit;
+      color:inherit;
+      cursor:pointer;
+      transition:all .22s cubic-bezier(.4,0,.2,1);
     }
 
-    .app-shell { max-width:680px; margin:auto; padding:28px 18px 120px; } 
-    .topbar,.date-row,.section-heading,.shop-date { display:flex; align-items:center; justify-content:space-between; gap:12px; } 
-    h1,h2,h3,p { margin:0; } 
-    h1 { font-size:29px; font-weight:800; letter-spacing:-.5px; } 
-    h1 span { color:var(--lime); } 
-    h2 { font-size:23px; font-weight:800; } 
-    h3 { font-size:19px; font-weight:800; } 
-    .eyebrow { color:var(--muted); font-size:13px; font-weight:500; } 
+    .app-shell {
+      max-width:680px;
+      margin:auto;
+      padding:28px 18px 120px;
+    }
 
-    .top-actions { display: flex; align-items: center; gap: 8px; }
+    .topbar,
+    .date-row,
+    .section-heading,
+    .shop-date {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
 
-    .icon-button { 
-      position:relative; width:43px; height:43px; border:1px solid var(--line); 
-      border-radius:14px; background:var(--panel); font-size:20px; display: grid; place-items: center;
-    } 
-    .icon-button:hover { transform: translateY(-2px); border-color: var(--lime); }
-    .notification-dot { position:absolute; top:9px; left:10px; width:7px; height:7px; border-radius:50%; background:var(--lime); } 
+    h1,h2,h3,p { margin:0; }
 
-    .view { display:none; } 
-    .view.active { 
-      display:block; 
-      animation: smoothIn 0.32s cubic-bezier(0.16, 1, 0.3, 1); 
-    } 
+    h1 {
+      font-size:29px;
+      font-weight:800;
+      letter-spacing:-.5px;
+    }
 
-    @keyframes smoothIn { 
-      from { opacity:0; transform:translateY(12px) scale(0.98); } 
-      to { opacity:1; transform:translateY(0) scale(1); } 
-    } 
+    h1 span { color:var(--lime); }
+    h2 { font-size:23px; font-weight:800; }
+    h3 { font-size:19px; font-weight:800; }
 
-    .date-row { margin:34px 0 15px; } 
-    .live-label { color:var(--lime); font-size:12px; } 
-    .live-label i { display:inline-block; width:7px; height:7px; background:var(--lime); border-radius:50%; margin-left:5px; box-shadow:0 0 10px var(--lime); } 
+    .eyebrow {
+      color:var(--muted);
+      font-size:13px;
+      font-weight:500;
+    }
 
-    .hero-card { 
-      min-height:178px; display:flex; overflow:hidden; position:relative; 
-      padding:24px; border-radius:25px; 
-      background:linear-gradient(125deg,#723cd9,#281b72); 
-      box-shadow: 0 12px 30px rgba(114, 60, 217, 0.25);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    } 
+    .top-actions {
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .icon-button {
+      position:relative;
+      width:43px;
+      height:43px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--panel);
+      font-size:20px;
+      display:grid;
+      place-items:center;
+    }
+
+    .icon-button:hover {
+      transform:translateY(-2px);
+      border-color:var(--lime);
+    }
+
+    .notification-dot {
+      position:absolute;
+      top:9px;
+      left:10px;
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--lime);
+    }
+
+    .view { display:none; }
+
+    .view.active {
+      display:block;
+      animation:smoothIn .32s cubic-bezier(.16,1,.3,1);
+    }
+
+    @keyframes smoothIn {
+      from { opacity:0; transform:translateY(12px) scale(.98); }
+      to { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    .date-row { margin:34px 0 15px; }
+
+    .live-label {
+      color:var(--lime);
+      font-size:12px;
+    }
+
+    .live-label i {
+      display:inline-block;
+      width:7px;
+      height:7px;
+      background:var(--lime);
+      border-radius:50%;
+      margin-left:5px;
+      box-shadow:0 0 10px var(--lime);
+    }
+
+    .hero-card {
+      min-height:178px;
+      display:flex;
+      overflow:hidden;
+      position:relative;
+      padding:24px;
+      border-radius:25px;
+      background:linear-gradient(125deg,#723cd9,#281b72);
+      box-shadow:0 12px 30px rgba(114,60,217,.25);
+      transition:transform .3s ease,box-shadow .3s ease;
+    }
+
     .hero-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 36px rgba(114, 60, 217, 0.35);
+      transform:translateY(-3px);
+      box-shadow:0 16px 36px rgba(114,60,217,.35);
     }
-    .hero-copy { position:relative; z-index:1; } 
-    .tag { display:inline-block; padding:5px 10px; border-radius:20px; background:rgba(255,255,255,.18); font-size:12px; } 
-    .hero-card h3 { margin-top:12px; font-size:25px; line-height:1.17; } 
-    .hero-card p { margin-top:9px; max-width:210px; color:#e1d9ff; font-size:13px; } 
-    .hero-art { 
-      position:absolute; left:20px; bottom:12px; font-size:68px; transform:rotate(-12deg); 
-      filter:drop-shadow(0 14px 10px rgba(0,0,0,.35)); 
-      transition: transform 0.4s ease;
-    } 
-    .hero-card:hover .hero-art { transform: rotate(-5deg) scale(1.08); }
-    .hero-art b,.hero-art em { position:absolute; font-style:normal; color:var(--lime); font-size:28px; } 
-    .hero-art b { top:-10px; left:0; } 
-    .hero-art em { bottom:-3px; right:-2px; color:#fff; } 
 
-    .section-heading { margin:30px 0 14px; } 
-    .section-heading h2 { font-size:20px; } 
-    .text-button { border:0; background:none; color:var(--lime); font-size:13px; padding:5px 0; } 
-    .text-button:hover { opacity: 0.8; transform: translateX(-3px); }
-
-    .game-list { display:grid; gap:11px; } 
-    .game-row { 
-      display:flex; align-items:center; gap:13px; padding:12px; border:1px solid var(--line); 
-      background:var(--panel); border-radius:18px; width: 100%; text-align: right;
-      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
-    } 
-    .game-row:hover, .game-row:active {
-      transform: translateY(-2px);
-      border-color: rgba(202, 255, 69, 0.4);
-      background: var(--panel-2);
+    .hero-copy {
+      position:relative;
+      z-index:1;
     }
-    .game-cover { width:51px; height:51px; border-radius:14px; display:grid; place-items:center; font-size:25px; flex:none; } 
-    .game-cover.fortnite { background:linear-gradient(135deg,#0f78d5,#a783ff); } 
-    .game-cover.rocket { background:linear-gradient(135deg,#156caa,#152546); } 
-    .game-cover.overwatch { background:linear-gradient(135deg,#f6a143,#54423e); } 
-    .game-info { flex:1; min-width:0; } 
-    .game-info h3 { font-size:16px; } 
-    .game-info p { color:var(--muted); font-size:12px; margin-top:2px; } 
-    .game-row > span:last-child { color:var(--lime); font-size:13px; white-space:nowrap; } 
 
-    .page-heading { margin:14px 0 23px; } 
-    .page-heading h2 { margin:5px 0 7px; font-size:27px; } 
-    .page-heading > p:last-child { color:var(--muted); font-size:14px; } 
+    .tag {
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:20px;
+      background:rgba(255,255,255,.18);
+      font-size:12px;
+    }
 
-    .game-tabs,.filter-row { display:flex; gap:8px; overflow:auto; padding:0 0 8px; scrollbar-width:none; } 
-    .game-tabs button,.filter-row button { flex:none; border:1px solid var(--line); background:var(--panel); border-radius:12px; padding:10px 13px; font-size:13px; } 
-    .game-tabs button:hover, .filter-row button:hover { border-color: var(--lime); }
-    .game-tabs button.active,.filter-row button.active { color:#10152a; background:var(--lime); border-color:var(--lime); font-weight:700; } 
+    .hero-card h3 {
+      margin-top:12px;
+      font-size:25px;
+      line-height:1.17;
+    }
 
-    .shop-date { margin:12px 0; color:var(--muted); font-size:13px; } 
-    .count { color:var(--lime); } 
+    .hero-card p {
+      margin-top:9px;
+      max-width:210px;
+      color:#e1d9ff;
+      font-size:13px;
+    }
 
-    .item-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; } 
-    .item-card { 
-      overflow:hidden; background:var(--panel); border-radius:20px; border:1px solid var(--line); 
-      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.25s ease;
-      display: flex; flex-direction: column; cursor: pointer; text-align: right;
-    } 
+    .hero-art {
+      position:absolute;
+      left:20px;
+      bottom:12px;
+      font-size:68px;
+      transform:rotate(-12deg);
+      filter:drop-shadow(0 14px 10px rgba(0,0,0,.35));
+      transition:transform .4s ease;
+    }
+
+    .hero-card:hover .hero-art {
+      transform:rotate(-5deg) scale(1.08);
+    }
+
+    .hero-art b,
+    .hero-art em {
+      position:absolute;
+      font-style:normal;
+      color:var(--lime);
+      font-size:28px;
+    }
+
+    .hero-art b { top:-10px; left:0; }
+    .hero-art em { bottom:-3px; right:-2px; color:#fff; }
+
+    .section-heading { margin:30px 0 14px; }
+
+    .section-heading h2 { font-size:20px; }
+
+    .text-button {
+      border:0;
+      background:none;
+      color:var(--lime);
+      font-size:13px;
+      padding:5px 0;
+    }
+
+    .text-button:hover {
+      opacity:.8;
+      transform:translateX(-3px);
+    }
+
+    .game-list {
+      display:grid;
+      gap:11px;
+    }
+
+    .game-row {
+      display:flex;
+      align-items:center;
+      gap:13px;
+      padding:12px;
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      width:100%;
+      text-align:right;
+      transition:transform .22s ease,border-color .22s ease,background .22s ease;
+    }
+
+    .game-row:hover,
+    .game-row:active {
+      transform:translateY(-2px);
+      border-color:rgba(202,255,69,.4);
+      background:var(--panel-2);
+    }
+
+    .game-cover {
+      width:51px;
+      height:51px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      font-size:25px;
+      flex:none;
+    }
+
+    .game-cover.fortnite {
+      background:linear-gradient(135deg,#0f78d5,#a783ff);
+    }
+
+    .game-cover.rocket {
+      background:linear-gradient(135deg,#156caa,#152546);
+    }
+
+    .game-cover.overwatch {
+      background:linear-gradient(135deg,#f6a143,#54423e);
+    }
+
+    .game-info {
+      flex:1;
+      min-width:0;
+    }
+
+    .game-info h3 { font-size:16px; }
+
+    .game-info p {
+      color:var(--muted);
+      font-size:12px;
+      margin-top:2px;
+    }
+
+    .game-row > span:last-child {
+      color:var(--lime);
+      font-size:13px;
+      white-space:nowrap;
+    }
+
+    .page-heading { margin:14px 0 23px; }
+
+    .page-heading h2 {
+      margin:5px 0 7px;
+      font-size:27px;
+    }
+
+    .page-heading > p:last-child {
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .game-tabs,
+    .filter-row {
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding:0 0 8px;
+      scrollbar-width:none;
+    }
+
+    .game-tabs button,
+    .filter-row button {
+      flex:none;
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:12px;
+      padding:10px 13px;
+      font-size:13px;
+    }
+
+    .game-tabs button:hover,
+    .filter-row button:hover {
+      border-color:var(--lime);
+    }
+
+    .game-tabs button.active,
+    .filter-row button.active {
+      color:#10152a;
+      background:var(--lime);
+      border-color:var(--lime);
+      font-weight:700;
+    }
+
+    .official-shop {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      width:100%;
+      margin:0 0 14px;
+      padding:12px 14px;
+      border-radius:14px;
+      background:var(--panel);
+      border:1px solid var(--line);
+      color:var(--text);
+      text-decoration:none;
+      font-size:13px;
+      font-weight:700;
+      transition:all .22s ease;
+    }
+
+    .official-shop:hover {
+      border-color:var(--lime);
+      background:var(--panel-2);
+      transform:translateY(-2px);
+    }
+
+    .official-shop span { color:var(--lime); }
+
+    .shop-date {
+      margin:12px 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .count { color:var(--lime); }
+
+    .item-grid {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .item-card {
+      overflow:hidden;
+      background:var(--panel);
+      border-radius:20px;
+      border:1px solid var(--line);
+      transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s ease,box-shadow .25s ease;
+      display:flex;
+      flex-direction:column;
+      cursor:pointer;
+      text-align:right;
+    }
+
     .item-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      border-color: rgba(202, 255, 69, 0.6);
-      box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+      transform:translateY(-5px) scale(1.02);
+      border-color:rgba(202,255,69,.6);
+      box-shadow:0 12px 25px rgba(0,0,0,.5);
     }
-    .item-card:active { transform:scale(.97); border-color:var(--lime); } 
 
-    .item-art { 
-      height: 180px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      overflow: hidden; 
-      background: var(--art); 
-      position: relative; 
-      padding: 10px;
-    } 
-    .item-art img { 
-      max-width: 100%; 
-      max-height: 100%; 
-      object-fit: contain; 
-      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
-      transition: transform 0.35s ease; 
-    } 
-    .item-card:hover .item-art img { transform: scale(1.1); }
+    .item-card:active {
+      transform:scale(.97);
+      border-color:var(--lime);
+    }
 
-    .item-info { position:relative; min-height:80px; padding:12px 38px 12px 12px; background: var(--panel); flex: 1; display: flex; flex-direction: column; justify-content: space-between; } 
-    .item-title { display:block; } 
-    .item-title h3 { 
-      font-size:15px; line-height:1.3; font-weight:800; overflow:hidden; 
-      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; color:#fff;
-    } 
-    .save-button { flex:none; border:0; background:transparent; padding:0; color:var(--muted); font-size:22px; line-height:1; transition: transform 0.2s ease, color 0.2s ease; cursor: pointer; } 
-    .save-button:hover { transform: scale(1.2); }
-    .item-info .save-button { position:absolute; top:12px; left:10px; } 
-    .save-button.saved { color:var(--lime); } 
-    .price { margin-top:6px; color:var(--muted); font-size:13px; font-weight:bold; } 
-    .coin { color:var(--orange); margin-left:3px; } 
+    .item-art {
+      height:180px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      background:var(--art);
+      position:relative;
+      padding:10px;
+    }
 
-    .news-list { display:grid; gap:12px; } 
-    .news-card { 
-      display:flex; gap:12px; align-items:stretch; padding:11px; border:1px solid var(--line); 
-      border-radius:18px; background:var(--panel); width: 100%; text-align: right; cursor: pointer;
-      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
-    } 
+    .item-art img {
+      max-width:100%;
+      max-height:100%;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));
+      transition:transform .35s ease;
+    }
+
+    .item-card:hover .item-art img {
+      transform:scale(1.1);
+    }
+
+    .item-info {
+      position:relative;
+      min-height:80px;
+      padding:12px 38px 12px 12px;
+      background:var(--panel);
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .item-title { display:block; }
+
+    .item-title h3 {
+      font-size:15px;
+      line-height:1.3;
+      font-weight:800;
+      overflow:hidden;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      color:#fff;
+    }
+
+    .save-button {
+      flex:none;
+      border:0;
+      background:transparent;
+      padding:0;
+      color:var(--muted);
+      font-size:22px;
+      line-height:1;
+      transition:transform .2s ease,color .2s ease;
+      cursor:pointer;
+    }
+
+    .save-button:hover { transform:scale(1.2); }
+
+    .item-info .save-button {
+      position:absolute;
+      top:12px;
+      left:10px;
+    }
+
+    .save-button.saved { color:var(--lime); }
+
+    .price {
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .coin {
+      color:var(--orange);
+      margin-left:3px;
+    }
+
+    .news-list {
+      display:grid;
+      gap:12px;
+    }
+
+    .news-card {
+      display:flex;
+      gap:12px;
+      align-items:stretch;
+      padding:11px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--panel);
+      width:100%;
+      text-align:right;
+      cursor:pointer;
+      transition:transform .22s ease,border-color .22s ease,background .22s ease;
+    }
+
     .news-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(202, 255, 69, 0.4);
-      background: var(--panel-2);
+      transform:translateY(-2px);
+      border-color:rgba(202,255,69,.4);
+      background:var(--panel-2);
     }
-    .news-card.compact-card { padding:9px; } 
-    .news-image { width:96px; min-height:82px; display:grid; place-items:center; flex:none; border-radius:13px; font-size:34px; background:var(--art); } 
-    .news-copy { flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center; } 
-    .news-meta { color:var(--muted); font-size:11px; } 
-    .news-copy h3 { margin:4px 0; font-size:14px; line-height:1.35; } 
-    .news-copy p { color:var(--muted); font-size:12px; line-height:1.35; } 
-    .news-actions { display:flex; flex-direction:column; justify-content:space-between; align-items:center; } 
 
-    .empty-state { text-align:center; padding:70px 20px; color:var(--muted); } 
-    .empty-state span { display:grid; place-items:center; margin:0 auto 16px; width:62px; height:62px; border-radius:50%; color:var(--lime); background:var(--panel); font-size:36px; } 
-    .empty-state h3 { color:var(--text); font-size:17px; margin-bottom:5px; } 
-    .empty-state p { font-size:13px; } 
+    .news-card.compact-card { padding:9px; }
 
-    .saved-content { display:grid; gap:12px; } 
-    .saved-label { color:var(--muted); font-size:13px; margin:19px 0 8px; } 
+    .news-image {
+      width:96px;
+      min-height:82px;
+      display:grid;
+      place-items:center;
+      flex:none;
+      border-radius:13px;
+      font-size:34px;
+      background:var(--art);
+    }
 
-    .bottom-nav { 
-      position:fixed; z-index:3; bottom:0; left:0; right:0; 
-      display:flex; justify-content:center; gap:3px; 
-      padding:10px max(16px,calc((100vw - 680px)/2)); 
-      padding-bottom: max(10px, env(safe-area-inset-bottom));
-      background:rgba(12,16,32,.85); 
-      border-top:1px solid var(--line); 
-      backdrop-filter:blur(20px); 
-    } 
-    .nav-item { 
-      min-width:0; flex:1; max-width:140px; border:0; background:none; color:var(--muted); 
-      padding:5px 3px; display:flex; flex-direction:column; gap:2px; align-items:center; font-size:11px; 
-      transition: transform 0.2s ease, color 0.2s ease;
-    } 
-    .nav-item span { font-size:22px; line-height:22px; transition: transform 0.2s ease; } 
-    .nav-item b { font-weight:500; } 
-    .nav-item.active { color:var(--lime); } 
-    .nav-item.active span { transform: scale(1.15); }
+    .news-copy {
+      flex:1;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
 
-    .details-dialog { 
-      width:min(92vw,440px); padding:0; overflow:hidden; border:1px solid var(--line); 
-      border-radius:24px; color:var(--text); background:var(--panel); 
-      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-    } 
-    .details-dialog::backdrop { background:rgba(0,0,0,.8); backdrop-filter: blur(5px); } 
-    .details-dialog > img { width:100%; height:280px; object-fit:contain; padding:15px; display:block; background:radial-gradient(circle, #202a48, #0c1020); } 
-    .detail-body { padding:20px; } 
-    .detail-body h2 { margin:4px 0 12px; font-size:24px; } 
-    .detail-price { color:var(--muted); font-size:16px; } 
-    .detail-body hr { border:0; border-top:1px solid var(--line); margin:18px 0; } 
-    .detail-date { color:var(--lime); font-size:14px; } 
+    .news-meta {
+      color:var(--muted);
+      font-size:11px;
+    }
 
-    .close-dialog { 
-      position:absolute; top:12px; left:12px; z-index:1; width:36px; height:36px; border:0; 
-      border-radius:50%; background:rgba(12,16,32,.82); color:var(--text); font-size:28px; line-height:1; 
-    } 
-    .close-dialog:hover { background: var(--lime); color: #0c1020; transform: rotate(90deg); }
+    .news-copy h3 {
+      margin:4px 0;
+      font-size:14px;
+      line-height:1.35;
+    }
 
-    .details-dialog[open] { animation:item-pop .28s cubic-bezier(.22,1,.36,1); } 
-    .details-dialog[open]::backdrop { animation:backdrop-in .25s ease-out; } 
+    .news-copy p {
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
 
-    @keyframes item-pop { 
-      from { opacity:0; transform:translateY(24px) scale(.92); } 
-      to { opacity:1; transform:translateY(0) scale(1); } 
-    } 
-    @keyframes backdrop-in { 
-      from { opacity:0; } 
-      to { opacity:1; } 
-    } 
+    .news-actions {
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:center;
+    }
 
-    @media (min-width:580px) { 
-      .item-grid { grid-template-columns:repeat(3,1fr); } 
+    .empty-state {
+      text-align:center;
+      padding:70px 20px;
+      color:var(--muted);
+    }
+
+    .empty-state span {
+      display:grid;
+      place-items:center;
+      margin:0 auto 16px;
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      color:var(--lime);
+      background:var(--panel);
+      font-size:36px;
+    }
+
+    .empty-state h3 {
+      color:var(--text);
+      font-size:17px;
+      margin-bottom:5px;
+    }
+
+    .empty-state p { font-size:13px; }
+
+    .saved-content {
+      display:grid;
+      gap:12px;
+    }
+
+    .saved-label {
+      color:var(--muted);
+      font-size:13px;
+      margin:19px 0 8px;
+    }
+
+    .bottom-nav {
+      position:fixed;
+      z-index:3;
+      bottom:0;
+      left:0;
+      right:0;
+      display:flex;
+      justify-content:center;
+      gap:3px;
+      padding:10px max(16px,calc((100vw - 680px)/2));
+      padding-bottom:max(10px,env(safe-area-inset-bottom));
+      background:rgba(12,16,32,.85);
+      border-top:1px solid var(--line);
+      backdrop-filter:blur(20px);
+    }
+
+    .nav-item {
+      min-width:0;
+      flex:1;
+      max-width:140px;
+      border:0;
+      background:none;
+      color:var(--muted);
+      padding:5px 3px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      align-items:center;
+      font-size:11px;
+      transition:transform .2s ease,color .2s ease;
+    }
+
+    .nav-item span {
+      font-size:22px;
+      line-height:22px;
+      transition:transform .2s ease;
+    }
+
+    .nav-item b { font-weight:500; }
+    .nav-item.active { color:var(--lime); }
+    .nav-item.active span { transform:scale(1.15); }
+
+    .details-dialog {
+      width:min(92vw,440px);
+      padding:0;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:24px;
+      color:var(--text);
+      background:var(--panel);
+      box-shadow:0 20px 40px rgba(0,0,0,.7);
+    }
+
+    .details-dialog::backdrop {
+      background:rgba(0,0,0,.8);
+      backdrop-filter:blur(5px);
+    }
+
+    .details-dialog > img {
+      width:100%;
+      height:280px;
+      object-fit:contain;
+      padding:15px;
+      display:block;
+      background:radial-gradient(circle,#202a48,#0c1020);
+    }
+
+    .detail-body { padding:20px; }
+
+    .detail-body h2 {
+      margin:4px 0 12px;
+      font-size:24px;
+    }
+
+    .detail-price {
+      color:var(--muted);
+      font-size:16px;
+    }
+
+    .detail-body hr {
+      border:0;
+      border-top:1px solid var(--line);
+      margin:18px 0;
+    }
+
+    .detail-date {
+      color:var(--lime);
+      font-size:14px;
+    }
+
+    .close-dialog {
+      position:absolute;
+      top:12px;
+      left:12px;
+      z-index:1;
+      width:36px;
+      height:36px;
+      border:0;
+      border-radius:50%;
+      background:rgba(12,16,32,.82);
+      color:var(--text);
+      font-size:28px;
+      line-height:1;
+    }
+
+    .close-dialog:hover {
+      background:var(--lime);
+      color:#0c1020;
+      transform:rotate(90deg);
+    }
+
+    .details-dialog[open] {
+      animation:item-pop .28s cubic-bezier(.22,1,.36,1);
+    }
+
+    .details-dialog[open]::backdrop {
+      animation:backdrop-in .25s ease-out;
+    }
+
+    @keyframes item-pop {
+      from { opacity:0; transform:translateY(24px) scale(.92); }
+      to { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    @keyframes backdrop-in {
+      from { opacity:0; }
+      to { opacity:1; }
+    }
+
+    @media (min-width:580px) {
+      .item-grid {
+        grid-template-columns:repeat(3,1fr);
+      }
     }
   </style>
 </head>
+
 <body>
+
   <main class="app-shell">
+
     <header class="topbar">
       <div>
         <p class="eyebrow">كل جديد الألعاب</p>
         <h1>وش نازل؟ <span>✦</span></h1>
       </div>
+
       <div class="top-actions">
-        <!-- زر التحميل فوق يمين -->
-        <button class="icon-button" id="install-btn" type="button" title="تحميل التطبيق" aria-label="تحميل التطبيق" style="display:none; color: var(--lime); border-color: rgba(202,255,69,0.3);">
+
+        <button
+          class="icon-button"
+          id="install-btn"
+          type="button"
+          title="تحميل التطبيق"
+          aria-label="تحميل التطبيق"
+          style="display:none;color:var(--lime);border-color:rgba(202,255,69,.3);">
           📥
         </button>
+
         <button class="icon-button" type="button" aria-label="الإشعارات">
           ♧<span class="notification-dot"></span>
         </button>
+
       </div>
     </header>
 
     <section id="home-view" class="view active" aria-labelledby="today-title">
+
       <div class="date-row">
         <div>
           <p class="eyebrow">اليوم المتجدد</p>
@@ -325,263 +799,862 @@
           <h3>شوف اللي نازل<br />قبل لا يفوتك</h3>
           <p>ثلاث ألعاب. كل شيء جديد في مكان واحد.</p>
         </div>
-        <div class="hero-art" aria-hidden="true"><span>🎮</span><b>+</b><em>✦</em></div>
+        <div class="hero-art" aria-hidden="true">
+          <span>🎮</span><b>+</b><em>✦</em>
+        </div>
       </article>
 
-      <div class="section-heading"><h2>الآيتم شوب</h2><button class="text-button" data-go="shop" type="button">عرض الكل</button></div>
+      <div class="section-heading">
+        <h2>الآيتم شوب</h2>
+        <button class="text-button" data-go="shop" type="button">عرض الكل</button>
+      </div>
+
       <div class="game-list" id="shop-preview"></div>
 
-      <div class="section-heading"><h2>آخر الأخبار المباشرة</h2><button class="text-button" data-go="news" type="button">عرض الكل</button></div>
+      <div class="section-heading">
+        <h2>آخر الأخبار المباشرة</h2>
+        <button class="text-button" data-go="news" type="button">عرض الكل</button>
+      </div>
+
       <div class="news-list compact" id="news-preview"></div>
+
     </section>
 
     <section id="shop-view" class="view" aria-labelledby="shop-title">
-      <div class="page-heading"><p class="eyebrow">يتم التحديث يومياً</p><h2 id="shop-title">آيتم شوب اليوم</h2><p>اختَر لعبة وشوف العناصر المتاحة الآن.</p></div>
+
+      <div class="page-heading">
+        <p class="eyebrow">يتم التحديث يومياً</p>
+        <h2 id="shop-title">آيتم شوب اليوم</h2>
+        <p>اختَر لعبة وشوف العناصر المتاحة الآن.</p>
+      </div>
+
       <div class="game-tabs" id="game-tabs" role="tablist" aria-label="اختيار اللعبة"></div>
-      <div class="shop-date"><span>متجر اليوم</span><span class="count" id="items-count"></span></div>
+
+      <a id="official-shop-link"
+         class="official-shop"
+         href="#"
+         target="_blank"
+         rel="noopener noreferrer">
+        <span>↗</span> فتح الآيتم شوب الرسمي
+      </a>
+
+      <div class="shop-date">
+        <span>متجر اليوم</span>
+        <span class="count" id="items-count"></span>
+      </div>
+
       <div class="item-grid" id="item-grid"></div>
+
     </section>
 
     <section id="news-view" class="view" aria-labelledby="news-title">
-      <div class="page-heading"><p class="eyebrow">آخر المستجدات</p><h2 id="news-title">أخبار الألعاب</h2><p>اختر لعبتك أو تابع كل الأخبار.</p></div>
+
+      <div class="page-heading">
+        <p class="eyebrow">آخر المستجدات</p>
+        <h2 id="news-title">أخبار الألعاب</h2>
+        <p>اختر لعبتك أو تابع كل الأخبار.</p>
+      </div>
+
       <div class="filter-row" id="news-filters"></div>
       <div class="news-list" id="news-list"></div>
+
     </section>
 
     <section id="saved-view" class="view" aria-labelledby="saved-title">
-      <div class="page-heading"><p class="eyebrow">قائمتك الخاصة</p><h2 id="saved-title">المحفوظات</h2><p>احفظ العناصر أو الأخبار التي تبغى ترجع لها.</p></div>
-      <div class="empty-state" id="saved-empty"><span>♡</span><h3>ما حفظت شيء إلى الآن</h3><p>اضغط على القلب بجانب أي عنصر أو خبر.</p></div>
+
+      <div class="page-heading">
+        <p class="eyebrow">قائمتك الخاصة</p>
+        <h2 id="saved-title">المحفوظات</h2>
+        <p>احفظ العناصر أو الأخبار التي تبغى ترجع لها.</p>
+      </div>
+
+      <div class="empty-state" id="saved-empty">
+        <span>♡</span>
+        <h3>ما حفظت شيء إلى الآن</h3>
+        <p>اضغط على القلب بجانب أي عنصر أو خبر.</p>
+      </div>
+
       <div class="saved-content" id="saved-content"></div>
+
     </section>
+
   </main>
 
-  <button type="button" onclick="openFeedback()" style="position:fixed; bottom:80px; right:18px; z-index:99; display:flex; align-items:center; gap:6px; padding:10px 16px; border:1px solid rgba(255,255,255,.1); border-radius:30px; background:#202a48; color:#caff45; font-size:13px; font-weight:700; box-shadow:0 8px 20px rgba(0,0,0,0.4); cursor:pointer;">
+  <button
+    type="button"
+    onclick="openFeedback()"
+    style="position:fixed;bottom:80px;right:18px;z-index:99;display:flex;align-items:center;gap:6px;padding:10px 16px;border:1px solid rgba(255,255,255,.1);border-radius:30px;background:#202a48;color:#caff45;font-size:13px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.4);cursor:pointer;">
     💬 طلب لعبة / ملاحظة
   </button>
 
   <nav class="bottom-nav" aria-label="التنقل الرئيسي">
-    <button class="nav-item active" data-go="home" type="button"><span>⌂</span><b>الرئيسية</b></button>
-    <button class="nav-item" data-go="shop" type="button"><span>▦</span><b>الآيتم شوب</b></button>
-    <button class="nav-item" data-go="news" type="button"><span>◉</span><b>الأخبار</b></button>
-    <button class="nav-item" data-go="saved" type="button"><span>♡</span><b>المحفوظات</b></button>
+    <button class="nav-item active" data-go="home" type="button">
+      <span>⌂</span><b>الرئيسية</b>
+    </button>
+
+    <button class="nav-item" data-go="shop" type="button">
+      <span>▦</span><b>الآيتم شوب</b>
+    </button>
+
+    <button class="nav-item" data-go="news" type="button">
+      <span>◉</span><b>الأخبار</b>
+    </button>
+
+    <button class="nav-item" data-go="saved" type="button">
+      <span>♡</span><b>المحفوظات</b>
+    </button>
   </nav>
 
   <dialog class="details-dialog" id="item-dialog" aria-labelledby="detail-name">
-    <button class="close-dialog" type="button" onclick="closeDetails()" aria-label="إغلاق">×</button>
+
+    <button class="close-dialog"
+            type="button"
+            onclick="closeDetails()"
+            aria-label="إغلاق">
+      ×
+    </button>
+
     <img id="detail-image" src="" alt="" />
-    <div class="detail-body"><p class="eyebrow" id="detail-game"></p><h2 id="detail-name"></h2><p class="detail-price" id="detail-price"></p><hr /><p class="detail-date" id="detail-date"></p></div>
+
+    <div class="detail-body">
+      <p class="eyebrow" id="detail-game"></p>
+      <h2 id="detail-name"></h2>
+      <p class="detail-price" id="detail-price"></p>
+      <hr />
+      <p class="detail-date" id="detail-date"></p>
+    </div>
+
   </dialog>
 
   <dialog class="details-dialog" id="install-guide-dialog">
-    <button class="close-dialog" type="button" onclick="document.getElementById('install-guide-dialog').close()" aria-label="إغلاق">×</button>
+
+    <button class="close-dialog"
+            type="button"
+            onclick="document.getElementById('install-guide-dialog').close()"
+            aria-label="إغلاق">
+      ×
+    </button>
+
     <div class="detail-body">
       <p class="eyebrow">تحميل التطبيق</p>
+
       <h2>طريقة تثبيت "وش نازل؟"</h2>
-      <p style="color:#a7b0ca; font-size:13px; margin: 10px 0 15px; line-height: 1.6;">
-        أنت تفتح الموقع من متصفح سفاري (أيفون). لتثبيت التطبيق على شاشتك الرئيسية بسهولة:<br>
-        1. اضغط على زر <b>المشاركة (Share)</b> أسفل المتصفح.<br>
-        2. اختر <b>"إضافة إلى الشاشة الرئيسية" (Add to Home Screen)</b>.
+
+      <p style="color:#a7b0ca;font-size:13px;margin:10px 0 15px;line-height:1.6;">
+        إذا ظهر زر التثبيت في أعلى اليمين اضغط عليه ثم اختر <b>تثبيت</b>.<br>
+        على iPhone/iPad: اضغط <b>مشاركة</b> ثم <b>إضافة إلى الشاشة الرئيسية</b>.
       </p>
-      <button type="button" onclick="document.getElementById('install-guide-dialog').close()" style="width:100%; padding:12px; border:0; border-radius:12px; background:#caff45; color:#10152a; font-weight:bold; cursor:pointer;">حسناً فهمت 👍</button>
+
+      <button
+        type="button"
+        onclick="document.getElementById('install-guide-dialog').close()"
+        style="width:100%;padding:12px;border:0;border-radius:12px;background:#caff45;color:#10152a;font-weight:bold;cursor:pointer;">
+        حسناً فهمت 👍
+      </button>
+
     </div>
+
   </dialog>
 
   <dialog class="details-dialog" id="feedback-dialog">
-    <button class="close-dialog" type="button" onclick="closeFeedback()" aria-label="إغلاق">×</button>
+
+    <button class="close-dialog"
+            type="button"
+            onclick="closeFeedback()"
+            aria-label="إغلاق">
+      ×
+    </button>
+
     <div class="detail-body">
+
       <p class="eyebrow">تواصل معنا</p>
+
       <h2>اطلب لعبة أو أرسل ملاحظة</h2>
-      <p style="color:#a7b0ca; font-size:13px; margin-bottom:14px;">اكتب ملاحظتك وسيتم إرسالها للواتساب مباشرة:</p>
-      <textarea id="feedback-text" rows="4" placeholder="اكتب اسم اللعبة أو ملاحظتك..." style="width:100%; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,.1); background:#202a48; color:#fff; font-family:inherit; resize:none; margin-bottom:12px;"></textarea>
-      <button type="button" onclick="submitFeedback()" style="width:100%; padding:12px; border:0; border-radius:12px; background:#caff45; color:#10152a; font-weight:bold; cursor:pointer;">إرسال عبر الواتساب 📲</button>
+
+      <p style="color:#a7b0ca;font-size:13px;margin-bottom:14px;">
+        اكتب ملاحظتك وسيتم إرسالها للواتساب مباشرة:
+      </p>
+
+      <textarea
+        id="feedback-text"
+        rows="4"
+        placeholder="اكتب اسم اللعبة أو ملاحظتك..."
+        style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:#202a48;color:#fff;font-family:inherit;resize:none;margin-bottom:12px;"></textarea>
+
+      <button
+        type="button"
+        onclick="submitFeedback()"
+        style="width:100%;padding:12px;border:0;border-radius:12px;background:#caff45;color:#10152a;font-weight:bold;cursor:pointer;">
+        إرسال عبر الواتساب 📲
+      </button>
+
     </div>
+
   </dialog>
 
   <script>
+
     const games = {
-      fortnite: { name: 'Fortnite', icon: '🏝️', className: 'fortnite', items: [
-        ['سكن أورا — Aura', 'https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png', '800', 'linear-gradient(135deg, #0f78d5, #a783ff)'],
-        ['سكن هيروبيرت — Herobrine', 'https://fortnite-api.com/images/cosmetics/br/cid_758_athena_commando_m_cyber_01/icon.png', '1,200', 'linear-gradient(135deg, #135b8f, #2464c7)'],
-        ['رقصة الفوز — Floss', 'https://fortnite-api.com/images/cosmetics/br/eid_floss/icon.png', '500', 'linear-gradient(135deg, #a783ff, #723cd9)']
-      ] },
-      rocket: { name: 'Rocket League', icon: '🚙', className: 'rocket', items: [
-        ['سيارة فـينوم — Venom', 'https://rocketleague.media.zestyio.com/Venom_Body_Default.png', '500', 'linear-gradient(135deg, #156caa, #152546)'],
-        ['كفرات ديسكو — Disco Wheels', 'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fwheels%2Fdisco%2Fstandard.png&w=640&q=75', '700', 'linear-gradient(135deg, #1f4068, #162447)'],
-        ['انفجار الهدف — Dueling Dragons', 'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fgoal-explosions%2Fdueling-dragons%2Fstandard.png&w=640&q=75', '2,000', 'linear-gradient(135deg, #b83b5e, #6a2c70)']
-      ] },
-      overwatch: { name: 'Overwatch', icon: '⚡', className: 'overwatch', items: [
-        ['سكن كيريكو — Kiriko Rogue', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/47/Kiriko_Skin_Rogue.png', '1,900', 'linear-gradient(135deg, #8E2DE2, #4A00E0)'],
-        ['سكن جينجي — Genji Cyberdemon', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/4c/Genji_Skin_Cyberdemon.png', '2,200', 'linear-gradient(135deg, #11998e, #38ef7d)'],
-        ['سكن ميرسي — Mercy Pink', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f3/Mercy_Skin_Pink.png', '1,900', 'linear-gradient(135deg, #ff758c, #ff7eb3)']
-      ]}
+
+      fortnite: {
+        name:'Fortnite',
+        icon:'🏝️',
+        className:'fortnite',
+        officialShop:'https://www.fortnite.com/item-shop',
+
+        items:[
+          [
+            'سكن أورا — Aura',
+            'https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png',
+            '800',
+            'linear-gradient(135deg,#0f78d5,#a783ff)'
+          ],
+          [
+            'سكن هيروبيرت — Herobrine',
+            'https://fortnite-api.com/images/cosmetics/br/cid_758_athena_commando_m_cyber_01/icon.png',
+            '1,200',
+            'linear-gradient(135deg,#135b8f,#2464c7)'
+          ],
+          [
+            'رقصة الفوز — Floss',
+            'https://fortnite-api.com/images/cosmetics/br/eid_floss/icon.png',
+            '500',
+            'linear-gradient(135deg,#a783ff,#723cd9)'
+          ]
+        ]
+      },
+
+      rocket: {
+        name:'Rocket League',
+        icon:'🚙',
+        className:'rocket',
+        officialShop:'https://www.rocketleague.com/en-us/news',
+
+        items:[
+          [
+            'سيارة فـينوم — Venom',
+            'https://rocketleague.media.zestyio.com/Venom_Body_Default.png',
+            '500',
+            'linear-gradient(135deg,#156caa,#152546)'
+          ],
+          [
+            'كفرات ديسكو — Disco Wheels',
+            'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fwheels%2Fdisco%2Fstandard.png&w=640&q=75',
+            '700',
+            'linear-gradient(135deg,#1f4068,#162447)'
+          ],
+          [
+            'انفجار الهدف — Dueling Dragons',
+            'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fgoal-explosions%2Fdueling-dragons%2Fstandard.png&w=640&q=75',
+            '2,000',
+            'linear-gradient(135deg,#b83b5e,#6a2c70)'
+          ]
+        ]
+      },
+
+      overwatch: {
+        name:'Overwatch',
+        icon:'⚡',
+        className:'overwatch',
+
+        items:[
+          [
+            'سكن كيريكو — Kiriko Rogue',
+            'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/47/Kiriko_Skin_Rogue.png',
+            '1,900',
+            'linear-gradient(135deg,#8E2DE2,#4A00E0)'
+          ],
+          [
+            'سكن جينجي — Genji Cyberdemon',
+            'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/4c/Genji_Skin_Cyberdemon.png',
+            '2,200',
+            'linear-gradient(135deg,#11998e,#38ef7d)'
+          ],
+          [
+            'سكن ميرسي — Mercy Pink',
+            'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f3/Mercy_Skin_Pink.png',
+            '1,900',
+            'linear-gradient(135deg,#ff758c,#ff7eb3)'
+          ]
+        ]
+      }
+
     };
 
     let news = [
-      { 
-        id:'n1', game:'fortnite', gameName:'Fortnite', icon:'🏝️', art:'#2464c7', title:'تحديث جديد يغيّر خريطة فورتنايت', text:'أماكن جديدة ومهام أسبوعية بانتظارك.', time:'اليوم',
-        details: 'يتضمن التحديث الجديد تغييرات جذرية في منطقة الجزيرة وإعادة أسلحة كلاسيكية مع التحديث اليومي لمتجر اللعبة.',
-        sourceName: 'موقع Epic Games الرسمي', sourceUrl: 'https://www.fortnite.com/news'
+
+      {
+        id:'n1',
+        game:'fortnite',
+        gameName:'Fortnite',
+        icon:'🏝️',
+        art:'#2464c7',
+        title:'تحديث جديد يغيّر خريطة فورتنايت',
+        text:'أماكن جديدة ومهام أسبوعية بانتظارك.',
+        time:'اليوم',
+        details:'يتضمن التحديث الجديد تغييرات جذرية في منطقة الجزيرة وإعادة أسلحة كلاسيكية مع التحديث اليومي لمتجر اللعبة.',
+        sourceName:'موقع Epic Games الرسمي',
+        sourceUrl:'https://www.fortnite.com/news'
       },
-      { 
-        id:'n2', game:'rocket', gameName:'Rocket League', icon:'🏁', art:'#135b8f', title:'موسم روكيت ليق الجديد بدأ الآن', text:'سيارات ومكافآت ومسار تنافسي جديد.', time:'اليوم',
-        details: 'ينطلق الموسم الجديد مع حزمة Rocket Pass مليئة بالتصاميم والأنماط المميزة والتحديات التنافسية.',
-        sourceName: 'موقع Rocket League الرسمي', sourceUrl: 'https://www.rocketleague.com/news/'
+
+      {
+        id:'n2',
+        game:'rocket',
+        gameName:'Rocket League',
+        icon:'🏁',
+        art:'#135b8f',
+        title:'موسم روكيت ليق الجديد بدأ الآن',
+        text:'سيارات ومكافآت ومسار تنافسي جديد.',
+        time:'اليوم',
+        details:'ينطلق الموسم الجديد مع حزمة Rocket Pass مليئة بالتصاميم والأنماط المميزة والتحديات التنافسية.',
+        sourceName:'موقع Rocket League الرسمي',
+        sourceUrl:'https://www.rocketleague.com/news/'
       },
-      { 
-        id:'n3', game:'overwatch', gameName:'Overwatch', icon:'🦸', art:'#b86c35', title:'تحديث طور التنافس وأسلحة أسطورية', text:'تعديلات موازنة الأبطال ومكافآت جديدة.', time:'اليوم',
-        details: 'أعلنت بليزارد عن إطلاق أسلحة أسطورية جديدة وتعديلات شاملة على قدرات أبطال الدعم والهجوم.',
-        sourceName: 'مدونة Overwatch الرسمية', sourceUrl: 'https://overwatch.blizzard.com/en-us/news/'
+
+      {
+        id:'n3',
+        game:'overwatch',
+        gameName:'Overwatch',
+        icon:'🦸',
+        art:'#b86c35',
+        title:'تحديث طور التنافس وأسلحة أسطورية',
+        text:'تعديلات موازنة الأبطال ومكافآت جديدة.',
+        time:'اليوم',
+        details:'أعلنت بليزارد عن إطلاق أسلحة أسطورية جديدة وتعديلات شاملة على قدرات أبطال الدعم والهجوم.',
+        sourceName:'مدونة Overwatch الرسمية',
+        sourceUrl:'https://overwatch.blizzard.com/en-us/news/'
       }
+
     ];
 
-    let activeGame = 'fortnite'; 
-    let activeFilter = 'all'; 
+    let activeGame = 'fortnite';
+    let activeFilter = 'all';
     let saved = JSON.parse(localStorage.getItem('wn-saved') || '[]');
 
     const $ = s => document.querySelector(s);
 
-    const save = id => { 
-      saved = saved.includes(id) ? saved.filter(x => x !== id) : [...saved, id]; 
-      localStorage.setItem('wn-saved', JSON.stringify(saved)); 
-      render(); 
+    const save = id => {
+      saved = saved.includes(id)
+        ? saved.filter(x => x !== id)
+        : [...saved,id];
+
+      localStorage.setItem('wn-saved',JSON.stringify(saved));
+      render();
     };
 
-    const saveBtn = id => `<button class="save-button ${saved.includes(id) ? 'saved' : ''}" onclick="event.stopPropagation();save('${id}')" aria-label="حفظ">${saved.includes(id) ? '♥' : '♡'}</button>`;
+    const saveBtn = id =>
+      `<button class="save-button ${saved.includes(id) ? 'saved':''}"
+        onclick="event.stopPropagation();save('${id}')"
+        aria-label="حفظ">
+        ${saved.includes(id) ? '♥':'♡'}
+      </button>`;
 
-    function itemCard(item, gameKey, i) { 
-      const id = item[4] ? String(item[4]) : `${gameKey}-${i}`; 
+    function itemCard(item,gameKey,i) {
+
+      const id = item[4]
+        ? String(item[4])
+        : `${gameKey}-${i}`;
+
       let currencyName = 'عملة';
-      if (gameKey === 'rocket') currencyName = 'Credits';
-      else if (gameKey === 'overwatch') currencyName = 'Overwatch Coins';
 
-      return `<article class="item-card" role="button" tabindex="0" onclick="showDetails('${gameKey}',${i})" onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})"><div class="item-art" style="background:${item[3]}"><img src="${item[1]}" alt="${item[0]}" loading="lazy" onError="this.src='https://via.placeholder.com/300/161d34/ffffff?text=Game+Item'" /></div><div class="item-info"><div class="item-title"><h3>${item[0]}</h3>${saveBtn(id)}</div><p class="price"><span class="coin">◉</span>${item[2]} ${currencyName}</p></div></article>`; 
+      if(gameKey === 'rocket')
+        currencyName = 'Credits';
+
+      else if(gameKey === 'overwatch')
+        currencyName = 'Overwatch Coins';
+
+      return `
+        <article
+          class="item-card"
+          role="button"
+          tabindex="0"
+          onclick="showDetails('${gameKey}',${i})"
+          onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})">
+
+          <div class="item-art" style="background:${item[3]}">
+
+            <img
+              src="${item[1]}"
+              alt="${item[0]}"
+              loading="lazy"
+              onError="this.src='https://via.placeholder.com/300/161d34/ffffff?text=Game+Item'"
+            />
+
+          </div>
+
+          <div class="item-info">
+
+            <div class="item-title">
+              <h3>${item[0]}</h3>
+              ${saveBtn(id)}
+            </div>
+
+            <p class="price">
+              <span class="coin">◉</span>
+              ${item[2]} ${currencyName}
+            </p>
+
+          </div>
+
+        </article>
+      `;
     }
 
-    function showDetails(gameKey, index) { 
-      const item = games[gameKey]?.items[index]; 
-      if (!item) return; 
-      let currencyName = gameKey === 'rocket' ? 'Credits' : gameKey === 'overwatch' ? 'Overwatch Coins' : 'عملة';
+    function showDetails(gameKey,index) {
+
+      const item = games[gameKey]?.items[index];
+
+      if(!item) return;
+
+      let currencyName =
+        gameKey === 'rocket'
+          ? 'Credits'
+          : gameKey === 'overwatch'
+            ? 'Overwatch Coins'
+            : 'عملة';
+
       $('#detail-image').style.display = 'block';
-      $('#detail-image').src = item[1]; 
-      $('#detail-image').alt = item[0]; 
-      $('#detail-game').textContent = games[gameKey].name; 
-      $('#detail-name').textContent = item[0]; 
+      $('#detail-image').src = item[1];
+      $('#detail-image').alt = item[0];
+
+      $('#detail-game').textContent =
+        games[gameKey].name;
+
+      $('#detail-name').textContent =
+        item[0];
+
       $('#detail-price').style.display = 'block';
-      $('#detail-price').innerHTML = `<span class="coin">◉</span> ${item[2]} ${currencyName}`; 
-      $('#detail-date').textContent = item[5] ? `تاريخ الظهور: ${item[5]}` : 'متوفر في متجر اليوم'; 
-      $('#item-dialog').showModal(); 
-    }
 
-    function showNewsDetails(newsId) {
-      const item = news.find(n => n.id === newsId);
-      if (!item) return;
-      $('#detail-image').style.display = 'none';
-      $('#detail-game').textContent = `${item.gameName} · ${item.time}`;
-      $('#detail-name').textContent = item.title;
-      $('#detail-price').style.display = 'none';
-      
-      const sourceBtn = item.sourceUrl 
-        ? `<br/><br/><a href="${item.sourceUrl}" target="_blank" rel="noopener" style="display:inline-block; padding:8px 16px; background:#2464c7; color:#fff; text-decoration:none; border-radius:8px; font-weight:bold; margin-top:8px;">🔗 المصدر: ${item.sourceName || 'رابط المصدر'} ↗</a>` 
-        : '';
+      $('#detail-price').innerHTML =
+        `<span class="coin">◉</span> ${item[2]} ${currencyName}`;
 
-      $('#detail-date').innerHTML = `${item.details || item.text}${sourceBtn}`;
+      $('#detail-date').textContent =
+        item[5]
+          ? `تاريخ الظهور: ${item[5]}`
+          : 'متوفر في متجر اليوم';
+
       $('#item-dialog').showModal();
     }
 
-    function closeDetails() { $('#item-dialog').close(); }
-    function openFeedback() { $('#feedback-dialog').showModal(); }
-    function closeFeedback() { $('#feedback-dialog').close(); }
+    function showNewsDetails(newsId) {
+
+      const item =
+        news.find(n => n.id === newsId);
+
+      if(!item) return;
+
+      $('#detail-image').style.display = 'none';
+
+      $('#detail-game').textContent =
+        `${item.gameName} · ${item.time}`;
+
+      $('#detail-name').textContent =
+        item.title;
+
+      $('#detail-price').style.display = 'none';
+
+      const sourceBtn = item.sourceUrl
+        ? `<br><br>
+           <a
+             href="${item.sourceUrl}"
+             target="_blank"
+             rel="noopener"
+             style="display:inline-block;padding:8px 16px;background:#2464c7;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;margin-top:8px;">
+             🔗 المصدر: ${item.sourceName || 'رابط المصدر'} ↗
+           </a>`
+        : '';
+
+      $('#detail-date').innerHTML =
+        `${item.details || item.text}${sourceBtn}`;
+
+      $('#item-dialog').showModal();
+    }
+
+    function closeDetails() {
+      $('#item-dialog').close();
+    }
+
+    function openFeedback() {
+      $('#feedback-dialog').showModal();
+    }
+
+    function closeFeedback() {
+      $('#feedback-dialog').close();
+    }
 
     function submitFeedback() {
-      const text = $('#feedback-text').value.trim();
-      if(!text) { 
-        alert('اكتب ملاحظتك أو اللعبة المطلوب إضافتها أولاً!'); 
-        return; 
+
+      const text =
+        $('#feedback-text').value.trim();
+
+      if(!text) {
+        alert('اكتب ملاحظتك أو اللعبة المطلوب إضافتها أولاً!');
+        return;
       }
-      const myPhoneNumber = '966565949571'; 
-      const message = encodeURIComponent(`سلام عليكم، عندي طلب/ملاحظة لتطبيق وش نازل:\n\n"${text}"`);
-      window.open(`https://wa.me/${myPhoneNumber}?text=${message}`, '_blank');
+
+      const myPhoneNumber =
+        '966565949571';
+
+      const message =
+        encodeURIComponent(
+          `سلام عليكم، عندي طلب/ملاحظة لتطبيق وش نازل:\n\n"${text}"`
+        );
+
+      window.open(
+        `https://wa.me/${myPhoneNumber}?text=${message}`,
+        '_blank'
+      );
+
       $('#feedback-text').value = '';
       closeFeedback();
     }
 
-    function newsCard(n, compact=false) { 
-      return `<article class="news-card ${compact ? 'compact-card':''}" role="button" tabindex="0" onclick="showNewsDetails('${n.id}')" onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')"><div class="news-image" style="background:${n.art}">${n.icon}</div><div class="news-copy"><span class="news-meta">${n.gameName} · ${n.time}</span><h3>${n.title}</h3><p>${n.text}</p></div><div class="news-actions">${saveBtn(n.id)}</div></article>`; 
+    function newsCard(n,compact=false) {
+
+      return `
+        <article
+          class="news-card ${compact ? 'compact-card':''}"
+          role="button"
+          tabindex="0"
+          onclick="showNewsDetails('${n.id}')"
+          onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')">
+
+          <div
+            class="news-image"
+            style="background:${n.art}">
+            ${n.icon}
+          </div>
+
+          <div class="news-copy">
+
+            <span class="news-meta">
+              ${n.gameName} · ${n.time}
+            </span>
+
+            <h3>${n.title}</h3>
+
+            <p>${n.text}</p>
+
+          </div>
+
+          <div class="news-actions">
+            ${saveBtn(n.id)}
+          </div>
+
+        </article>
+      `;
     }
 
     function render() {
-      $('#shop-preview').innerHTML = Object.entries(games).map(([key,g]) => `<button class="game-row" data-open-game="${key}" type="button"><span class="game-cover ${g.className}">${g.icon}</span><span class="game-info"><h3>${g.name}</h3><p>متوفر الآن ${g.items.length} عناصر جديدة</p></span><span>شوف الشوب ←</span></button>`).join('');
-      $('#news-preview').innerHTML = news.slice(0,3).map(n => newsCard(n,true)).join('');
-      $('#game-tabs').innerHTML = Object.entries(games).map(([key,g]) => `<button role="tab" class="${activeGame===key?'active':''}" onclick="chooseGame('${key}')">${g.icon} ${g.name}</button>`).join('');
-      
-      const game = games[activeGame]; 
-      $('#items-count').textContent = `${game.items.length} عنصر مباشر الآن`; 
-      $('#item-grid').innerHTML = game.items.map((x,i)=>itemCard(x,activeGame,i)).join('');
-      
-      $('#news-filters').innerHTML = [['all','الكل'],...Object.entries(games).map(([k,g])=>[k,g.name])].map(([k,n])=>`<button class="${activeFilter===k?'active':''}" onclick="chooseFilter('${k}')">${n}</button>`).join('');
-      $('#news-list').innerHTML = news.filter(n=>activeFilter==='all'||n.game===activeFilter).map(n=>newsCard(n)).join('');
-      
-      const savedItems = saved.map(id => { 
-        if(id.startsWith('n')) { 
-          const n=news.find(x=>x.id===id); 
-          return n ? {type:'news', html:newsCard(n)}:null; 
-        } 
-        const [key,num]=id.split('-'); 
-        const x=games[key]?.items[Number(num)]; 
-        return x ? {type:'shop', html:itemCard(x,key,Number(num))}:null; 
-      }).filter(Boolean);
-      
-      $('#saved-empty').style.display = savedItems.length ? 'none':'block'; 
-      $('#saved-content').innerHTML = savedItems.length ? ['shop','news'].map(t=>{
-        const a=savedItems.filter(x=>x.type===t); 
-        return a.length ? `<p class="saved-label">${t==='shop'?'عناصر الآيتم شوب':'الأخبار'}</p><div class="${t==='shop'?'item-grid':'news-list'}">${a.map(x=>x.html).join('')}</div>`:''
-      }).join(''):'';
 
-      document.querySelectorAll('[data-open-game]').forEach(b=>b.addEventListener('click',()=>{activeGame=b.dataset.openGame; go('shop');}));
+      $('#shop-preview').innerHTML =
+        Object.entries(games)
+          .map(([key,g]) =>
+            `<button
+              class="game-row"
+              data-open-game="${key}"
+              type="button">
+
+              <span class="game-cover ${g.className}">
+                ${g.icon}
+              </span>
+
+              <span class="game-info">
+                <h3>${g.name}</h3>
+                <p>متوفر الآن ${g.items.length} عناصر جديدة</p>
+              </span>
+
+              <span>شوف الشوب ←</span>
+
+            </button>`
+          )
+          .join('');
+
+      $('#news-preview').innerHTML =
+        news
+          .slice(0,3)
+          .map(n => newsCard(n,true))
+          .join('');
+
+      $('#game-tabs').innerHTML =
+        Object.entries(games)
+          .map(([key,g]) =>
+            `<button
+              role="tab"
+              class="${activeGame === key ? 'active':''}"
+              onclick="chooseGame('${key}')">
+              ${g.icon} ${g.name}
+            </button>`
+          )
+          .join('');
+
+      const game =
+        games[activeGame];
+
+      const officialShopLink =
+        $('#official-shop-link');
+
+      officialShopLink.href =
+        game.officialShop;
+
+      officialShopLink.innerHTML =
+        `<span>↗</span> فتح الآيتم شوب الرسمي لـ ${game.name}`;
+
+      $('#items-count').textContent =
+        `${game.items.length} عنصر مباشر الآن`;
+
+      $('#item-grid').innerHTML =
+        game.items
+          .map((x,i) => itemCard(x,activeGame,i))
+          .join('');
+
+      $('#news-filters').innerHTML =
+        [
+          ['all','الكل'],
+          ...Object.entries(games)
+            .map(([k,g]) => [k,g.name])
+        ]
+        .map(([k,n]) =>
+          `<button
+            class="${activeFilter === k ? 'active':''}"
+            onclick="chooseFilter('${k}')">
+            ${n}
+          </button>`
+        )
+        .join('');
+
+      $('#news-list').innerHTML =
+        news
+          .filter(n =>
+            activeFilter === 'all' ||
+            n.game === activeFilter
+          )
+          .map(n => newsCard(n))
+          .join('');
+
+      const savedItems =
+        saved
+          .map(id => {
+
+            if(id.startsWith('n')) {
+
+              const n =
+                news.find(x => x.id === id);
+
+              return n
+                ? {type:'news',html:newsCard(n)}
+                : null;
+            }
+
+            const [key,num] =
+              id.split('-');
+
+            const x =
+              games[key]?.items[Number(num)];
+
+            return x
+              ? {
+                  type:'shop',
+                  html:itemCard(
+                    x,
+                    key,
+                    Number(num)
+                  )
+                }
+              : null;
+
+          })
+          .filter(Boolean);
+
+      $('#saved-empty').style.display =
+        savedItems.length
+          ? 'none'
+          : 'block';
+
+      $('#saved-content').innerHTML =
+        savedItems.length
+          ? ['shop','news']
+              .map(t => {
+
+                const a =
+                  savedItems.filter(
+                    x => x.type === t
+                  );
+
+                return a.length
+                  ? `<p class="saved-label">
+                       ${t === 'shop'
+                         ? 'عناصر الآيتم شوب'
+                         : 'الأخبار'}
+                     </p>
+                     <div class="${t === 'shop'
+                       ? 'item-grid'
+                       : 'news-list'}">
+                       ${a.map(x => x.html).join('')}
+                     </div>`
+                  : '';
+
+              })
+              .join('')
+          : '';
+
+      document
+        .querySelectorAll('[data-open-game]')
+        .forEach(b =>
+          b.addEventListener(
+            'click',
+            () => {
+              activeGame =
+                b.dataset.openGame;
+
+              go('shop');
+            }
+          )
+        );
     }
 
-    function chooseGame(k){activeGame=k;render()} 
-    function chooseFilter(k){activeFilter=k;render()} 
-
-    function go(view) { 
-      document.querySelectorAll('.view').forEach(e=>e.classList.toggle('active',e.id===`${view}-view`)); 
-      document.querySelectorAll('.nav-item').forEach(e=>e.classList.toggle('active',e.dataset.go===view)); 
-      window.scrollTo({top:0,behavior:'smooth'}); 
+    function chooseGame(k) {
+      activeGame = k;
+      render();
     }
 
-    document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go))); 
+    function chooseFilter(k) {
+      activeFilter = k;
+      render();
+    }
 
-    // منطق تشغيل زر التحميل (PWA Install)
+    function go(view) {
+
+      document
+        .querySelectorAll('.view')
+        .forEach(e =>
+          e.classList.toggle(
+            'active',
+            e.id === `${view}-view`
+          )
+        );
+
+      document
+        .querySelectorAll('.nav-item')
+        .forEach(e =>
+          e.classList.toggle(
+            'active',
+            e.dataset.go === view
+          )
+        );
+
+      window.scrollTo({
+        top:0,
+        behavior:'smooth'
+      });
+    }
+
+    document
+      .querySelectorAll('[data-go]')
+      .forEach(b =>
+        b.addEventListener(
+          'click',
+          () => go(b.dataset.go)
+        )
+      );
+
+    /* PWA */
+
+    if('serviceWorker' in navigator) {
+
+      window.addEventListener(
+        'load',
+        () =>
+          navigator.serviceWorker
+            .register('./sw.js')
+            .catch(() => {})
+      );
+
+    }
+
     let deferredPrompt;
-    const installBtn = document.getElementById('install-btn');
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'grid'; // يظهر الزر فوق يمين في الأندرويد والكروم
-    });
+    const installBtn =
+      document.getElementById('install-btn');
 
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          installBtn.style.display = 'none';
-        }
-        deferredPrompt = null;
-      } else {
-        // لو كان المتصفح أيفون (سفاري) يفتح له نافذة التعليمات
-        document.getElementById('install-guide-dialog').showModal();
+    window.addEventListener(
+      'beforeinstallprompt',
+      e => {
+
+        e.preventDefault();
+
+        deferredPrompt = e;
+
+        installBtn.style.display =
+          'grid';
+
       }
-    });
+    );
 
-    // في حال كان أيفون نظهر زر التحميل دائماً لأنه يدعم الإضافة من قائمة المشاركة
-    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-    if (isIos) {
-      installBtn.style.display = 'grid';
+    installBtn.addEventListener(
+      'click',
+      async () => {
+
+        if(deferredPrompt) {
+
+          deferredPrompt.prompt();
+
+          const {outcome} =
+            await deferredPrompt.userChoice;
+
+          if(outcome === 'accepted') {
+            installBtn.style.display =
+              'none';
+          }
+
+          deferredPrompt = null;
+
+        } else {
+
+          document
+            .getElementById(
+              'install-guide-dialog'
+            )
+            .showModal();
+
+        }
+
+      }
+    );
+
+    const isIos =
+      /iphone|ipad|ipod/
+        .test(
+          window.navigator.userAgent.toLowerCase()
+        );
+
+    const isStandalone =
+      window.matchMedia(
+        '(display-mode: standalone)'
+      ).matches ||
+      window.navigator.standalone === true;
+
+    if(isIos && !isStandalone) {
+      installBtn.style.display =
+        'grid';
     }
+
+    window.addEventListener(
+      'appinstalled',
+      () => {
+
+        installBtn.style.display =
+          'none';
+
+        deferredPrompt = null;
+
+      }
+    );
 
     render();
+
   </script>
+
 </body>
 </html>
+```

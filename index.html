@@ -6,7 +6,13 @@
   <meta name="theme-color" content="#0c1020" />
   <meta name="description" content="وش نازل؟ آيتم شوب وأخبار ألعابك في مكان واحد." />
   <title>وش نازل؟</title>
+  
+  <!-- إعدادات PWA لتثبيت التطبيق من الموقع -->
   <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="وش نازل؟" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -324,8 +330,6 @@
       <div class="page-heading"><p class="eyebrow">يتم التحديث يومياً</p><h2 id="shop-title">آيتم شوب اليوم</h2><p>اختَر لعبة وشوف العناصر المتاحة الآن.</p></div>
       <div class="game-tabs" id="game-tabs" role="tablist" aria-label="اختيار اللعبة"></div>
       <div class="shop-date"><span>متجر اليوم</span><span class="count" id="items-count"></span></div>
-      <p id="rocket-shop-status" class="eyebrow" style="margin:-4px 0 12px;display:none;"></p>
-<p id="overwatch-shop-status" class="eyebrow" style="margin:-4px 0 12px;display:none;"></p>
       <div class="item-grid" id="item-grid"></div>
     </section>
 
@@ -372,15 +376,20 @@
 
   <script>
     const games = {
-      fortnite: { name: 'Fortnite', icon: '🏝️', className: 'fortnite', items: [] },
-      rocket: { name: 'Rocket League', icon: '🚙', className: 'rocket', items: [] },
+      fortnite: { name: 'Fortnite', icon: '🏝️', className: 'fortnite', items: [
+        ['سكن أورا — Aura', 'https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png', '800', 'linear-gradient(135deg, #0f78d5, #a783ff)'],
+        ['سكن هيروبيرت — Herobrine', 'https://fortnite-api.com/images/cosmetics/br/cid_758_athena_commando_m_cyber_01/icon.png', '1,200', 'linear-gradient(135deg, #135b8f, #2464c7)'],
+        ['رقصة الفوز — Floss', 'https://fortnite-api.com/images/cosmetics/br/eid_floss/icon.png', '500', 'linear-gradient(135deg, #a783ff, #723cd9)']
+      ] },
+      rocket: { name: 'Rocket League', icon: '🚙', className: 'rocket', items: [
+        ['سيارة فـينوم — Venom', 'https://rocketleague.media.zestyio.com/Venom_Body_Default.png', '500', 'linear-gradient(135deg, #156caa, #152546)'],
+        ['كفرات ديسكو — Disco Wheels', 'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fwheels%2Fdisco%2Fstandard.png&w=640&q=75', '700', 'linear-gradient(135deg, #1f4068, #162447)'],
+        ['انفجار الهدف — Dueling Dragons', 'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fgoal-explosions%2Fdueling-dragons%2Fstandard.png&w=640&q=75', '2,000', 'linear-gradient(135deg, #b83b5e, #6a2c70)']
+      ] },
       overwatch: { name: 'Overwatch', icon: '⚡', className: 'overwatch', items: [
         ['سكن كيريكو — Kiriko Rogue', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/47/Kiriko_Skin_Rogue.png', '1,900', 'linear-gradient(135deg, #8E2DE2, #4A00E0)'],
         ['سكن جينجي — Genji Cyberdemon', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/4c/Genji_Skin_Cyberdemon.png', '2,200', 'linear-gradient(135deg, #11998e, #38ef7d)'],
-        ['سكن ميرسي — Mercy Pink', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f3/Mercy_Skin_Pink.png', '1,900', 'linear-gradient(135deg, #ff758c, #ff7eb3)'],
-        ['سكن D.Va — D.Va Officer', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/3/30/D.Va_Skin_Officer.png', '1,500', 'linear-gradient(135deg, #12c2e9, #c471ed)'],
-        ['سكن راينهارت — Reinhardt Minotaur', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/3/3b/Reinhardt_Skin_Minotaur.png', '1,900', 'linear-gradient(135deg, #f857a6, #ff5858)'],
-        ['سكن ترايسر — Tracer Slipstream', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f8/Tracer_Skin_Slipstream.png', '1,300', 'linear-gradient(135deg, #e65c00, #F9D423)']
+        ['سكن ميرسي — Mercy Pink', 'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f3/Mercy_Skin_Pink.png', '1,900', 'linear-gradient(135deg, #ff758c, #ff7eb3)']
       ]}
     };
 
@@ -418,19 +427,24 @@
 
     function itemCard(item, gameKey, i) { 
       const id = item[4] ? String(item[4]) : `${gameKey}-${i}`; 
-      return `<article class="item-card" role="button" tabindex="0" onclick="showDetails('${gameKey}',${i})" onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})"><div class="item-art" style="background:${item[3]}"><img src="${item[1]}" alt="${item[0]}" loading="lazy" onError="this.src='https://via.placeholder.com/300/161d34/ffffff?text=Game+Item'" /></div><div class="item-info"><div class="item-title"><h3>${item[0]}</h3>${saveBtn(id)}</div><p class="price"><span class="coin">◉</span>${item[2]} ${gameKey === "rocket" ? "Credits" : gameKey === "overwatch" ? "Overwatch Coins" : "عملة"}</p></div></article>`; 
+      let currencyName = 'عملة';
+      if (gameKey === 'rocket') currencyName = 'Credits';
+      else if (gameKey === 'overwatch') currencyName = 'Overwatch Coins';
+
+      return `<article class="item-card" role="button" tabindex="0" onclick="showDetails('${gameKey}',${i})" onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})"><div class="item-art" style="background:${item[3]}"><img src="${item[1]}" alt="${item[0]}" loading="lazy" onError="this.src='https://via.placeholder.com/300/161d34/ffffff?text=Game+Item'" /></div><div class="item-info"><div class="item-title"><h3>${item[0]}</h3>${saveBtn(id)}</div><p class="price"><span class="coin">◉</span>${item[2]} ${currencyName}</p></div></article>`; 
     }
 
     function showDetails(gameKey, index) { 
       const item = games[gameKey]?.items[index]; 
       if (!item) return; 
+      let currencyName = gameKey === 'rocket' ? 'Credits' : gameKey === 'overwatch' ? 'Overwatch Coins' : 'عملة';
       $('#detail-image').style.display = 'block';
       $('#detail-image').src = item[1]; 
       $('#detail-image').alt = item[0]; 
       $('#detail-game').textContent = games[gameKey].name; 
       $('#detail-name').textContent = item[0]; 
       $('#detail-price').style.display = 'block';
-      $('#detail-price').innerHTML = `<span class="coin">◉</span> ${item[2]} عملة`; 
+      $('#detail-price').innerHTML = `<span class="coin">◉</span> ${item[2]} ${currencyName}`; 
       $('#detail-date').textContent = item[5] ? `تاريخ الظهور: ${item[5]}` : 'متوفر في متجر اليوم'; 
       $('#item-dialog').showModal(); 
     }
@@ -514,207 +528,7 @@
 
     document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go))); 
 
-    // جلب متجر Rocket League تلقائياً من itemshop.gg.
-    // itemshop.gg يعرض المتجر الحالي ويتحدث مع دورة المتجر اليومية.
-    // نستخدم Jina Reader كوسيط قراءة لتجنب مشكلة CORS في الاستضافة الثابتة.
-    async function loadRocketLeagueShop() {
-      const status = $('#rocket-shop-status');
-      const sourceUrl = 'https://itemshop.gg/rocket-league';
-      const readerUrl = 'https://r.jina.ai/' + sourceUrl;
-
-      try {
-        status.style.display = 'block';
-        status.textContent = 'جارٍ تحديث متجر Rocket League…';
-
-        const response = await fetch(readerUrl, {
-          cache: 'no-store',
-          headers: { 'Accept': 'text/plain' }
-        });
-        if (!response.ok) throw new Error('تعذر الوصول إلى مصدر متجر Rocket League');
-
-        const markdown = await response.text();
-
-        // نقرأ بطاقات المتجر من صيغة Markdown التي يعيدها المصدر.
-        // نلتقط اسم العنصر، نوعه، والسعر، ونستخدم رابط الصورة إن توفر.
-        const lines = markdown.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-        const items = [];
-
-        for (let i = 0; i < lines.length; i++) {
-          const imageMatch = lines[i].match(/^!\[([^\]]*)\]\((https?:\/\/[^)]+)\)$/i);
-          if (!imageMatch) continue;
-
-          const image = imageMatch[2];
-          let name = imageMatch[1] || '';
-
-          let j = i + 1;
-          while (j < lines.length && !lines[j].startsWith('#') && items.length < 500) {
-            const candidate = lines[j].replace(/^#+\s*/, '').trim();
-            if (candidate && !/^Image/i.test(candidate) && !/^View/i.test(candidate) && !/^Leaves\b/i.test(candidate)) {
-              name = candidate;
-              break;
-            }
-            j++;
-          }
-
-          if (!name || /^Image$/i.test(name)) continue;
-
-          let price = '—';
-          for (let k = i + 1; k < Math.min(i + 10, lines.length); k++) {
-            const p = lines[k].match(/(?:Image)?\s*([\d,]+)\s*$/);
-            if (p) { price = p[1]; break; }
-          }
-
-          // تجاهل الصور العامة/العناوين إذا ظهرت في الصفحة.
-          if (/^(featured shop|rocket league item shop today|image)$/i.test(name)) continue;
-
-          items.push([
-            name,
-            image,
-            price,
-            'linear-gradient(135deg, #1e3c72, #2a5298)',
-            `live-rocket-${btoa(unescape(encodeURIComponent(name))).replace(/[^a-zA-Z0-9]/g,'').slice(0,40)}`
-          ]);
-        }
-
-        // إزالة التكرار.
-        const unique = [];
-        const seen = new Set();
-        for (const item of items) {
-          const key = `${item[0]}|${item[1]}|${item[2]}`;
-          if (!seen.has(key)) {
-            seen.add(key);
-            unique.push(item);
-          }
-        }
-
-        if (!unique.length) throw new Error('لم يتم العثور على عناصر المتجر');
-
-        games.rocket.items = unique;
-        status.textContent = `آخر تحديث تلقائي: ${new Date().toLocaleTimeString('ar-SA', {hour:'2-digit', minute:'2-digit'})}`;
-      } catch (error) {
-        console.warn('تعذر تحديث متجر Rocket League:', error);
-        status.textContent = 'تعذر تحديث متجر Rocket League حالياً — ستظهر البيانات المحلية إن وُجدت.';
-      } finally {
-        render();
-      }
-    }
-
-    // جلب متجر Overwatch 2 الحالي تلقائياً.
-    // Overwatch لا يملك دورة يومية ثابتة مثل Rocket League؛ المتجر الرئيسي
-    // يتغير حسب تدوير Blizzard، لذلك نحدّث البيانات عند فتح الصفحة وبشكل دوري.
-    async function loadOverwatchShop() {
-      const source = 'https://overwatch.blizzard.com/en-us/shop/';
-      const reader = 'https://r.jina.ai/' + source;
-      const status = $('#overwatch-shop-status');
-
-      try {
-        status.style.display = 'block';
-        status.textContent = 'جارٍ تحديث متجر Overwatch…';
-
-        const response = await fetch(reader, { cache: 'no-store' });
-        if (!response.ok) throw new Error('تعذر جلب متجر Overwatch');
-
-        const markdown = await response.text();
-        const lines = markdown.split(/\r?\n/).map(x => x.trim()).filter(Boolean);
-        const items = [];
-
-        // نلتقط صور المنتجات الظاهرة في صفحة المتجر، ثم نبحث عن الاسم والسعر
-        // القريبين منها. هذا يجعل الصور حقيقية وليست صوراً تجريبية ثابتة.
-        for (let i = 0; i < lines.length; i++) {
-          const imageMatch = lines[i].match(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/i);
-          if (!imageMatch) continue;
-
-          let name = imageMatch[1].trim();
-          let price = '—';
-
-          for (let j = i + 1; j < Math.min(i + 14, lines.length); j++) {
-            const line = lines[j].replace(/^#+\s*/, '').trim();
-            if (!line) continue;
-
-            const priceMatch = line.match(/([\d,]+)\s*(?:Overwatch\s*)?(?:Coins|عملات)?$/i);
-            if (priceMatch) {
-              price = priceMatch[1];
-              continue;
-            }
-
-            if (
-              line.length > 2 &&
-              !/^image$/i.test(line) &&
-              !/^view$/i.test(line) &&
-              !/^leaves\b/i.test(line) &&
-              !/^(shop|featured|just for you|overwatch shop)$/i.test(line)
-            ) {
-              if (name === imageMatch[1].trim() || name.length < 3) name = line;
-            }
-          }
-
-          if (!name || /^image$/i.test(name)) continue;
-
-          items.push([
-            name,
-            imageMatch[2],
-            price,
-            'linear-gradient(135deg, #5a2d82, #b85cff)',
-            `live-overwatch-${items.length}`
-          ]);
-        }
-
-        const unique = [];
-        const seen = new Set();
-        for (const item of items) {
-          const key = `${item[0]}|${item[1]}|${item[2]}`;
-          if (!seen.has(key)) {
-            seen.add(key);
-            unique.push(item);
-          }
-        }
-
-        if (!unique.length) throw new Error('لم يتم العثور على عناصر Overwatch');
-
-        games.overwatch.items = unique;
-        status.textContent = `تم تحديث متجر Overwatch · ${unique.length} عنصر`;
-      } catch (error) {
-        console.warn('تعذر تحديث متجر Overwatch:', error);
-        status.textContent = 'تعذر تحديث متجر Overwatch حالياً.';
-      } finally {
-        render();
-      }
-    }
-
-    // جلب آيتم شوب فورتنايت التلقائي المباشر
-    async function loadFortniteShop() {
-      try {
-        const response = await fetch('https://fortnite-api.com/v2/shop?language=ar');
-        if (!response.ok) throw new Error('تعذر جلب المتجر');
-        const payload = await response.json();
-        const entries = payload?.data?.entries || [];
-        const items = entries.map((entry, i) => {
-          const cosmetic = entry.items?.[0] || {};
-          const image = entry.newDisplayAsset?.materialInstances?.[0]?.images?.OfferImage || entry.bundle?.image || cosmetic.images?.featured || cosmetic.images?.icon || cosmetic.images?.smallIcon;
-          const baseName = String(entry.bundle?.name || cosmetic.name || entry.devName || 'عنصر فورتنايت').replace(/#{0,3}\s*virtual\b/gi, '').replace(/\s*[|+].*$/, '').trim();
-          const normalizedName = baseName.replace(/^(حزمة\s+)+/u, 'حزمة ');
-          const name = (entry.bundle || entry.items?.length > 1) && !/^حزمة(?:\s|$)/u.test(normalizedName) ? `حزمة ${normalizedName}` : normalizedName;
-          const dates = (cosmetic.shopHistory || []).map(value => new Date(value)).filter(value => !Number.isNaN(value.getTime()));
-          const firstSeen = dates.length ? new Date(Math.min(...dates)).toLocaleDateString('ar-SA') : cosmetic.introduction?.text;
-          return image ? [name || 'عنصر فورتنايت', image, String(entry.finalPrice ?? entry.regularPrice ?? '—'), 'linear-gradient(135deg, #1d3557, #457b9d)', `live-fortnite-${entry.offerId || i}`, firstSeen] : null;
-        }).filter(Boolean);
-        
-        if (items.length) {
-          games.fortnite.items = items;
-        }
-      } catch (error) {
-        console.log('استخدام البيانات المحلية لفورتنايت');
-      } finally {
-        render();
-      }
-    }
-
-    loadRocketLeagueShop();
-    loadOverwatchShop();
-    setInterval(loadOverwatchShop, 60 * 60 * 1000);
-    loadFortniteShop();
-    setInterval(loadRocketLeagueShop, 30 * 60 * 1000);
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+    render();
   </script>
 </body>
 </html>

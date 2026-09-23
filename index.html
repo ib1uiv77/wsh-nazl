@@ -2,601 +2,807 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071923">
-<meta name="description" content="وش نازل؟ آيتم شوب وأخبار ألعابك في مكان واحد.">
-<title>وش نازل؟</title>
-
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="وش نازل؟">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --bg:#071923;
-  --panel:#0d2430;
-  --panel2:#123541;
-  --text:#f7fbff;
-  --muted:#9fc1cb;
-  --line:rgba(0,217,255,.18);
-  --cyan:#00d9ff;
-  --gold:#ffd447;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Tajawal,system-ui,sans-serif;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:-50%;
-  width:200%;
-  height:200%;
-  background:
-    radial-gradient(circle at 30% 30%,rgba(0,217,255,.16),transparent 40%),
-    radial-gradient(circle at 70% 70%,rgba(255,212,71,.12),transparent 45%);
-  animation:glow 18s ease-in-out infinite alternate;
-  z-index:-1;
-  pointer-events:none;
-}
-
-@keyframes glow{
-  from{transform:translate(0,0) rotate(0) scale(1)}
-  to{transform:translate(3%,-2%) rotate(-3deg) scale(.98)}
-}
-
-button{
-  font:inherit;
-  color:inherit;
-  cursor:pointer;
-}
-
-.app-shell{
-  max-width:680px;
-  margin:auto;
-  padding:28px 18px 120px;
-}
-
-.topbar,.date-row,.section-heading,.shop-date{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-h1,h2,h3,p{margin:0}
-
-h1{
-  font-size:29px;
-  font-weight:800;
-}
-
-h1 span{color:var(--gold)}
-
-h2{
-  font-size:23px;
-  font-weight:800;
-}
-
-h3{
-  font-size:19px;
-  font-weight:800;
-}
-
-.eyebrow{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.top-actions{
-  display:flex;
-  gap:8px;
-}
-
-.icon-button{
-  position:relative;
-  width:43px;
-  height:43px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--panel);
-  display:grid;
-  place-items:center;
-  font-size:20px;
-}
-
-.icon-button:hover{
-  border-color:var(--cyan);
-  transform:translateY(-2px);
-}
-
-.notification-dot{
-  position:absolute;
-  top:9px;
-  left:10px;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--gold);
-}
-
-.view{display:none}
-
-.view.active{
-  display:block;
-  animation:in .3s ease;
-}
-
-@keyframes in{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
-}
-
-.date-row{
-  margin:34px 0 15px;
-}
-
-.live-label{
-  color:var(--cyan);
-  font-size:12px;
-}
-
-.live-label i{
-  display:inline-block;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--cyan);
-  margin-left:5px;
-}
-
-.hero-card{
-  min-height:178px;
-  display:flex;
-  overflow:hidden;
-  position:relative;
-  padding:24px;
-  border-radius:25px;
-  background:linear-gradient(125deg,#00aeca,#07566a,#9d7800);
-  box-shadow:0 12px 30px rgba(0,210,235,.2);
-}
-
-.hero-copy{position:relative;z-index:1}
-
-.tag{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:20px;
-  background:rgba(255,255,255,.18);
-  font-size:12px;
-}
-
-.hero-card h3{
-  margin-top:12px;
-  font-size:25px;
-}
-
-.hero-card p{
-  margin-top:9px;
-  max-width:210px;
-  color:#e5fbff;
-  font-size:13px;
-}
-
-.hero-art{
-  position:absolute;
-  left:20px;
-  bottom:12px;
-  font-size:68px;
-  transform:rotate(-12deg);
-}
-
-.section-heading{
-  margin:30px 0 14px;
-}
-
-.section-heading h2{font-size:20px}
-
-.text-button{
-  border:0;
-  background:none;
-  color:var(--gold);
-  font-size:13px;
-}
-
-.game-list{
-  display:grid;
-  gap:11px;
-}
-
-.game-row{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  padding:12px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  border-radius:18px;
-  width:100%;
-  text-align:right;
-}
-
-.game-row:hover{
-  transform:translateY(-2px);
-  border-color:rgba(0,217,255,.45);
-  background:var(--panel2);
-}
-
-.game-cover{
-  width:58px;
-  height:58px;
-  border-radius:15px;
-  flex:none;
-  overflow:hidden;
-  background:#08151c;
-  border:1px solid rgba(255,255,255,.08);
-}
-
-.game-cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-
-.game-info{
-  flex:1;
-  min-width:0;
-}
-
-.game-info h3{font-size:16px}
-
-.game-info p{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:2px;
-}
-
-.game-row>span:last-child{
-  color:var(--gold);
-  font-size:13px;
-  white-space:nowrap;
-}
-
-.page-heading{
-  margin:14px 0 23px;
-}
-
-.page-heading h2{
-  margin:5px 0 7px;
-  font-size:27px;
-}
-
-.page-heading>p:last-child{
-  color:var(--muted);
-  font-size:14px;
-}
-
-.game-tabs,.filter-row{
-  display:flex;
-  gap:8px;
-  overflow:auto;
-  padding-bottom:8px;
-  scrollbar-width:none;
-}
-
-.game-tabs button,.filter-row button{
-  flex:none;
-  border:1px solid var(--line);
-  background:var(--panel);
-  border-radius:12px;
-  padding:10px 13px;
-  font-size:13px;
-}
-
-.game-tabs button.active,.filter-row button.active{
-  color:#07151c;
-  background:var(--gold);
-  border-color:var(--gold);
-  font-weight:700;
-}
-
-.shop-date{
-  margin:12px 0;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.count{color:var(--cyan)}
-
-.item-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-}
-
-.item-card{
-  overflow:hidden;
-  background:var(--panel);
-  border-radius:20px;
-  border:1px solid var(--line);
-  display:flex;
-  flex-direction:column;
-  cursor:pointer;
-}
-
-.item-card:hover{
-  transform:translateY(-4px);
-  border-color:rgba(0,217,255,.6);
-}
-
-.item-art{
-  height:180px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  position:relative;
-  padding:10px;
-}
-
-.item-art img{
-  max-width:100%;
-  max-height:100%;
-  object-fit:contain;
-  filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));
-}
-
-.item-info{
-  position:relative;
-  min-height:82px;
-  padding:12px 12px 12px 40px;
-  background:var(--panel);
-}
-
-.item-title h3{
-  font-size:15px;
-  line-height:1.3;
-}
-
-.save-button{
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  font-size:22px;
-}
-
-.item-info .save-button{
-  position:absolute;
-  top:12px;
-  left:10px;
-}
-
-.save-button.saved{color:var(--gold)}
-
-.price{
-  margin-top:7px;
-  color:var(--muted);
-  font-size:13px;
-  font-weight:bold;
-}
-
-.coin{
-  color:var(--gold);
-  margin-left:3px;
-}
-
-.news-list{
-  display:grid;
-  gap:12px;
-}
-
-.news-card{
-  display:flex;
-  gap:12px;
-  align-items:stretch;
-  padding:11px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:var(--panel);
-  width:100%;
-  text-align:right;
-  cursor:pointer;
-}
-
-.news-image{
-  width:96px;
-  min-height:82px;
-  display:grid;
-  place-items:center;
-  flex:none;
-  border-radius:13px;
-  overflow:hidden;
-}
-
-.news-image img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  padding:8px;
-}
-
-.news-copy{
-  flex:1;
-  min-width:0;
-}
-
-.news-meta{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.news-copy h3{
-  margin:4px 0;
-  font-size:14px;
-}
-
-.news-copy p{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.news-actions{
-  display:flex;
-  align-items:center;
-}
-
-.empty-state{
-  text-align:center;
-  padding:70px 20px;
-  color:var(--muted);
-}
-
-.empty-state span{
-  display:grid;
-  place-items:center;
-  margin:auto auto 16px;
-  width:62px;
-  height:62px;
-  border-radius:50%;
-  background:var(--panel);
-  color:var(--cyan);
-  font-size:36px;
-}
-
-.empty-state h3{
-  color:var(--text);
-  font-size:17px;
-  margin-bottom:5px;
-}
-
-.saved-content{
-  display:grid;
-  gap:12px;
-}
-
-.saved-label{
-  color:var(--muted);
-  font-size:13px;
-  margin:19px 0 8px;
-}
-
-.bottom-nav{
-  position:fixed;
-  z-index:3;
-  bottom:0;
-  left:0;
-  right:0;
-  display:flex;
-  justify-content:center;
-  gap:3px;
-  padding:10px 16px;
-  padding-bottom:max(10px,env(safe-area-inset-bottom));
-  background:rgba(5,18,25,.9);
-  border-top:1px solid var(--line);
-  backdrop-filter:blur(20px);
-}
-
-.nav-item{
-  min-width:0;
-  flex:1;
-  max-width:140px;
-  border:0;
-  background:none;
-  color:var(--muted);
-  padding:5px 3px;
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  align-items:center;
-  font-size:11px;
-}
-
-.nav-item span{
-  font-size:22px;
-}
-
-.nav-item.active{color:var(--gold)}
-
-.details-dialog{
-  width:min(92vw,440px);
-  padding:0;
-  overflow:hidden;
-  border:1px solid var(--line);
-  border-radius:24px;
-  color:var(--text);
-  background:var(--panel);
-}
-
-.details-dialog::backdrop{
-  background:rgba(0,0,0,.8);
-}
-
-.details-dialog>img{
-  width:100%;
-  height:280px;
-  object-fit:contain;
-  padding:15px;
-  display:block;
-  background:#071923;
-}
-
-.detail-body{
-  padding:20px;
-}
-
-.detail-body h2{
-  margin:4px 0 12px;
-}
-
-.detail-price{
-  color:var(--muted);
-}
-
-.detail-date{
-  color:var(--cyan);
-  font-size:14px;
-  line-height:1.7;
-}
-
-.close-dialog{
-  position:absolute;
-  top:12px;
-  left:12px;
-  z-index:1;
-  width:36px;
-  height:36px;
-  border:0;
-  border-radius:50%;
-  background:rgba(7,25,35,.82);
-  color:#fff;
-  font-size:28px;
-}
-
-textarea{
-  font-family:inherit;
-}
-
-@media(min-width:580px){
-  .item-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#071923" />
+  <meta name="description" content="وش نازل؟ آيتم شوب وأخبار ألعابك في مكان واحد." />
+  <title>وش نازل؟</title>
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="وش نازل؟" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:#071923;
+      --panel:#0d2430;
+      --panel-2:#123541;
+      --text:#f7fbff;
+      --muted:#9fc1cb;
+      --line:rgba(0,210,235,.18);
+      --cyan:#00d9ff;
+      --gold:#ffd447;
+      --orange:#ffad65;
+      --blue:#6abaff;
+    }
+
+    * {
+      box-sizing:border-box;
+    }
+
+    body {
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Tajawal,system-ui,sans-serif;
+      min-height:100vh;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    body::before {
+      content:"";
+      position:fixed;
+      top:-50%;
+      left:-50%;
+      width:200%;
+      height:200%;
+      background:
+        radial-gradient(circle at 30% 30%,rgba(0,217,255,.16),transparent 40%),
+        radial-gradient(circle at 70% 70%,rgba(255,212,71,.12),transparent 45%),
+        radial-gradient(circle at 50% 20%,rgba(0,130,170,.14),transparent 50%);
+      animation:ambientGlow 18s ease-in-out infinite alternate;
+      z-index:-1;
+      pointer-events:none;
+    }
+
+    @keyframes ambientGlow {
+      0% {
+        transform:translate(0,0) rotate(0deg) scale(1);
+      }
+
+      50% {
+        transform:translate(-3%,4%) rotate(3deg) scale(1.05);
+      }
+
+      100% {
+        transform:translate(3%,-2%) rotate(-3deg) scale(.98);
+      }
+    }
+
+    button {
+      font:inherit;
+      color:inherit;
+      cursor:pointer;
+      transition:all .22s cubic-bezier(.4,0,.2,1);
+    }
+
+    .app-shell {
+      max-width:680px;
+      margin:auto;
+      padding:28px 18px 120px;
+    }
+
+    .topbar,
+    .date-row,
+    .section-heading,
+    .shop-date {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    h1,h2,h3,p {
+      margin:0;
+    }
+
+    h1 {
+      font-size:29px;
+      font-weight:800;
+      letter-spacing:-.5px;
+    }
+
+    h1 span {
+      color:var(--gold);
+    }
+
+    h2 {
+      font-size:23px;
+      font-weight:800;
+    }
+
+    h3 {
+      font-size:19px;
+      font-weight:800;
+    }
+
+    .eyebrow {
+      color:var(--muted);
+      font-size:13px;
+      font-weight:500;
+    }
+
+    .top-actions {
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .icon-button {
+      position:relative;
+      width:43px;
+      height:43px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--panel);
+      font-size:20px;
+      display:grid;
+      place-items:center;
+    }
+
+    .icon-button:hover {
+      transform:translateY(-2px);
+      border-color:var(--cyan);
+    }
+
+    .notification-dot {
+      position:absolute;
+      top:9px;
+      left:10px;
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--gold);
+      box-shadow:0 0 10px var(--gold);
+    }
+
+    .view {
+      display:none;
+    }
+
+    .view.active {
+      display:block;
+      animation:smoothIn .32s cubic-bezier(.16,1,.3,1);
+    }
+
+    @keyframes smoothIn {
+      from {
+        opacity:0;
+        transform:translateY(12px) scale(.98);
+      }
+
+      to {
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+    }
+
+    .date-row {
+      margin:34px 0 15px;
+    }
+
+    .live-label {
+      color:var(--cyan);
+      font-size:12px;
+    }
+
+    .live-label i {
+      display:inline-block;
+      width:7px;
+      height:7px;
+      background:var(--cyan);
+      border-radius:50%;
+      margin-left:5px;
+      box-shadow:0 0 10px var(--cyan);
+    }
+
+    .hero-card {
+      min-height:178px;
+      display:flex;
+      overflow:hidden;
+      position:relative;
+      padding:24px;
+      border-radius:25px;
+      background:linear-gradient(125deg,#00aeca,#07566a,#9d7800);
+      box-shadow:0 12px 30px rgba(0,210,235,.2);
+      transition:transform .3s ease,box-shadow .3s ease;
+    }
+
+    .hero-card:hover {
+      transform:translateY(-3px);
+      box-shadow:0 16px 36px rgba(0,210,235,.3);
+    }
+
+    .hero-copy {
+      position:relative;
+      z-index:1;
+    }
+
+    .tag {
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:20px;
+      background:rgba(255,255,255,.18);
+      font-size:12px;
+    }
+
+    .hero-card h3 {
+      margin-top:12px;
+      font-size:25px;
+      line-height:1.17;
+    }
+
+    .hero-card p {
+      margin-top:9px;
+      max-width:210px;
+      color:#e5fbff;
+      font-size:13px;
+    }
+
+    .hero-art {
+      position:absolute;
+      left:20px;
+      bottom:12px;
+      font-size:68px;
+      transform:rotate(-12deg);
+      filter:drop-shadow(0 14px 10px rgba(0,0,0,.35));
+      transition:transform .4s ease;
+    }
+
+    .hero-card:hover .hero-art {
+      transform:rotate(-5deg) scale(1.08);
+    }
+
+    .hero-art b,
+    .hero-art em {
+      position:absolute;
+      font-style:normal;
+      color:var(--gold);
+      font-size:28px;
+    }
+
+    .hero-art b {
+      top:-10px;
+      left:0;
+    }
+
+    .hero-art em {
+      bottom:-3px;
+      right:-2px;
+      color:#fff;
+    }
+
+    .section-heading {
+      margin:30px 0 14px;
+    }
+
+    .section-heading h2 {
+      font-size:20px;
+    }
+
+    .text-button {
+      border:0;
+      background:none;
+      color:var(--gold);
+      font-size:13px;
+      padding:5px 0;
+    }
+
+    .text-button:hover {
+      opacity:.8;
+      transform:translateX(-3px);
+    }
+
+    .game-list {
+      display:grid;
+      gap:11px;
+    }
+
+    .game-row {
+      display:flex;
+      align-items:center;
+      gap:13px;
+      padding:12px;
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      width:100%;
+      text-align:right;
+      transition:transform .22s ease,border-color .22s ease,background .22s ease;
+    }
+
+    .game-row:hover,
+    .game-row:active {
+      transform:translateY(-2px);
+      border-color:rgba(0,217,255,.45);
+      background:var(--panel-2);
+    }
+
+    /* صور الألعاب */
+    .game-cover {
+      width:58px;
+      height:58px;
+      border-radius:15px;
+      flex:none;
+      overflow:hidden;
+      background:#08151c;
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .game-cover img {
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:cover;
+    }
+
+    .game-info {
+      flex:1;
+      min-width:0;
+    }
+
+    .game-info h3 {
+      font-size:16px;
+    }
+
+    .game-info p {
+      color:var(--muted);
+      font-size:12px;
+      margin-top:2px;
+    }
+
+    .game-row > span:last-child {
+      color:var(--gold);
+      font-size:13px;
+      white-space:nowrap;
+    }
+
+    .page-heading {
+      margin:14px 0 23px;
+    }
+
+    .page-heading h2 {
+      margin:5px 0 7px;
+      font-size:27px;
+    }
+
+    .page-heading > p:last-child {
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .game-tabs,
+    .filter-row {
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding:0 0 8px;
+      scrollbar-width:none;
+    }
+
+    .game-tabs button,
+    .filter-row button {
+      flex:none;
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:12px;
+      padding:10px 13px;
+      font-size:13px;
+    }
+
+    .game-tabs button:hover,
+    .filter-row button:hover {
+      border-color:var(--cyan);
+    }
+
+    .game-tabs button.active,
+    .filter-row button.active {
+      color:#07151c;
+      background:var(--gold);
+      border-color:var(--gold);
+      font-weight:700;
+    }
+
+    .shop-date {
+      margin:12px 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .count {
+      color:var(--cyan);
+    }
+
+    .item-grid {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .item-card {
+      overflow:hidden;
+      background:var(--panel);
+      border-radius:20px;
+      border:1px solid var(--line);
+      transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s ease,box-shadow .25s ease;
+      display:flex;
+      flex-direction:column;
+      cursor:pointer;
+      text-align:right;
+    }
+
+    .item-card:hover {
+      transform:translateY(-5px) scale(1.02);
+      border-color:rgba(0,217,255,.6);
+      box-shadow:0 12px 25px rgba(0,0,0,.5);
+    }
+
+    .item-card:active {
+      transform:scale(.97);
+      border-color:var(--gold);
+    }
+
+    .item-art {
+      height:180px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      background:var(--art);
+      position:relative;
+      padding:10px;
+    }
+
+    .item-art img {
+      max-width:100%;
+      max-height:100%;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));
+      transition:transform .35s ease;
+    }
+
+    .item-card:hover .item-art img {
+      transform:scale(1.1);
+    }
+
+    .item-info {
+      position:relative;
+      min-height:80px;
+      padding:12px 38px 12px 12px;
+      background:var(--panel);
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .item-title {
+      display:block;
+    }
+
+    .item-title h3 {
+      font-size:15px;
+      line-height:1.3;
+      font-weight:800;
+      overflow:hidden;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      color:#fff;
+    }
+
+    .save-button {
+      flex:none;
+      border:0;
+      background:transparent;
+      padding:0;
+      color:var(--muted);
+      font-size:22px;
+      line-height:1;
+      transition:transform .2s ease,color .2s ease;
+      cursor:pointer;
+    }
+
+    .save-button:hover {
+      transform:scale(1.2);
+    }
+
+    .item-info .save-button {
+      position:absolute;
+      top:12px;
+      left:10px;
+    }
+
+    .save-button.saved {
+      color:var(--gold);
+    }
+
+    .price {
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:bold;
+    }
+
+    .coin {
+      color:var(--gold);
+      margin-left:3px;
+    }
+
+    .news-list {
+      display:grid;
+      gap:12px;
+    }
+
+    .news-card {
+      display:flex;
+      gap:12px;
+      align-items:stretch;
+      padding:11px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--panel);
+      width:100%;
+      text-align:right;
+      cursor:pointer;
+      transition:transform .22s ease,border-color .22s ease,background .22s ease;
+    }
+
+    .news-card:hover {
+      transform:translateY(-2px);
+      border-color:rgba(0,217,255,.4);
+      background:var(--panel-2);
+    }
+
+    .news-card.compact-card {
+      padding:9px;
+    }
+
+    .news-image {
+      width:96px;
+      min-height:82px;
+      display:grid;
+      place-items:center;
+      flex:none;
+      border-radius:13px;
+      font-size:34px;
+      background:var(--art);
+    }
+
+    .news-copy {
+      flex:1;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .news-meta {
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .news-copy h3 {
+      margin:4px 0;
+      font-size:14px;
+      line-height:1.35;
+    }
+
+    .news-copy p {
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    .news-actions {
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .empty-state {
+      text-align:center;
+      padding:70px 20px;
+      color:var(--muted);
+    }
+
+    .empty-state span {
+      display:grid;
+      place-items:center;
+      margin:0 auto 16px;
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      color:var(--cyan);
+      background:var(--panel);
+      font-size:36px;
+    }
+
+    .empty-state h3 {
+      color:var(--text);
+      font-size:17px;
+      margin-bottom:5px;
+    }
+
+    .empty-state p {
+      font-size:13px;
+    }
+
+    .saved-content {
+      display:grid;
+      gap:12px;
+    }
+
+    .saved-label {
+      color:var(--muted);
+      font-size:13px;
+      margin:19px 0 8px;
+    }
+
+    .bottom-nav {
+      position:fixed;
+      z-index:3;
+      bottom:0;
+      left:0;
+      right:0;
+      display:flex;
+      justify-content:center;
+      gap:3px;
+      padding:10px max(16px,calc((100vw - 680px)/2));
+      padding-bottom:max(10px,env(safe-area-inset-bottom));
+      background:rgba(5,18,25,.88);
+      border-top:1px solid var(--line);
+      backdrop-filter:blur(20px);
+    }
+
+    .nav-item {
+      min-width:0;
+      flex:1;
+      max-width:140px;
+      border:0;
+      background:none;
+      color:var(--muted);
+      padding:5px 3px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      align-items:center;
+      font-size:11px;
+      transition:transform .2s ease,color .2s ease;
+    }
+
+    .nav-item span {
+      font-size:22px;
+      line-height:22px;
+      transition:transform .2s ease;
+    }
+
+    .nav-item b {
+      font-weight:500;
+    }
+
+    .nav-item.active {
+      color:var(--gold);
+    }
+
+    .nav-item.active span {
+      transform:scale(1.15);
+    }
+
+    .details-dialog {
+      width:min(92vw,440px);
+      padding:0;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:24px;
+      color:var(--text);
+      background:var(--panel);
+      box-shadow:0 20px 40px rgba(0,0,0,.7);
+    }
+
+    .details-dialog::backdrop {
+      background:rgba(0,0,0,.8);
+      backdrop-filter:blur(5px);
+    }
+
+    .details-dialog > img {
+      width:100%;
+      height:280px;
+      object-fit:contain;
+      padding:15px;
+      display:block;
+      background:radial-gradient(circle,#123541,#071923);
+    }
+
+    .detail-body {
+      padding:20px;
+    }
+
+    .detail-body h2 {
+      margin:4px 0 12px;
+      font-size:24px;
+    }
+
+    .detail-price {
+      color:var(--muted);
+      font-size:16px;
+    }
+
+    .detail-body hr {
+      border:0;
+      border-top:1px solid var(--line);
+      margin:18px 0;
+    }
+
+    .detail-date {
+      color:var(--cyan);
+      font-size:14px;
+    }
+
+    .close-dialog {
+      position:absolute;
+      top:12px;
+      left:12px;
+      z-index:1;
+      width:36px;
+      height:36px;
+      border:0;
+      border-radius:50%;
+      background:rgba(7,25,35,.82);
+      color:var(--text);
+      font-size:28px;
+      line-height:1;
+    }
+
+    .close-dialog:hover {
+      background:var(--gold);
+      color:#071923;
+      transform:rotate(90deg);
+    }
+
+    .details-dialog[open] {
+      animation:item-pop .28s cubic-bezier(.22,1,.36,1);
+    }
+
+    .details-dialog[open]::backdrop {
+      animation:backdrop-in .25s ease-out;
+    }
+
+    @keyframes item-pop {
+      from {
+        opacity:0;
+        transform:translateY(24px) scale(.92);
+      }
+
+      to {
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+    }
+
+    @keyframes backdrop-in {
+      from {
+        opacity:0;
+      }
+
+      to {
+        opacity:1;
+      }
+    }
+
+    @media (min-width:580px) {
+      .item-grid {
+        grid-template-columns:repeat(3,1fr);
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -605,145 +811,167 @@ textarea{
 
 <header class="topbar">
 
-<div>
-<p class="eyebrow">كل جديد الألعاب</p>
-<h1>وش نازل؟ <span>✦</span></h1>
-</div>
+  <div>
+    <p class="eyebrow">كل جديد الألعاب</p>
+    <h1>وش نازل؟ <span>✦</span></h1>
+  </div>
 
-<div class="top-actions">
+  <div class="top-actions">
 
-<button
-class="icon-button"
-id="install-btn"
-type="button"
-title="تحميل التطبيق"
-aria-label="تحميل التطبيق"
-style="display:none;color:var(--gold)">
-📥
-</button>
+    <button
+      class="icon-button"
+      id="install-btn"
+      type="button"
+      title="تحميل التطبيق"
+      aria-label="تحميل التطبيق"
+      style="display:none;color:var(--gold);border-color:rgba(255,212,71,.3);">
+      📥
+    </button>
 
-<button
-class="icon-button"
-type="button"
-aria-label="الإشعارات">
-♧
-<span class="notification-dot"></span>
-</button>
+    <button
+      class="icon-button"
+      type="button"
+      aria-label="الإشعارات">
+      ♧
+      <span class="notification-dot"></span>
+    </button>
 
-</div>
+  </div>
+
 </header>
 
-<section id="home-view" class="view active">
 
-<div class="date-row">
-<div>
-<p class="eyebrow">اليوم المتجدد</p>
-<h2>نازل اليوم</h2>
-</div>
+<section id="home-view" class="view active" aria-labelledby="today-title">
 
-<span class="live-label">
-<i></i> يتحدث تلقائياً
-</span>
-</div>
+  <div class="date-row">
 
-<article class="hero-card">
+    <div>
+      <p class="eyebrow">اليوم المتجدد</p>
+      <h2 id="today-title">نازل اليوم</h2>
+    </div>
 
-<div class="hero-copy">
+    <span class="live-label">
+      <i></i> يتحدث تلقائياً
+    </span>
 
-<span class="tag">آيتم شوب</span>
+  </div>
 
-<h3>
-شوف اللي نازل<br>
-قبل لا يفوتك
-</h3>
 
-<p>
-ثلاث ألعاب. كل شيء جديد في مكان واحد.
-</p>
+  <article class="hero-card">
 
-</div>
+    <div class="hero-copy">
 
-<div class="hero-art">🎮</div>
+      <span class="tag">آيتم شوب</span>
 
-</article>
+      <h3>
+        شوف اللي نازل<br />
+        قبل لا يفوتك
+      </h3>
 
-<div class="section-heading">
-<h2>الآيتم شوب</h2>
-<button class="text-button" data-go="shop" type="button">
-عرض الكل
-</button>
-</div>
+      <p>
+        ثلاث ألعاب. كل شيء جديد في مكان واحد.
+      </p>
 
-<div class="game-list" id="shop-preview"></div>
+    </div>
 
-<div class="section-heading">
-<h2>آخر الأخبار المباشرة</h2>
+    <div class="hero-art" aria-hidden="true">
+      <span>🎮</span>
+      <b>+</b>
+      <em>✦</em>
+    </div>
 
-<button class="text-button" data-go="news" type="button">
-عرض الكل
-</button>
-</div>
+  </article>
 
-<div class="news-list" id="news-preview"></div>
 
-</section>
+  <div class="section-heading">
+    <h2>الآيتم شوب</h2>
+    <button class="text-button" data-go="shop" type="button">
+      عرض الكل
+    </button>
+  </div>
 
-<section id="shop-view" class="view">
+  <div class="game-list" id="shop-preview"></div>
 
-<div class="page-heading">
-<p class="eyebrow">يتم التحديث يومياً</p>
-<h2>آيتم شوب اليوم</h2>
-<p>اختَر لعبة وشوف العناصر المتاحة الآن.</p>
-</div>
 
-<div class="game-tabs" id="game-tabs"></div>
+  <div class="section-heading">
+    <h2>آخر الأخبار المباشرة</h2>
 
-<div class="shop-date">
-<span>متجر اليوم</span>
-<span class="count" id="items-count"></span>
-</div>
+    <button class="text-button" data-go="news" type="button">
+      عرض الكل
+    </button>
+  </div>
 
-<div class="item-grid" id="item-grid"></div>
+  <div class="news-list compact" id="news-preview"></div>
 
 </section>
 
-<section id="news-view" class="view">
 
-<div class="page-heading">
-<p class="eyebrow">آخر المستجدات</p>
-<h2>أخبار الألعاب</h2>
-<p>اختر لعبتك أو تابع كل الأخبار.</p>
-</div>
+<section id="shop-view" class="view" aria-labelledby="shop-title">
 
-<div class="filter-row" id="news-filters"></div>
+  <div class="page-heading">
+    <p class="eyebrow">يتم التحديث يومياً</p>
+    <h2 id="shop-title">آيتم شوب اليوم</h2>
+    <p>اختَر لعبة وشوف العناصر المتاحة الآن.</p>
+  </div>
 
-<div class="news-list" id="news-list"></div>
+  <div
+    class="game-tabs"
+    id="game-tabs"
+    role="tablist"
+    aria-label="اختيار اللعبة">
+  </div>
+
+  <div class="shop-date">
+    <span>متجر اليوم</span>
+    <span class="count" id="items-count"></span>
+  </div>
+
+  <div class="item-grid" id="item-grid"></div>
 
 </section>
 
-<section id="saved-view" class="view">
 
-<div class="page-heading">
-<p class="eyebrow">قائمتك الخاصة</p>
-<h2>المحفوظات</h2>
-<p>احفظ العناصر أو الأخبار التي تبغى ترجع لها.</p>
-</div>
+<section id="news-view" class="view" aria-labelledby="news-title">
 
-<div class="empty-state" id="saved-empty">
+  <div class="page-heading">
+    <p class="eyebrow">آخر المستجدات</p>
+    <h2 id="news-title">أخبار الألعاب</h2>
+    <p>اختر لعبتك أو تابع كل الأخبار.</p>
+  </div>
 
-<span>♡</span>
+  <div class="filter-row" id="news-filters"></div>
 
-<h3>ما حفظت شيء إلى الآن</h3>
+  <div class="news-list" id="news-list"></div>
 
-<p>اضغط على القلب بجانب أي عنصر أو خبر.</p>
+</section>
 
-</div>
 
-<div class="saved-content" id="saved-content"></div>
+<section id="saved-view" class="view" aria-labelledby="saved-title">
+
+  <div class="page-heading">
+    <p class="eyebrow">قائمتك الخاصة</p>
+    <h2 id="saved-title">المحفوظات</h2>
+    <p>احفظ العناصر أو الأخبار التي تبغى ترجع لها.</p>
+  </div>
+
+  <div class="empty-state" id="saved-empty">
+
+    <span>♡</span>
+
+    <h3>ما حفظت شيء إلى الآن</h3>
+
+    <p>
+      اضغط على القلب بجانب أي عنصر أو خبر.
+    </p>
+
+  </div>
+
+  <div class="saved-content" id="saved-content"></div>
 
 </section>
 
 </main>
+
 
 <button
 type="button"
@@ -753,885 +981,1062 @@ position:fixed;
 bottom:80px;
 right:18px;
 z-index:99;
+display:flex;
+align-items:center;
+gap:6px;
 padding:10px 16px;
 border:1px solid rgba(0,217,255,.18);
 border-radius:30px;
 background:#123541;
 color:#ffd447;
 font-size:13px;
-font-weight:700;">
+font-weight:700;
+box-shadow:0 8px 20px rgba(0,0,0,.4);
+cursor:pointer;
+">
 💬 طلب لعبة / ملاحظة
 </button>
 
-<nav class="bottom-nav">
 
-<button class="nav-item active" data-go="home" type="button">
-<span>⌂</span>
-<b>الرئيسية</b>
-</button>
+<nav class="bottom-nav" aria-label="التنقل الرئيسي">
 
-<button class="nav-item" data-go="shop" type="button">
-<span>▦</span>
-<b>الآيتم شوب</b>
-</button>
+  <button
+    class="nav-item active"
+    data-go="home"
+    type="button">
+    <span>⌂</span>
+    <b>الرئيسية</b>
+  </button>
 
-<button class="nav-item" data-go="news" type="button">
-<span>◉</span>
-<b>الأخبار</b>
-</button>
+  <button
+    class="nav-item"
+    data-go="shop"
+    type="button">
+    <span>▦</span>
+    <b>الآيتم شوب</b>
+  </button>
 
-<button class="nav-item" data-go="saved" type="button">
-<span>♡</span>
-<b>المحفوظات</b>
-</button>
+  <button
+    class="nav-item"
+    data-go="news"
+    type="button">
+    <span>◉</span>
+    <b>الأخبار</b>
+  </button>
+
+  <button
+    class="nav-item"
+    data-go="saved"
+    type="button">
+    <span>♡</span>
+    <b>المحفوظات</b>
+  </button>
 
 </nav>
 
-<dialog class="details-dialog" id="item-dialog">
 
-<button
-class="close-dialog"
-type="button"
-onclick="closeDetails()">
-×
-</button>
+<dialog
+  class="details-dialog"
+  id="item-dialog"
+  aria-labelledby="detail-name">
 
-<img id="detail-image" src="" alt="">
+  <button
+    class="close-dialog"
+    type="button"
+    onclick="closeDetails()"
+    aria-label="إغلاق">
+    ×
+  </button>
 
-<div class="detail-body">
+  <img
+    id="detail-image"
+    src=""
+    alt="" />
 
-<p class="eyebrow" id="detail-game"></p>
+  <div class="detail-body">
 
-<h2 id="detail-name"></h2>
+    <p class="eyebrow" id="detail-game"></p>
 
-<p class="detail-price" id="detail-price"></p>
+    <h2 id="detail-name"></h2>
 
-<hr>
+    <p
+      class="detail-price"
+      id="detail-price">
+    </p>
 
-<p class="detail-date" id="detail-date"></p>
+    <hr />
 
-</div>
+    <p
+      class="detail-date"
+      id="detail-date">
+    </p>
+
+  </div>
 
 </dialog>
 
-<dialog class="details-dialog" id="feedback-dialog">
 
-<button
-class="close-dialog"
-type="button"
-onclick="closeFeedback()">
-×
-</button>
+<dialog
+  class="details-dialog"
+  id="install-guide-dialog">
 
-<div class="detail-body">
+  <button
+    class="close-dialog"
+    type="button"
+    onclick="document.getElementById('install-guide-dialog').close()"
+    aria-label="إغلاق">
+    ×
+  </button>
 
-<p class="eyebrow">تواصل معنا</p>
+  <div class="detail-body">
 
-<h2>اطلب لعبة أو أرسل ملاحظة</h2>
+    <p class="eyebrow">
+      تحميل التطبيق
+    </p>
 
-<p style="color:#9fc1cb;font-size:13px;margin:10px 0 14px">
-اكتب ملاحظتك وسيتم إرسالها للواتساب.
-</p>
+    <h2>
+      طريقة تثبيت "وش نازل؟"
+    </h2>
 
-<textarea
-id="feedback-text"
-rows="4"
-placeholder="اكتب اسم اللعبة أو ملاحظتك..."
-style="
-width:100%;
-padding:12px;
-border-radius:12px;
-border:1px solid rgba(0,217,255,.18);
-background:#123541;
-color:#fff;
-resize:none;
-margin-bottom:12px"></textarea>
+    <p
+      style="
+      color:#9fc1cb;
+      font-size:13px;
+      margin:10px 0 15px;
+      line-height:1.6;
+      ">
 
-<button
-type="button"
-onclick="submitFeedback()"
-style="
-width:100%;
-padding:12px;
-border:0;
-border-radius:12px;
-background:#ffd447;
-color:#071923;
-font-weight:bold">
-إرسال عبر الواتساب 📲
-</button>
+      على Android وChrome:
+      إذا ظهر زر التثبيت اضغط عليه مباشرة.
+      وإذا لم يظهر، افتح قائمة المتصفح واختر
+      <b>تثبيت التطبيق</b> أو
+      <b>إضافة إلى الشاشة الرئيسية</b>.
 
-</div>
+    </p>
+
+    <button
+      type="button"
+      onclick="document.getElementById('install-guide-dialog').close()"
+      style="
+      width:100%;
+      padding:12px;
+      border:0;
+      border-radius:12px;
+      background:#ffd447;
+      color:#071923;
+      font-weight:bold;
+      cursor:pointer;
+      ">
+      حسناً فهمت 👍
+    </button>
+
+  </div>
+
 </dialog>
+
+
+<dialog
+  class="details-dialog"
+  id="feedback-dialog">
+
+  <button
+    class="close-dialog"
+    type="button"
+    onclick="closeFeedback()"
+    aria-label="إغلاق">
+    ×
+  </button>
+
+  <div class="detail-body">
+
+    <p class="eyebrow">
+      تواصل معنا
+    </p>
+
+    <h2>
+      اطلب لعبة أو أرسل ملاحظة
+    </h2>
+
+    <p
+      style="
+      color:#9fc1cb;
+      font-size:13px;
+      margin-bottom:14px;
+      ">
+      اكتب ملاحظتك وسيتم إرسالها للواتساب مباشرة:
+    </p>
+
+    <textarea
+      id="feedback-text"
+      rows="4"
+      placeholder="اكتب اسم اللعبة أو ملاحظتك..."
+      style="
+      width:100%;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(0,217,255,.18);
+      background:#123541;
+      color:#fff;
+      font-family:inherit;
+      resize:none;
+      margin-bottom:12px;
+      "></textarea>
+
+    <button
+      type="button"
+      onclick="submitFeedback()"
+      style="
+      width:100%;
+      padding:12px;
+      border:0;
+      border-radius:12px;
+      background:#ffd447;
+      color:#071923;
+      font-weight:bold;
+      cursor:pointer;
+      ">
+      إرسال عبر الواتساب 📲
+    </button>
+
+  </div>
+
+</dialog>
+
 
 <script>
 
-/* =========================
-   أدوات الصور
-========================= */
+const games = {
 
-const FALLBACK_IMAGE =
-"data:image/svg+xml;charset=UTF-8," +
-encodeURIComponent(`
-<svg xmlns="http://www.w3.org/2000/svg"
-width="600" height="600" viewBox="0 0 600 600">
-<rect width="600" height="600" fill="#0d2430"/>
-<circle cx="300" cy="250" r="100"
-fill="#123541" stroke="#00d9ff" stroke-width="8"/>
-<text x="300" y="275"
-text-anchor="middle"
-font-family="Arial"
-font-size="100"
-fill="#ffd447">?</text>
-<text x="300" y="440"
-text-anchor="middle"
-font-family="Arial"
-font-size="32"
-fill="#9fc1cb">الصورة غير متوفرة</text>
-</svg>
-`);
+  fortnite: {
+    name:'Fortnite',
 
-function safeImage(img){
+    image:
+    'https://cdn2.unrealengine.com/fortnite-logo-1920x1080-1920x1080-7d4b8f6c8c8e.png',
 
-  if(!img.dataset.failed){
+    className:'fortnite',
 
-    img.dataset.failed="1";
+    items:[
+      [
+        'سكن أورا — Aura',
+        'https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png',
+        '800',
+        'linear-gradient(135deg,#0f78d5,#a783ff)'
+      ],
 
-    img.onerror=()=>{
+      [
+        'سكن هيروبيرت — Herobrine',
+        'https://fortnite-api.com/images/cosmetics/br/cid_758_athena_commando_m_cyber_01/icon.png',
+        '1,200',
+        'linear-gradient(135deg,#135b8f,#2464c7)'
+      ],
 
-      img.onerror=null;
+      [
+        'رقصة الفوز — Floss',
+        'https://fortnite-api.com/images/cosmetics/br/eid_floss/icon.png',
+        '500',
+        'linear-gradient(135deg,#a783ff,#723cd9)'
+      ]
+    ]
+  },
 
-      img.src=FALLBACK_IMAGE;
 
-    };
+  rocket: {
+    name:'Rocket League',
 
+    image:
+    'https://rocketleague.media.zesty.site/rl-logo.png',
+
+    className:'rocket',
+
+    items:[
+      [
+        'سيارة فـينوم — Venom',
+        'https://rocketleague.media.zestyio.com/Venom_Body_Default.png',
+        '500',
+        'linear-gradient(135deg,#156caa,#152546)'
+      ],
+
+      [
+        'كفرات ديسكو — Disco Wheels',
+        'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fwheels%2Fdisco%2Fstandard.png&w=640&q=75',
+        '700',
+        'linear-gradient(135deg,#1f4068,#162447)'
+      ],
+
+      [
+        'انفجار الهدف — Dueling Dragons',
+        'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fgoal-explosions%2Fdueling-dragons%2Fstandard.png&w=640&q=75',
+        '2,000',
+        'linear-gradient(135deg,#b83b5e,#6a2c70)'
+      ]
+    ]
+  },
+
+
+  overwatch: {
+    name:'Overwatch',
+
+    image:
+    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/overwatch-logo.png',
+
+    className:'overwatch',
+
+    items:[
+      [
+        'سكن كيريكو — Kiriko Rogue',
+        'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/47/Kiriko_Skin_Rogue.png',
+        '1,900',
+        'linear-gradient(135deg,#8E2DE2,#4A00E0)'
+      ],
+
+      [
+        'سكن جينجي — Genji Cyberdemon',
+        'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/4c/Genji_Skin_Cyberdemon.png',
+        '2,200',
+        'linear-gradient(135deg,#11998e,#38ef7d)'
+      ],
+
+      [
+        'سكن ميرسي — Mercy Pink',
+        'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f3/Mercy_Skin_Pink.png',
+        '1,900',
+        'linear-gradient(135deg,#ff758c,#ff7eb3)'
+      ]
+    ]
   }
-
-}
-
-
-/* =========================
-   بيانات الألعاب
-========================= */
-
-const games={
-
-fortnite:{
-name:"Fortnite",
-image:"https://fortnite-api.com/images/fortnite-api-logo.png",
-className:"fortnite",
-
-items:[
-[
-"سكن Aura",
-"https://fortnite-api.com/images/cosmetics/br/cid_556_athena_commando_f_rebirthdefault/icon.png",
-"800",
-"linear-gradient(135deg,#0f78d5,#a783ff)"
-],
-[
-"سكن Cyberdemon",
-"https://fortnite-api.com/images/cosmetics/br/cid_758_athena_commando_m_cyber_01/icon.png",
-"1,200",
-"linear-gradient(135deg,#135b8f,#2464c7)"
-],
-[
-"Floss",
-"https://fortnite-api.com/images/cosmetics/br/eid_floss/icon.png",
-"500",
-"linear-gradient(135deg,#a783ff,#723cd9)"
-]
-]
-},
-
-rocket:{
-name:"Rocket League",
-
-/* صورة شعار احتياطية مستقرة */
-image:"https://rocketleague.media.zesty.site/rl-logo.png",
-
-className:"rocket",
-
-items:[
-[
-"Venom",
-"https://rocketleague.media.zesty.site/Venom_Body_Default.png",
-"500",
-"linear-gradient(135deg,#156caa,#152546)"
-],
-[
-"Disco Wheels",
-"",
-"700",
-"linear-gradient(135deg,#1f4068,#162447)"
-],
-[
-"Dueling Dragons",
-"",
-"2,000",
-"linear-gradient(135deg,#b83b5e,#6a2c70)"
-]
-]
-},
-
-overwatch:{
-name:"Overwatch",
-
-image:"https://d15f34w2p8l1cc.cloudfront.net/hearthstone/overwatch-logo.png",
-
-className:"overwatch",
-
-items:[
-[
-"Kiriko",
-"",
-"1,900",
-"linear-gradient(135deg,#8E2DE2,#4A00E0)"
-],
-[
-"Genji",
-"",
-"2,200",
-"linear-gradient(135deg,#11998e,#38ef7d)"
-],
-[
-"Mercy",
-"",
-"1,900",
-"linear-gradient(135deg,#ff758c,#ff7eb3)"
-]
-]
-}
 
 };
 
 
-/* =========================
-   أخبار
-========================= */
+let news = [
 
-let news=[
+  {
+    id:'n1',
+    game:'fortnite',
+    gameName:'Fortnite',
+    image:games.fortnite.image,
+    art:'#2464c7',
+    title:'تحديث جديد يغيّر خريطة فورتنايت',
+    text:'أماكن جديدة ومهام أسبوعية بانتظارك.',
+    time:'اليوم',
+    details:'يتضمن التحديث الجديد تغييرات في منطقة الجزيرة وإعادة أسلحة كلاسيكية مع التحديث اليومي لمتجر اللعبة.',
+    sourceName:'موقع Epic Games الرسمي',
+    sourceUrl:'https://www.fortnite.com/news'
+  },
 
-{
-id:"n1",
-game:"fortnite",
-gameName:"Fortnite",
-image:games.fortnite.image,
-art:"#2464c7",
-title:"آخر أخبار فورتنايت",
-text:"تابع آخر الأخبار والتحديثات.",
-time:"اليوم",
-details:"يمكن تحديث أخبار فورتنايت من المصدر الرسمي.",
-sourceName:"Fortnite",
-sourceUrl:"https://www.fortnite.com/news"
-},
+  {
+    id:'n2',
+    game:'rocket',
+    gameName:'Rocket League',
+    image:games.rocket.image,
+    art:'#135b8f',
+    title:'موسم روكيت ليق الجديد بدأ الآن',
+    text:'سيارات ومكافآت ومسار تنافسي جديد.',
+    time:'اليوم',
+    details:'ينطلق الموسم الجديد مع حزمة Rocket Pass مليئة بالتصاميم والأنماط المميزة والتحديات التنافسية.',
+    sourceName:'موقع Rocket League الرسمي',
+    sourceUrl:'https://www.rocketleague.com/news/'
+  },
 
-{
-id:"n2",
-game:"rocket",
-gameName:"Rocket League",
-image:games.rocket.image,
-art:"#135b8f",
-title:"آخر أخبار روكيت ليق",
-text:"تابع آخر التحديثات والمواسم.",
-time:"اليوم",
-details:"يمكن متابعة آخر الأخبار من الموقع الرسمي.",
-sourceName:"Rocket League",
-sourceUrl:"https://www.rocketleague.com/news/"
-},
-
-{
-id:"n3",
-game:"overwatch",
-gameName:"Overwatch",
-image:games.overwatch.image,
-art:"#b86c35",
-title:"آخر أخبار Overwatch",
-text:"تحديثات وأخبار اللعبة.",
-time:"اليوم",
-details:"يمكن متابعة آخر الأخبار من Blizzard.",
-sourceName:"Overwatch",
-sourceUrl:"https://overwatch.blizzard.com/en-us/news/"
-}
+  {
+    id:'n3',
+    game:'overwatch',
+    gameName:'Overwatch',
+    image:games.overwatch.image,
+    art:'#b86c35',
+    title:'تحديث طور التنافس وأسلحة أسطورية',
+    text:'تعديلات موازنة الأبطال ومكافآت جديدة.',
+    time:'اليوم',
+    details:'تحديثات جديدة للعبة Overwatch.',
+    sourceName:'مدونة Overwatch الرسمية',
+    sourceUrl:'https://overwatch.blizzard.com/en-us/news/'
+  }
 
 ];
 
 
-let activeGame="fortnite";
-let activeFilter="all";
+let activeGame='fortnite';
+
+let activeFilter='all';
 
 let saved=
-JSON.parse(localStorage.getItem("wn-saved")||"[]");
-
-
-const $=s=>document.querySelector(s);
-
-
-/* =========================
-   الحفظ
-========================= */
-
-function save(id){
-
-saved=saved.includes(id)
-?saved.filter(x=>x!==id)
-:[...saved,id];
-
-localStorage.setItem(
-"wn-saved",
-JSON.stringify(saved)
+JSON.parse(
+localStorage.getItem('wn-saved') || '[]'
 );
 
-render();
-}
+
+const $=s=>
+document.querySelector(s);
 
 
-function saveBtn(id){
+const save=id=>{
 
-return `
+  saved=
+  saved.includes(id)
+  ?
+  saved.filter(x=>x!==id)
+  :
+  [...saved,id];
+
+  localStorage.setItem(
+    'wn-saved',
+    JSON.stringify(saved)
+  );
+
+  render();
+
+};
+
+
+const saveBtn=id=>
+
+`
 <button
-class="save-button ${saved.includes(id)?"saved":""}"
+class="save-button ${saved.includes(id)?'saved':''}"
 onclick="event.stopPropagation();save('${id}')"
 aria-label="حفظ">
-${saved.includes(id)?"♥":"♡"}
+
+${saved.includes(id)?'♥':'♡'}
+
 </button>
 `;
 
-}
-
-
-/* =========================
-   بطاقة العنصر
-========================= */
 
 function itemCard(item,gameKey,i){
 
-const id=`${gameKey}-${i}`;
+  const id=
+    item[4]
+    ?
+    String(item[4])
+    :
+    `${gameKey}-${i}`;
 
-let currency="عملة";
+  let currencyName='عملة';
 
-if(gameKey==="rocket")
-currency="Credits";
+  if(gameKey==='rocket'){
+    currencyName='Credits';
+  }
 
-if(gameKey==="overwatch")
-currency="Overwatch Coins";
+  else if(gameKey==='overwatch'){
+    currencyName='Overwatch Coins';
+  }
 
-const image=item[1]||FALLBACK_IMAGE;
+  return `
 
-return `
+  <article
+    class="item-card"
+    role="button"
+    tabindex="0"
+    onclick="showDetails('${gameKey}',${i})"
+    onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})">
 
-<article
-class="item-card"
-role="button"
-tabindex="0"
-onclick="showDetails('${gameKey}',${i})"
-onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})">
+    <div
+      class="item-art"
+      style="background:${item[3]}">
 
-<div
-class="item-art"
-style="background:${item[3]}">
+      <img
+        src="${item[1]}"
+        alt="${item[0]}"
+        loading="lazy"
+        onError="this.src='https://via.placeholder.com/300/0d2430/ffffff?text=Game+Item'"
+      />
 
-<img
-src="${image}"
-alt="${item[0]}"
-loading="lazy"
-onerror="safeImage(this)">
+    </div>
 
-</div>
+    <div class="item-info">
 
-<div class="item-info">
+      <div class="item-title">
 
-<div class="item-title">
+        <h3>
+          ${item[0]}
+        </h3>
 
-<h3>${item[0]}</h3>
+        ${saveBtn(id)}
 
-${saveBtn(id)}
+      </div>
 
-</div>
+      <p class="price">
 
-<p class="price">
+        <span class="coin">◉</span>
 
-<span class="coin">◉</span>
-${item[2]} ${currency}
+        ${item[2]}
 
-</p>
+        ${currencyName}
 
-</div>
+      </p>
 
-</article>
-`;
+    </div>
+
+  </article>
+
+  `;
 }
 
-
-/* =========================
-   تفاصيل
-========================= */
 
 function showDetails(gameKey,index){
 
-const item=games[gameKey]?.items[index];
+  const item=
+    games[gameKey]?.items[index];
 
-if(!item)return;
+  if(!item) return;
 
-const image=item[1]||FALLBACK_IMAGE;
+  let currencyName=
+    gameKey==='rocket'
+    ?
+    'Credits'
+    :
+    gameKey==='overwatch'
+    ?
+    'Overwatch Coins'
+    :
+    'عملة';
 
-$("#detail-image").src=image;
-$("#detail-image").onerror=()=>{
-$("#detail-image").onerror=null;
-$("#detail-image").src=FALLBACK_IMAGE;
-};
+  $('#detail-image').style.display='block';
 
-$("#detail-image").alt=item[0];
+  $('#detail-image').src=item[1];
 
-$("#detail-game").textContent=games[gameKey].name;
+  $('#detail-image').alt=item[0];
 
-$("#detail-name").textContent=item[0];
+  $('#detail-game').textContent=
+    games[gameKey].name;
 
-let currency=
-gameKey==="rocket"
-?"Credits"
-:gameKey==="overwatch"
-?"Overwatch Coins"
-:"عملة";
+  $('#detail-name').textContent=
+    item[0];
 
-$("#detail-price").innerHTML=
-`<span class="coin">◉</span> ${item[2]} ${currency}`;
+  $('#detail-price').style.display='block';
 
-$("#detail-date").textContent="متوفر في متجر اليوم";
+  $('#detail-price').innerHTML=
+    `<span class="coin">◉</span> ${item[2]} ${currencyName}`;
 
-$("#item-dialog").showModal();
+  $('#detail-date').textContent=
+    item[5]
+    ?
+    `تاريخ الظهور: ${item[5]}`
+    :
+    'متوفر في متجر اليوم';
+
+  $('#item-dialog').showModal();
 
 }
 
 
-function showNewsDetails(id){
+function showNewsDetails(newsId){
 
-const n=news.find(x=>x.id===id);
+  const item=
+    news.find(n=>n.id===newsId);
 
-if(!n)return;
+  if(!item) return;
 
-$("#detail-image").src=n.image||FALLBACK_IMAGE;
+  $('#detail-image').style.display='block';
 
-$("#detail-image").onerror=()=>{
-$("#detail-image").onerror=null;
-$("#detail-image").src=FALLBACK_IMAGE;
-};
+  $('#detail-image').src=
+    item.image || games[item.game].image;
 
-$("#detail-game").textContent=
-`${n.gameName} · ${n.time}`;
+  $('#detail-image').alt=
+    item.gameName;
 
-$("#detail-name").textContent=n.title;
+  $('#detail-game').textContent=
+    `${item.gameName} · ${item.time}`;
 
-$("#detail-price").style.display="none";
+  $('#detail-name').textContent=
+    item.title;
 
-$("#detail-date").innerHTML=
-`${n.details}<br><br>
-<a
-href="${n.sourceUrl}"
-target="_blank"
-rel="noopener noreferrer"
-style="
-display:inline-block;
-padding:9px 14px;
-background:#00aeca;
-color:#fff;
-text-decoration:none;
-border-radius:8px;
-font-weight:bold">
-🔗 المصدر الرسمي ↗
-</a>`;
+  $('#detail-price').style.display='none';
 
-$("#item-dialog").showModal();
+  const sourceBtn=
+    item.sourceUrl
+    ?
+    `<br/><br/>
+    <a
+      href="${item.sourceUrl}"
+      target="_blank"
+      rel="noopener"
+      style="
+      display:inline-block;
+      padding:8px 16px;
+      background:#00aeca;
+      color:#fff;
+      text-decoration:none;
+      border-radius:8px;
+      font-weight:bold;
+      margin-top:8px;
+      ">
+      🔗 المصدر: ${item.sourceName || 'رابط المصدر'} ↗
+    </a>`
+    :
+    '';
+
+  $('#detail-date').innerHTML=
+    `${item.details || item.text}${sourceBtn}`;
+
+  $('#item-dialog').showModal();
 
 }
 
 
 function closeDetails(){
+  $('#item-dialog').close();
+}
 
-$("#item-dialog").close();
+
+function openFeedback(){
+  $('#feedback-dialog').showModal();
+}
+
+
+function closeFeedback(){
+  $('#feedback-dialog').close();
+}
+
+
+function submitFeedback(){
+
+  const text=
+    $('#feedback-text').value.trim();
+
+  if(!text){
+
+    alert(
+      'اكتب ملاحظتك أو اللعبة المطلوب إضافتها أولاً!'
+    );
+
+    return;
+  }
+
+  const myPhoneNumber=
+    '966565949571';
+
+  const message=
+    encodeURIComponent(
+      `سلام عليكم، عندي طلب/ملاحظة لتطبيق وش نازل:\n\n"${text}"`
+    );
+
+  window.open(
+    `https://wa.me/${myPhoneNumber}?text=${message}`,
+    '_blank'
+  );
+
+  $('#feedback-text').value='';
+
+  closeFeedback();
 
 }
 
 
-/* =========================
-   التنقل
-========================= */
+function newsCard(n,compact=false){
 
-function go(view){
+  return `
 
-document.querySelectorAll(".view").forEach(v=>{
-v.classList.toggle(
-"active",
-v.id===`${view}-view`
-);
-});
+  <article
+    class="news-card ${compact?'compact-card':''}"
+    role="button"
+    tabindex="0"
+    onclick="showNewsDetails('${n.id}')"
+    onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')">
 
-document.querySelectorAll(".nav-item").forEach(n=>{
-n.classList.toggle(
-"active",
-n.dataset.go===view
-);
-});
+    <div
+      class="news-image"
+      style="background:${n.art}">
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
+      <img
+        src="${n.image || games[n.game].image}"
+        alt="${n.gameName}"
+        style="
+        width:100%;
+        height:100%;
+        object-fit:contain;
+        padding:8px;
+        "
+      />
 
+    </div>
+
+    <div class="news-copy">
+
+      <span class="news-meta">
+        ${n.gameName} · ${n.time}
+      </span>
+
+      <h3>
+        ${n.title}
+      </h3>
+
+      <p>
+        ${n.text}
+      </p>
+
+    </div>
+
+    <div class="news-actions">
+      ${saveBtn(n.id)}
+    </div>
+
+  </article>
+
+  `;
 }
 
 
-document.querySelectorAll("[data-go]").forEach(b=>{
-b.addEventListener(
-"click",
-()=>go(b.dataset.go)
-);
-});
+function render(){
+
+  $('#shop-preview').innerHTML=
+
+    Object.entries(games)
+    .map(([key,g])=>`
+
+      <button
+        class="game-row"
+        data-open-game="${key}"
+        type="button">
+
+        <span class="game-cover ${g.className}">
+
+          <img
+            src="${g.image}"
+            alt="${g.name}"
+            loading="lazy"
+          />
+
+        </span>
+
+        <span class="game-info">
+
+          <h3>
+            ${g.name}
+          </h3>
+
+          <p>
+            متوفر الآن ${g.items.length} عناصر جديدة
+          </p>
+
+        </span>
+
+        <span>
+          شوف الشوب ←
+        </span>
+
+      </button>
+
+    `)
+    .join('');
+
+
+  $('#news-preview').innerHTML=
+    news
+    .slice(0,3)
+    .map(n=>newsCard(n,true))
+    .join('');
+
+
+  $('#game-tabs').innerHTML=
+
+    Object.entries(games)
+    .map(([key,g])=>`
+
+      <button
+        role="tab"
+        class="${activeGame===key?'active':''}"
+        onclick="chooseGame('${key}')">
+
+        <img
+          src="${g.image}"
+          alt=""
+          style="
+          width:22px;
+          height:22px;
+          object-fit:contain;
+          vertical-align:middle;
+          margin-left:5px;
+          border-radius:5px;
+          ">
+
+        ${g.name}
+
+      </button>
+
+    `)
+    .join('');
+
+
+  const game=
+    games[activeGame];
+
+
+  $('#items-count').textContent=
+    `${game.items.length} عنصر مباشر الآن`;
+
+
+  $('#item-grid').innerHTML=
+    game.items
+    .map((x,i)=>itemCard(x,activeGame,i))
+    .join('');
+
+
+  $('#news-filters').innerHTML=
+
+    [
+      ['all','الكل'],
+      ...Object.entries(games)
+      .map(([k,g])=>[k,g.name])
+    ]
+    .map(([k,n])=>`
+
+      <button
+        class="${activeFilter===k?'active':''}"
+        onclick="chooseFilter('${k}')">
+
+        ${n}
+
+      </button>
+
+    `)
+    .join('');
+
+
+  $('#news-list').innerHTML=
+
+    news
+    .filter(
+      n=>
+      activeFilter==='all' ||
+      n.game===activeFilter
+    )
+    .map(n=>newsCard(n))
+    .join('');
+
+
+  const savedItems=
+
+    saved
+    .map(id=>{
+
+      if(id.startsWith('n')){
+
+        const n=
+          news.find(x=>x.id===id);
+
+        return n
+          ?
+          {
+            type:'news',
+            html:newsCard(n)
+          }
+          :
+          null;
+
+      }
+
+      const [key,num]=id.split('-');
+
+      const x=
+        games[key]?.items[Number(num)];
+
+      return x
+        ?
+        {
+          type:'shop',
+          html:itemCard(
+            x,
+            key,
+            Number(num)
+          )
+        }
+        :
+        null;
+
+    })
+    .filter(Boolean);
+
+
+  $('#saved-empty').style.display=
+    savedItems.length
+    ?
+    'none'
+    :
+    'block';
+
+
+  $('#saved-content').innerHTML=
+
+    savedItems.length
+    ?
+
+    ['shop','news']
+    .map(t=>{
+
+      const a=
+        savedItems.filter(
+          x=>x.type===t
+        );
+
+      return a.length
+        ?
+
+        `<p class="saved-label">
+          ${t==='shop'
+            ?
+            'عناصر الآيتم شوب'
+            :
+            'الأخبار'}
+        </p>
+
+        <div class="${t==='shop'?'item-grid':'news-list'}">
+
+          ${a.map(x=>x.html).join('')}
+
+        </div>`
+
+        :
+        '';
+
+    })
+    .join('')
+
+    :
+
+    '';
+
+
+  document
+    .querySelectorAll('[data-open-game]')
+    .forEach(b=>{
+
+      b.addEventListener(
+        'click',
+        ()=>{
+
+          activeGame=
+            b.dataset.openGame;
+
+          go('shop');
+
+        }
+      );
+
+    });
+
+}
 
 
 function chooseGame(k){
 
-activeGame=k;
-render();
+  activeGame=k;
+
+  render();
 
 }
 
 
 function chooseFilter(k){
 
-activeFilter=k;
-render();
+  activeFilter=k;
+
+  render();
 
 }
+
+
+function go(view){
+
+  document
+    .querySelectorAll('.view')
+    .forEach(e=>
+      e.classList.toggle(
+        'active',
+        e.id===`${view}-view`
+      )
+    );
+
+
+  document
+    .querySelectorAll('.nav-item')
+    .forEach(e=>
+      e.classList.toggle(
+        'active',
+        e.dataset.go===view
+      )
+    );
+
+
+  window.scrollTo({
+    top:0,
+    behavior:'smooth'
+  });
+
+}
+
+
+document
+  .querySelectorAll('[data-go]')
+  .forEach(b=>
+    b.addEventListener(
+      'click',
+      ()=>go(b.dataset.go)
+    )
+  );
 
 
 /* =========================
-   الأخبار
+   زر تحميل Android
 ========================= */
 
-function newsCard(n){
+let deferredPrompt;
 
-return `
-
-<article
-class="news-card"
-role="button"
-tabindex="0"
-onclick="showNewsDetails('${n.id}')"
-onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')">
-
-<div
-class="news-image"
-style="background:${n.art}">
-
-<img
-src="${n.image||FALLBACK_IMAGE}"
-alt="${n.gameName}"
-loading="lazy"
-onerror="safeImage(this)">
-
-</div>
-
-<div class="news-copy">
-
-<span class="news-meta">
-${n.gameName} · ${n.time}
-</span>
-
-<h3>${n.title}</h3>
-
-<p>${n.text}</p>
-
-</div>
-
-<div class="news-actions">
-${saveBtn(n.id)}
-</div>
-
-</article>
-`;
-
-}
-
-
-/* =========================
-   الرسم
-========================= */
-
-function render(){
-
-$("#shop-preview").innerHTML=
-Object.entries(games).map(([key,g])=>`
-
-<button
-class="game-row"
-data-open-game="${key}"
-type="button">
-
-<span class="game-cover">
-
-<img
-src="${g.image||FALLBACK_IMAGE}"
-alt="${g.name}"
-loading="lazy"
-onerror="safeImage(this)">
-
-</span>
-
-<span class="game-info">
-
-<h3>${g.name}</h3>
-
-<p>
-متوفر الآن ${g.items.length} عناصر
-</p>
-
-</span>
-
-<span>شوف الشوب ←</span>
-
-</button>
-
-`).join("");
-
-
-$("#news-preview").innerHTML=
-news.slice(0,3)
-.map(newsCard)
-.join("");
-
-
-$("#game-tabs").innerHTML=
-Object.entries(games)
-.map(([key,g])=>`
-
-<button
-role="tab"
-class="${activeGame===key?"active":""}"
-onclick="chooseGame('${key}')">
-
-<img
-src="${g.image||FALLBACK_IMAGE}"
-alt=""
-style="
-width:22px;
-height:22px;
-object-fit:contain;
-vertical-align:middle;
-margin-left:5px;
-border-radius:5px"
-onerror="safeImage(this)">
-
-${g.name}
-
-</button>
-
-`).join("");
-
-
-const game=games[activeGame];
-
-$("#items-count").textContent=
-`${game.items.length} عنصر مباشر الآن`;
-
-$("#item-grid").innerHTML=
-game.items
-.map((x,i)=>itemCard(x,activeGame,i))
-.join("");
-
-
-$("#news-filters").innerHTML=
-
-[
-["all","الكل"],
-...Object.entries(games)
-.map(([k,g])=>[k,g.name])
-]
-.map(([k,n])=>`
-
-<button
-class="${activeFilter===k?"active":""}"
-onclick="chooseFilter('${k}')">
-
-${n}
-
-</button>
-
-`).join("");
-
-
-$("#news-list").innerHTML=
-news
-.filter(n=>
-activeFilter==="all"||
-n.game===activeFilter
-)
-.map(newsCard)
-.join("");
-
-
-const savedItems=saved.map(id=>{
-
-if(id.startsWith("n")){
-
-const n=news.find(x=>x.id===id);
-
-return n
-?{type:"news",html:newsCard(n)}
-:null;
-
-}
-
-const parts=id.split("-");
-const key=parts[0];
-const num=Number(parts[1]);
-
-const x=games[key]?.items[num];
-
-return x
-?{
-type:"shop",
-html:itemCard(x,key,num)
-}
-:null;
-
-}).filter(Boolean);
-
-
-$("#saved-empty").style.display=
-savedItems.length?"none":"block";
-
-$("#saved-content").innerHTML=
-savedItems.length
-?
-savedItems.map(x=>x.html).join("")
-:"";
-
-
-document.querySelectorAll("[data-open-game]")
-.forEach(b=>{
-b.addEventListener(
-"click",
-()=>{
-activeGame=b.dataset.openGame;
-go("shop");
-render();
-}
-);
-});
-
-}
-
-
-/* =========================
-   الواتساب
-========================= */
-
-function openFeedback(){
-
-$("#feedback-dialog").showModal();
-
-}
-
-function closeFeedback(){
-
-$("#feedback-dialog").close();
-
-}
-
-function submitFeedback(){
-
-const text=$("#feedback-text").value.trim();
-
-if(!text){
-
-alert("اكتب ملاحظتك أولاً");
-
-return;
-
-}
-
-const phone="966565949571";
-
-const message=encodeURIComponent(
-`سلام عليكم، عندي طلب/ملاحظة لتطبيق وش نازل:\n\n"${text}"`
-);
-
-window.open(
-`https://wa.me/${phone}?text=${message}`,
-"_blank"
-);
-
-$("#feedback-text").value="";
-
-closeFeedback();
-
-}
-
-
-/* =========================
-   تثبيت Android / PWA
-========================= */
-
-let deferredPrompt=null;
-
-const installBtn=$("#install-btn");
+const installBtn=
+  document.getElementById('install-btn');
 
 
 window.addEventListener(
-"beforeinstallprompt",
-e=>{
+  'beforeinstallprompt',
+  e=>{
 
-e.preventDefault();
+    e.preventDefault();
 
-deferredPrompt=e;
+    deferredPrompt=e;
 
-installBtn.style.display="grid";
+    installBtn.style.display='grid';
 
-}
+  }
 );
 
 
 installBtn.addEventListener(
-"click",
-async()=>{
+  'click',
+  async()=>{
 
-if(!deferredPrompt){
+    if(deferredPrompt){
 
-alert(
-"إذا ما ظهر التثبيت، افتح قائمة Chrome ثم اختر «إضافة إلى الشاشة الرئيسية»."
-);
+      deferredPrompt.prompt();
 
-return;
+      const {outcome}=
+        await deferredPrompt.userChoice;
 
-}
+      if(outcome==='accepted'){
 
-deferredPrompt.prompt();
+        installBtn.style.display='none';
 
-const result=
-await deferredPrompt.userChoice;
+      }
 
-if(result.outcome==="accepted"){
+      deferredPrompt=null;
 
-installBtn.style.display="none";
+    }
 
-}
+    else{
 
-deferredPrompt=null;
+      document
+        .getElementById(
+          'install-guide-dialog'
+        )
+        .showModal();
 
-}
-);
+    }
 
-
-window.addEventListener(
-"appinstalled",
-()=>{
-installBtn.style.display="none";
-}
+  }
 );
 
 
 /* =========================
-   تشغيل
+   تشغيل الموقع
 ========================= */
 
 render();

@@ -2,807 +2,554 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#071923" />
-  <meta name="description" content="وش نازل؟ آيتم شوب وأخبار ألعابك في مكان واحد." />
-  <title>وش نازل؟</title>
-
-  <link rel="manifest" href="manifest.webmanifest" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="وش نازل؟" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
-
-  <style>
-    :root {
-      --bg:#071923;
-      --panel:#0d2430;
-      --panel-2:#123541;
-      --text:#f7fbff;
-      --muted:#9fc1cb;
-      --line:rgba(0,210,235,.18);
-      --cyan:#00d9ff;
-      --gold:#ffd447;
-      --orange:#ffad65;
-      --blue:#6abaff;
-    }
-
-    * {
-      box-sizing:border-box;
-    }
-
-    body {
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:Tajawal,system-ui,sans-serif;
-      min-height:100vh;
-      position:relative;
-      overflow-x:hidden;
-    }
-
-    body::before {
-      content:"";
-      position:fixed;
-      top:-50%;
-      left:-50%;
-      width:200%;
-      height:200%;
-      background:
-        radial-gradient(circle at 30% 30%,rgba(0,217,255,.16),transparent 40%),
-        radial-gradient(circle at 70% 70%,rgba(255,212,71,.12),transparent 45%),
-        radial-gradient(circle at 50% 20%,rgba(0,130,170,.14),transparent 50%);
-      animation:ambientGlow 18s ease-in-out infinite alternate;
-      z-index:-1;
-      pointer-events:none;
-    }
-
-    @keyframes ambientGlow {
-      0% {
-        transform:translate(0,0) rotate(0deg) scale(1);
-      }
-
-      50% {
-        transform:translate(-3%,4%) rotate(3deg) scale(1.05);
-      }
-
-      100% {
-        transform:translate(3%,-2%) rotate(-3deg) scale(.98);
-      }
-    }
-
-    button {
-      font:inherit;
-      color:inherit;
-      cursor:pointer;
-      transition:all .22s cubic-bezier(.4,0,.2,1);
-    }
-
-    .app-shell {
-      max-width:680px;
-      margin:auto;
-      padding:28px 18px 120px;
-    }
-
-    .topbar,
-    .date-row,
-    .section-heading,
-    .shop-date {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-
-    h1,h2,h3,p {
-      margin:0;
-    }
-
-    h1 {
-      font-size:29px;
-      font-weight:800;
-      letter-spacing:-.5px;
-    }
-
-    h1 span {
-      color:var(--gold);
-    }
-
-    h2 {
-      font-size:23px;
-      font-weight:800;
-    }
-
-    h3 {
-      font-size:19px;
-      font-weight:800;
-    }
-
-    .eyebrow {
-      color:var(--muted);
-      font-size:13px;
-      font-weight:500;
-    }
-
-    .top-actions {
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .icon-button {
-      position:relative;
-      width:43px;
-      height:43px;
-      border:1px solid var(--line);
-      border-radius:14px;
-      background:var(--panel);
-      font-size:20px;
-      display:grid;
-      place-items:center;
-    }
-
-    .icon-button:hover {
-      transform:translateY(-2px);
-      border-color:var(--cyan);
-    }
-
-    .notification-dot {
-      position:absolute;
-      top:9px;
-      left:10px;
-      width:7px;
-      height:7px;
-      border-radius:50%;
-      background:var(--gold);
-      box-shadow:0 0 10px var(--gold);
-    }
-
-    .view {
-      display:none;
-    }
-
-    .view.active {
-      display:block;
-      animation:smoothIn .32s cubic-bezier(.16,1,.3,1);
-    }
-
-    @keyframes smoothIn {
-      from {
-        opacity:0;
-        transform:translateY(12px) scale(.98);
-      }
-
-      to {
-        opacity:1;
-        transform:translateY(0) scale(1);
-      }
-    }
-
-    .date-row {
-      margin:34px 0 15px;
-    }
-
-    .live-label {
-      color:var(--cyan);
-      font-size:12px;
-    }
-
-    .live-label i {
-      display:inline-block;
-      width:7px;
-      height:7px;
-      background:var(--cyan);
-      border-radius:50%;
-      margin-left:5px;
-      box-shadow:0 0 10px var(--cyan);
-    }
-
-    .hero-card {
-      min-height:178px;
-      display:flex;
-      overflow:hidden;
-      position:relative;
-      padding:24px;
-      border-radius:25px;
-      background:linear-gradient(125deg,#00aeca,#07566a,#9d7800);
-      box-shadow:0 12px 30px rgba(0,210,235,.2);
-      transition:transform .3s ease,box-shadow .3s ease;
-    }
-
-    .hero-card:hover {
-      transform:translateY(-3px);
-      box-shadow:0 16px 36px rgba(0,210,235,.3);
-    }
-
-    .hero-copy {
-      position:relative;
-      z-index:1;
-    }
-
-    .tag {
-      display:inline-block;
-      padding:5px 10px;
-      border-radius:20px;
-      background:rgba(255,255,255,.18);
-      font-size:12px;
-    }
-
-    .hero-card h3 {
-      margin-top:12px;
-      font-size:25px;
-      line-height:1.17;
-    }
-
-    .hero-card p {
-      margin-top:9px;
-      max-width:210px;
-      color:#e5fbff;
-      font-size:13px;
-    }
-
-    .hero-art {
-      position:absolute;
-      left:20px;
-      bottom:12px;
-      font-size:68px;
-      transform:rotate(-12deg);
-      filter:drop-shadow(0 14px 10px rgba(0,0,0,.35));
-      transition:transform .4s ease;
-    }
-
-    .hero-card:hover .hero-art {
-      transform:rotate(-5deg) scale(1.08);
-    }
-
-    .hero-art b,
-    .hero-art em {
-      position:absolute;
-      font-style:normal;
-      color:var(--gold);
-      font-size:28px;
-    }
-
-    .hero-art b {
-      top:-10px;
-      left:0;
-    }
-
-    .hero-art em {
-      bottom:-3px;
-      right:-2px;
-      color:#fff;
-    }
-
-    .section-heading {
-      margin:30px 0 14px;
-    }
-
-    .section-heading h2 {
-      font-size:20px;
-    }
-
-    .text-button {
-      border:0;
-      background:none;
-      color:var(--gold);
-      font-size:13px;
-      padding:5px 0;
-    }
-
-    .text-button:hover {
-      opacity:.8;
-      transform:translateX(-3px);
-    }
-
-    .game-list {
-      display:grid;
-      gap:11px;
-    }
-
-    .game-row {
-      display:flex;
-      align-items:center;
-      gap:13px;
-      padding:12px;
-      border:1px solid var(--line);
-      background:var(--panel);
-      border-radius:18px;
-      width:100%;
-      text-align:right;
-      transition:transform .22s ease,border-color .22s ease,background .22s ease;
-    }
-
-    .game-row:hover,
-    .game-row:active {
-      transform:translateY(-2px);
-      border-color:rgba(0,217,255,.45);
-      background:var(--panel-2);
-    }
-
-    /* صور الألعاب */
-    .game-cover {
-      width:58px;
-      height:58px;
-      border-radius:15px;
-      flex:none;
-      overflow:hidden;
-      background:#08151c;
-      border:1px solid rgba(255,255,255,.08);
-    }
-
-    .game-cover img {
-      width:100%;
-      height:100%;
-      display:block;
-      object-fit:cover;
-    }
-
-    .game-info {
-      flex:1;
-      min-width:0;
-    }
-
-    .game-info h3 {
-      font-size:16px;
-    }
-
-    .game-info p {
-      color:var(--muted);
-      font-size:12px;
-      margin-top:2px;
-    }
-
-    .game-row > span:last-child {
-      color:var(--gold);
-      font-size:13px;
-      white-space:nowrap;
-    }
-
-    .page-heading {
-      margin:14px 0 23px;
-    }
-
-    .page-heading h2 {
-      margin:5px 0 7px;
-      font-size:27px;
-    }
-
-    .page-heading > p:last-child {
-      color:var(--muted);
-      font-size:14px;
-    }
-
-    .game-tabs,
-    .filter-row {
-      display:flex;
-      gap:8px;
-      overflow:auto;
-      padding:0 0 8px;
-      scrollbar-width:none;
-    }
-
-    .game-tabs button,
-    .filter-row button {
-      flex:none;
-      border:1px solid var(--line);
-      background:var(--panel);
-      border-radius:12px;
-      padding:10px 13px;
-      font-size:13px;
-    }
-
-    .game-tabs button:hover,
-    .filter-row button:hover {
-      border-color:var(--cyan);
-    }
-
-    .game-tabs button.active,
-    .filter-row button.active {
-      color:#07151c;
-      background:var(--gold);
-      border-color:var(--gold);
-      font-weight:700;
-    }
-
-    .shop-date {
-      margin:12px 0;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .count {
-      color:var(--cyan);
-    }
-
-    .item-grid {
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:14px;
-    }
-
-    .item-card {
-      overflow:hidden;
-      background:var(--panel);
-      border-radius:20px;
-      border:1px solid var(--line);
-      transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s ease,box-shadow .25s ease;
-      display:flex;
-      flex-direction:column;
-      cursor:pointer;
-      text-align:right;
-    }
-
-    .item-card:hover {
-      transform:translateY(-5px) scale(1.02);
-      border-color:rgba(0,217,255,.6);
-      box-shadow:0 12px 25px rgba(0,0,0,.5);
-    }
-
-    .item-card:active {
-      transform:scale(.97);
-      border-color:var(--gold);
-    }
-
-    .item-art {
-      height:180px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      background:var(--art);
-      position:relative;
-      padding:10px;
-    }
-
-    .item-art img {
-      max-width:100%;
-      max-height:100%;
-      object-fit:contain;
-      filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));
-      transition:transform .35s ease;
-    }
-
-    .item-card:hover .item-art img {
-      transform:scale(1.1);
-    }
-
-    .item-info {
-      position:relative;
-      min-height:80px;
-      padding:12px 38px 12px 12px;
-      background:var(--panel);
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
-
-    .item-title {
-      display:block;
-    }
-
-    .item-title h3 {
-      font-size:15px;
-      line-height:1.3;
-      font-weight:800;
-      overflow:hidden;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      color:#fff;
-    }
-
-    .save-button {
-      flex:none;
-      border:0;
-      background:transparent;
-      padding:0;
-      color:var(--muted);
-      font-size:22px;
-      line-height:1;
-      transition:transform .2s ease,color .2s ease;
-      cursor:pointer;
-    }
-
-    .save-button:hover {
-      transform:scale(1.2);
-    }
-
-    .item-info .save-button {
-      position:absolute;
-      top:12px;
-      left:10px;
-    }
-
-    .save-button.saved {
-      color:var(--gold);
-    }
-
-    .price {
-      margin-top:6px;
-      color:var(--muted);
-      font-size:13px;
-      font-weight:bold;
-    }
-
-    .coin {
-      color:var(--gold);
-      margin-left:3px;
-    }
-
-    .news-list {
-      display:grid;
-      gap:12px;
-    }
-
-    .news-card {
-      display:flex;
-      gap:12px;
-      align-items:stretch;
-      padding:11px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:var(--panel);
-      width:100%;
-      text-align:right;
-      cursor:pointer;
-      transition:transform .22s ease,border-color .22s ease,background .22s ease;
-    }
-
-    .news-card:hover {
-      transform:translateY(-2px);
-      border-color:rgba(0,217,255,.4);
-      background:var(--panel-2);
-    }
-
-    .news-card.compact-card {
-      padding:9px;
-    }
-
-    .news-image {
-      width:96px;
-      min-height:82px;
-      display:grid;
-      place-items:center;
-      flex:none;
-      border-radius:13px;
-      font-size:34px;
-      background:var(--art);
-    }
-
-    .news-copy {
-      flex:1;
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-    }
-
-    .news-meta {
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    .news-copy h3 {
-      margin:4px 0;
-      font-size:14px;
-      line-height:1.35;
-    }
-
-    .news-copy p {
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.35;
-    }
-
-    .news-actions {
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      align-items:center;
-    }
-
-    .empty-state {
-      text-align:center;
-      padding:70px 20px;
-      color:var(--muted);
-    }
-
-    .empty-state span {
-      display:grid;
-      place-items:center;
-      margin:0 auto 16px;
-      width:62px;
-      height:62px;
-      border-radius:50%;
-      color:var(--cyan);
-      background:var(--panel);
-      font-size:36px;
-    }
-
-    .empty-state h3 {
-      color:var(--text);
-      font-size:17px;
-      margin-bottom:5px;
-    }
-
-    .empty-state p {
-      font-size:13px;
-    }
-
-    .saved-content {
-      display:grid;
-      gap:12px;
-    }
-
-    .saved-label {
-      color:var(--muted);
-      font-size:13px;
-      margin:19px 0 8px;
-    }
-
-    .bottom-nav {
-      position:fixed;
-      z-index:3;
-      bottom:0;
-      left:0;
-      right:0;
-      display:flex;
-      justify-content:center;
-      gap:3px;
-      padding:10px max(16px,calc((100vw - 680px)/2));
-      padding-bottom:max(10px,env(safe-area-inset-bottom));
-      background:rgba(5,18,25,.88);
-      border-top:1px solid var(--line);
-      backdrop-filter:blur(20px);
-    }
-
-    .nav-item {
-      min-width:0;
-      flex:1;
-      max-width:140px;
-      border:0;
-      background:none;
-      color:var(--muted);
-      padding:5px 3px;
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      align-items:center;
-      font-size:11px;
-      transition:transform .2s ease,color .2s ease;
-    }
-
-    .nav-item span {
-      font-size:22px;
-      line-height:22px;
-      transition:transform .2s ease;
-    }
-
-    .nav-item b {
-      font-weight:500;
-    }
-
-    .nav-item.active {
-      color:var(--gold);
-    }
-
-    .nav-item.active span {
-      transform:scale(1.15);
-    }
-
-    .details-dialog {
-      width:min(92vw,440px);
-      padding:0;
-      overflow:hidden;
-      border:1px solid var(--line);
-      border-radius:24px;
-      color:var(--text);
-      background:var(--panel);
-      box-shadow:0 20px 40px rgba(0,0,0,.7);
-    }
-
-    .details-dialog::backdrop {
-      background:rgba(0,0,0,.8);
-      backdrop-filter:blur(5px);
-    }
-
-    .details-dialog > img {
-      width:100%;
-      height:280px;
-      object-fit:contain;
-      padding:15px;
-      display:block;
-      background:radial-gradient(circle,#123541,#071923);
-    }
-
-    .detail-body {
-      padding:20px;
-    }
-
-    .detail-body h2 {
-      margin:4px 0 12px;
-      font-size:24px;
-    }
-
-    .detail-price {
-      color:var(--muted);
-      font-size:16px;
-    }
-
-    .detail-body hr {
-      border:0;
-      border-top:1px solid var(--line);
-      margin:18px 0;
-    }
-
-    .detail-date {
-      color:var(--cyan);
-      font-size:14px;
-    }
-
-    .close-dialog {
-      position:absolute;
-      top:12px;
-      left:12px;
-      z-index:1;
-      width:36px;
-      height:36px;
-      border:0;
-      border-radius:50%;
-      background:rgba(7,25,35,.82);
-      color:var(--text);
-      font-size:28px;
-      line-height:1;
-    }
-
-    .close-dialog:hover {
-      background:var(--gold);
-      color:#071923;
-      transform:rotate(90deg);
-    }
-
-    .details-dialog[open] {
-      animation:item-pop .28s cubic-bezier(.22,1,.36,1);
-    }
-
-    .details-dialog[open]::backdrop {
-      animation:backdrop-in .25s ease-out;
-    }
-
-    @keyframes item-pop {
-      from {
-        opacity:0;
-        transform:translateY(24px) scale(.92);
-      }
-
-      to {
-        opacity:1;
-        transform:translateY(0) scale(1);
-      }
-    }
-
-    @keyframes backdrop-in {
-      from {
-        opacity:0;
-      }
-
-      to {
-        opacity:1;
-      }
-    }
-
-    @media (min-width:580px) {
-      .item-grid {
-        grid-template-columns:repeat(3,1fr);
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#071923">
+<meta name="description" content="وش نازل؟ آيتم شوب وأخبار ألعابك في مكان واحد.">
+<title>وش نازل؟</title>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="وش نازل؟">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--bg:#071923;
+--panel:#0d2430;
+--panel2:#123541;
+--text:#f7fbff;
+--muted:#9fc1cb;
+--line:rgba(0,217,255,.18);
+--cyan:#00d9ff;
+--gold:#ffd447;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:Tajawal,system-ui,sans-serif;
+min-height:100vh;
+overflow-x:hidden;
+}
+
+body:before{
+content:"";
+position:fixed;
+inset:-50%;
+width:200%;
+height:200%;
+background:
+radial-gradient(circle at 30% 30%,rgba(0,217,255,.15),transparent 40%),
+radial-gradient(circle at 70% 70%,rgba(255,212,71,.10),transparent 45%);
+z-index:-1;
+animation:glow 18s ease-in-out infinite alternate;
+}
+
+@keyframes glow{
+from{transform:translate(0,0)}
+to{transform:translate(3%,-2%)}
+}
+
+button{font:inherit;color:inherit;cursor:pointer}
+
+.app-shell{
+max-width:680px;
+margin:auto;
+padding:28px 18px 120px;
+}
+
+.topbar,.date-row,.section-heading,.shop-date{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+}
+
+h1,h2,h3,p{margin:0}
+
+h1{font-size:29px;font-weight:800}
+h1 span{color:var(--gold)}
+h2{font-size:23px;font-weight:800}
+h3{font-size:19px;font-weight:800}
+
+.eyebrow{
+color:var(--muted);
+font-size:13px;
+}
+
+.top-actions{
+display:flex;
+gap:8px;
+}
+
+.icon-button{
+position:relative;
+width:43px;
+height:43px;
+border:1px solid var(--line);
+border-radius:14px;
+background:var(--panel);
+font-size:20px;
+display:grid;
+place-items:center;
+}
+
+#install-btn{
+color:var(--gold);
+border-color:rgba(255,212,71,.35);
+}
+
+.notification-dot{
+position:absolute;
+top:9px;
+left:10px;
+width:7px;
+height:7px;
+border-radius:50%;
+background:var(--gold);
+}
+
+.view{display:none}
+.view.active{
+display:block;
+animation:in .3s ease;
+}
+
+@keyframes in{
+from{opacity:0;transform:translateY(10px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+.date-row{margin:34px 0 15px}
+
+.live-label{
+color:var(--cyan);
+font-size:12px;
+}
+
+.live-label i{
+display:inline-block;
+width:7px;
+height:7px;
+background:var(--cyan);
+border-radius:50%;
+margin-left:5px;
+}
+
+.hero-card{
+min-height:178px;
+display:flex;
+overflow:hidden;
+position:relative;
+padding:24px;
+border-radius:25px;
+background:linear-gradient(125deg,#00aeca,#07566a,#9d7800);
+box-shadow:0 12px 30px rgba(0,210,235,.2);
+}
+
+.hero-copy{position:relative;z-index:1}
+
+.tag{
+display:inline-block;
+padding:5px 10px;
+border-radius:20px;
+background:rgba(255,255,255,.18);
+font-size:12px;
+}
+
+.hero-card h3{
+margin-top:12px;
+font-size:25px;
+line-height:1.17;
+}
+
+.hero-card p{
+margin-top:9px;
+max-width:210px;
+color:#e5fbff;
+font-size:13px;
+}
+
+.hero-art{
+position:absolute;
+left:20px;
+bottom:12px;
+font-size:68px;
+transform:rotate(-12deg);
+filter:drop-shadow(0 14px 10px rgba(0,0,0,.35));
+}
+
+.section-heading{margin:30px 0 14px}
+
+.section-heading h2{font-size:20px}
+
+.text-button{
+border:0;
+background:none;
+color:var(--gold);
+font-size:13px;
+}
+
+.game-list,.news-list{
+display:grid;
+gap:11px;
+}
+
+.game-row{
+display:flex;
+align-items:center;
+gap:13px;
+padding:12px;
+border:1px solid var(--line);
+background:var(--panel);
+border-radius:18px;
+width:100%;
+text-align:right;
+}
+
+.game-row:hover{
+border-color:rgba(0,217,255,.45);
+background:var(--panel2);
+transform:translateY(-2px);
+}
+
+.game-cover{
+width:58px;
+height:58px;
+border-radius:15px;
+overflow:hidden;
+flex:none;
+background:#08151c;
+}
+
+.game-cover img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.game-info{
+flex:1;
+min-width:0;
+}
+
+.game-info h3{font-size:16px}
+.game-info p{
+color:var(--muted);
+font-size:12px;
+margin-top:2px;
+}
+
+.game-row>span:last-child{
+color:var(--gold);
+font-size:13px;
+white-space:nowrap;
+}
+
+.page-heading{
+margin:14px 0 23px;
+}
+
+.page-heading h2{
+margin:5px 0 7px;
+font-size:27px;
+}
+
+.page-heading>p:last-child{
+color:var(--muted);
+font-size:14px;
+}
+
+.game-tabs,.filter-row{
+display:flex;
+gap:8px;
+overflow:auto;
+padding-bottom:8px;
+scrollbar-width:none;
+}
+
+.game-tabs button,.filter-row button{
+flex:none;
+border:1px solid var(--line);
+background:var(--panel);
+border-radius:12px;
+padding:10px 13px;
+font-size:13px;
+}
+
+.game-tabs button.active,.filter-row button.active{
+color:#07151c;
+background:var(--gold);
+border-color:var(--gold);
+font-weight:700;
+}
+
+.shop-date{
+margin:12px 0;
+color:var(--muted);
+font-size:13px;
+}
+
+.count{color:var(--cyan)}
+
+.item-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+}
+
+.item-card{
+overflow:hidden;
+background:var(--panel);
+border-radius:20px;
+border:1px solid var(--line);
+display:flex;
+flex-direction:column;
+cursor:pointer;
+text-align:right;
+transition:.25s ease;
+}
+
+.item-card:hover{
+transform:translateY(-5px);
+border-color:rgba(0,217,255,.6);
+}
+
+.item-art{
+height:180px;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+background:var(--art);
+padding:10px;
+}
+
+.item-art img{
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+filter:drop-shadow(0 8px 12px rgba(0,0,0,.4));
+}
+
+.item-info{
+position:relative;
+min-height:80px;
+padding:12px 38px 12px 12px;
+background:var(--panel);
+flex:1;
+}
+
+.item-title h3{
+font-size:15px;
+line-height:1.3;
+}
+
+.save-button{
+position:absolute;
+top:10px;
+left:10px;
+border:0;
+background:none;
+font-size:22px;
+color:var(--muted);
+}
+
+.save-button.saved{color:var(--gold)}
+
+.price{
+margin-top:7px;
+color:var(--muted);
+font-size:13px;
+font-weight:bold;
+}
+
+.coin{
+color:var(--gold);
+margin-left:3px;
+}
+
+.news-card{
+display:flex;
+gap:12px;
+align-items:stretch;
+padding:11px;
+border:1px solid var(--line);
+border-radius:18px;
+background:var(--panel);
+width:100%;
+text-align:right;
+cursor:pointer;
+}
+
+.news-image{
+width:96px;
+min-height:82px;
+display:grid;
+place-items:center;
+flex:none;
+border-radius:13px;
+background:#123541;
+overflow:hidden;
+}
+
+.news-image img{
+width:100%;
+height:100%;
+object-fit:contain;
+padding:8px;
+}
+
+.news-copy{
+flex:1;
+min-width:0;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.news-meta{
+color:var(--muted);
+font-size:11px;
+}
+
+.news-copy h3{
+margin:4px 0;
+font-size:14px;
+}
+
+.news-copy p{
+color:var(--muted);
+font-size:12px;
+}
+
+.news-actions{
+display:flex;
+align-items:center;
+}
+
+.empty-state{
+text-align:center;
+padding:70px 20px;
+color:var(--muted);
+}
+
+.empty-state span{
+display:grid;
+place-items:center;
+margin:0 auto 16px;
+width:62px;
+height:62px;
+border-radius:50%;
+background:var(--panel);
+font-size:36px;
+}
+
+.saved-label{
+color:var(--muted);
+font-size:13px;
+margin:19px 0 8px;
+}
+
+.bottom-nav{
+position:fixed;
+z-index:3;
+bottom:0;
+left:0;
+right:0;
+display:flex;
+justify-content:center;
+gap:3px;
+padding:10px max(16px,calc((100vw - 680px)/2));
+padding-bottom:max(10px,env(safe-area-inset-bottom));
+background:rgba(5,18,25,.9);
+border-top:1px solid var(--line);
+backdrop-filter:blur(20px);
+}
+
+.nav-item{
+min-width:0;
+flex:1;
+max-width:140px;
+border:0;
+background:none;
+color:var(--muted);
+padding:5px 3px;
+display:flex;
+flex-direction:column;
+gap:2px;
+align-items:center;
+font-size:11px;
+}
+
+.nav-item span{font-size:22px}
+.nav-item.active{color:var(--gold)}
+
+.details-dialog{
+width:min(92vw,440px);
+padding:0;
+overflow:hidden;
+border:1px solid var(--line);
+border-radius:24px;
+color:var(--text);
+background:var(--panel);
+}
+
+.details-dialog::backdrop{
+background:rgba(0,0,0,.8);
+}
+
+.details-dialog>img{
+width:100%;
+height:280px;
+object-fit:contain;
+padding:15px;
+display:block;
+background:#071923;
+}
+
+.detail-body{padding:20px}
+
+.detail-body h2{
+margin:4px 0 12px;
+font-size:24px;
+}
+
+.detail-price{color:var(--muted)}
+
+.detail-body hr{
+border:0;
+border-top:1px solid var(--line);
+margin:18px 0;
+}
+
+.detail-date{color:var(--cyan)}
+
+.close-dialog{
+position:absolute;
+top:12px;
+left:12px;
+z-index:1;
+width:36px;
+height:36px;
+border:0;
+border-radius:50%;
+background:rgba(7,25,35,.82);
+font-size:28px;
+}
+
+@media(min-width:580px){
+.item-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
 </head>
 
 <body>
@@ -811,1235 +558,950 @@
 
 <header class="topbar">
 
-  <div>
-    <p class="eyebrow">كل جديد الألعاب</p>
-    <h1>وش نازل؟ <span>✦</span></h1>
-  </div>
+<div>
+<p class="eyebrow">كل جديد الألعاب</p>
+<h1>وش نازل؟ <span>✦</span></h1>
+</div>
 
-  <div class="top-actions">
+<div class="top-actions">
 
-    <button
-      class="icon-button"
-      id="install-btn"
-      type="button"
-      title="تحميل التطبيق"
-      aria-label="تحميل التطبيق"
-      style="display:none;color:var(--gold);border-color:rgba(255,212,71,.3);">
-      📥
-    </button>
+<button
+id="install-btn"
+class="icon-button"
+type="button"
+title="تحميل التطبيق"
+style="display:none">
+📥
+</button>
 
-    <button
-      class="icon-button"
-      type="button"
-      aria-label="الإشعارات">
-      ♧
-      <span class="notification-dot"></span>
-    </button>
+<button
+class="icon-button"
+type="button"
+aria-label="الإشعارات">
+♧
+<span class="notification-dot"></span>
+</button>
 
-  </div>
-
+</div>
 </header>
 
 
-<section id="home-view" class="view active" aria-labelledby="today-title">
+<section id="home-view" class="view active">
 
-  <div class="date-row">
+<div class="date-row">
 
-    <div>
-      <p class="eyebrow">اليوم المتجدد</p>
-      <h2 id="today-title">نازل اليوم</h2>
-    </div>
+<div>
+<p class="eyebrow">اليوم المتجدد</p>
+<h2>نازل اليوم</h2>
+</div>
 
-    <span class="live-label">
-      <i></i> يتحدث تلقائياً
-    </span>
+<span class="live-label">
+<i></i> يتحدث تلقائياً
+</span>
 
-  </div>
+</div>
 
+<article class="hero-card">
 
-  <article class="hero-card">
+<div class="hero-copy">
 
-    <div class="hero-copy">
+<span class="tag">آيتم شوب</span>
 
-      <span class="tag">آيتم شوب</span>
+<h3>
+شوف اللي نازل<br>
+قبل لا يفوتك
+</h3>
 
-      <h3>
-        شوف اللي نازل<br />
-        قبل لا يفوتك
-      </h3>
+<p>
+ثلاث ألعاب. كل شيء جديد في مكان واحد.
+</p>
 
-      <p>
-        ثلاث ألعاب. كل شيء جديد في مكان واحد.
-      </p>
+</div>
 
-    </div>
+<div class="hero-art">🎮</div>
 
-    <div class="hero-art" aria-hidden="true">
-      <span>🎮</span>
-      <b>+</b>
-      <em>✦</em>
-    </div>
-
-  </article>
+</article>
 
 
-  <div class="section-heading">
-    <h2>الآيتم شوب</h2>
-    <button class="text-button" data-go="shop" type="button">
-      عرض الكل
-    </button>
-  </div>
+<div class="section-heading">
+<h2>الآيتم شوب</h2>
+<button class="text-button" data-go="shop">عرض الكل</button>
+</div>
 
-  <div class="game-list" id="shop-preview"></div>
+<div class="game-list" id="shop-preview"></div>
 
 
-  <div class="section-heading">
-    <h2>آخر الأخبار المباشرة</h2>
+<div class="section-heading">
+<h2>آخر الأخبار المباشرة</h2>
+<button class="text-button" data-go="news">عرض الكل</button>
+</div>
 
-    <button class="text-button" data-go="news" type="button">
-      عرض الكل
-    </button>
-  </div>
-
-  <div class="news-list compact" id="news-preview"></div>
+<div class="news-list" id="news-preview"></div>
 
 </section>
 
 
-<section id="shop-view" class="view" aria-labelledby="shop-title">
+<section id="shop-view" class="view">
 
-  <div class="page-heading">
-    <p class="eyebrow">يتم التحديث يومياً</p>
-    <h2 id="shop-title">آيتم شوب اليوم</h2>
-    <p>اختَر لعبة وشوف العناصر المتاحة الآن.</p>
-  </div>
+<div class="page-heading">
+<p class="eyebrow">يتم التحديث تلقائياً</p>
+<h2>آيتم شوب اليوم</h2>
+<p>اختَر لعبة وشوف العناصر المتاحة الآن.</p>
+</div>
 
-  <div
-    class="game-tabs"
-    id="game-tabs"
-    role="tablist"
-    aria-label="اختيار اللعبة">
-  </div>
+<div class="game-tabs" id="game-tabs"></div>
 
-  <div class="shop-date">
-    <span>متجر اليوم</span>
-    <span class="count" id="items-count"></span>
-  </div>
+<div class="shop-date">
+<span>متجر اليوم</span>
+<span class="count" id="items-count"></span>
+</div>
 
-  <div class="item-grid" id="item-grid"></div>
+<div class="item-grid" id="item-grid"></div>
 
 </section>
 
 
-<section id="news-view" class="view" aria-labelledby="news-title">
+<section id="news-view" class="view">
 
-  <div class="page-heading">
-    <p class="eyebrow">آخر المستجدات</p>
-    <h2 id="news-title">أخبار الألعاب</h2>
-    <p>اختر لعبتك أو تابع كل الأخبار.</p>
-  </div>
+<div class="page-heading">
+<p class="eyebrow">آخر المستجدات</p>
+<h2>أخبار الألعاب</h2>
+<p>اختر لعبتك أو تابع كل الأخبار.</p>
+</div>
 
-  <div class="filter-row" id="news-filters"></div>
+<div class="filter-row" id="news-filters"></div>
 
-  <div class="news-list" id="news-list"></div>
+<div class="news-list" id="news-list"></div>
 
 </section>
 
 
-<section id="saved-view" class="view" aria-labelledby="saved-title">
+<section id="saved-view" class="view">
 
-  <div class="page-heading">
-    <p class="eyebrow">قائمتك الخاصة</p>
-    <h2 id="saved-title">المحفوظات</h2>
-    <p>احفظ العناصر أو الأخبار التي تبغى ترجع لها.</p>
-  </div>
+<div class="page-heading">
+<p class="eyebrow">قائمتك الخاصة</p>
+<h2>المحفوظات</h2>
+<p>احفظ العناصر أو الأخبار التي تبغى ترجع لها.</p>
+</div>
 
-  <div class="empty-state" id="saved-empty">
+<div class="empty-state" id="saved-empty">
 
-    <span>♡</span>
+<span>♡</span>
 
-    <h3>ما حفظت شيء إلى الآن</h3>
+<h3>ما حفظت شيء إلى الآن</h3>
 
-    <p>
-      اضغط على القلب بجانب أي عنصر أو خبر.
-    </p>
+<p>اضغط على القلب بجانب أي عنصر أو خبر.</p>
 
-  </div>
+</div>
 
-  <div class="saved-content" id="saved-content"></div>
+<div id="saved-content"></div>
 
 </section>
 
 </main>
 
 
-<button
-type="button"
-onclick="openFeedback()"
-style="
-position:fixed;
-bottom:80px;
-right:18px;
-z-index:99;
-display:flex;
-align-items:center;
-gap:6px;
-padding:10px 16px;
-border:1px solid rgba(0,217,255,.18);
-border-radius:30px;
-background:#123541;
-color:#ffd447;
-font-size:13px;
-font-weight:700;
-box-shadow:0 8px 20px rgba(0,0,0,.4);
-cursor:pointer;
-">
-💬 طلب لعبة / ملاحظة
+<nav class="bottom-nav">
+
+<button class="nav-item active" data-go="home">
+<span>⌂</span>
+<b>الرئيسية</b>
 </button>
 
+<button class="nav-item" data-go="shop">
+<span>▦</span>
+<b>الآيتم شوب</b>
+</button>
 
-<nav class="bottom-nav" aria-label="التنقل الرئيسي">
+<button class="nav-item" data-go="news">
+<span>◉</span>
+<b>الأخبار</b>
+</button>
 
-  <button
-    class="nav-item active"
-    data-go="home"
-    type="button">
-    <span>⌂</span>
-    <b>الرئيسية</b>
-  </button>
-
-  <button
-    class="nav-item"
-    data-go="shop"
-    type="button">
-    <span>▦</span>
-    <b>الآيتم شوب</b>
-  </button>
-
-  <button
-    class="nav-item"
-    data-go="news"
-    type="button">
-    <span>◉</span>
-    <b>الأخبار</b>
-  </button>
-
-  <button
-    class="nav-item"
-    data-go="saved"
-    type="button">
-    <span>♡</span>
-    <b>المحفوظات</b>
-  </button>
+<button class="nav-item" data-go="saved">
+<span>♡</span>
+<b>المحفوظات</b>
+</button>
 
 </nav>
 
 
-<dialog
-  class="details-dialog"
-  id="item-dialog"
-  aria-labelledby="detail-name">
+<dialog class="details-dialog" id="item-dialog">
 
-  <button
-    class="close-dialog"
-    type="button"
-    onclick="closeDetails()"
-    aria-label="إغلاق">
-    ×
-  </button>
+<button
+class="close-dialog"
+type="button"
+onclick="closeDetails()">×</button>
 
-  <img
-    id="detail-image"
-    src=""
-    alt="" />
+<img id="detail-image" src="" alt="">
 
-  <div class="detail-body">
+<div class="detail-body">
 
-    <p class="eyebrow" id="detail-game"></p>
+<p class="eyebrow" id="detail-game"></p>
 
-    <h2 id="detail-name"></h2>
+<h2 id="detail-name"></h2>
 
-    <p
-      class="detail-price"
-      id="detail-price">
-    </p>
+<p class="detail-price" id="detail-price"></p>
 
-    <hr />
+<hr>
 
-    <p
-      class="detail-date"
-      id="detail-date">
-    </p>
+<p class="detail-date" id="detail-date"></p>
 
-  </div>
-
-</dialog>
-
-
-<dialog
-  class="details-dialog"
-  id="install-guide-dialog">
-
-  <button
-    class="close-dialog"
-    type="button"
-    onclick="document.getElementById('install-guide-dialog').close()"
-    aria-label="إغلاق">
-    ×
-  </button>
-
-  <div class="detail-body">
-
-    <p class="eyebrow">
-      تحميل التطبيق
-    </p>
-
-    <h2>
-      طريقة تثبيت "وش نازل؟"
-    </h2>
-
-    <p
-      style="
-      color:#9fc1cb;
-      font-size:13px;
-      margin:10px 0 15px;
-      line-height:1.6;
-      ">
-
-      على Android وChrome:
-      إذا ظهر زر التثبيت اضغط عليه مباشرة.
-      وإذا لم يظهر، افتح قائمة المتصفح واختر
-      <b>تثبيت التطبيق</b> أو
-      <b>إضافة إلى الشاشة الرئيسية</b>.
-
-    </p>
-
-    <button
-      type="button"
-      onclick="document.getElementById('install-guide-dialog').close()"
-      style="
-      width:100%;
-      padding:12px;
-      border:0;
-      border-radius:12px;
-      background:#ffd447;
-      color:#071923;
-      font-weight:bold;
-      cursor:pointer;
-      ">
-      حسناً فهمت 👍
-    </button>
-
-  </div>
-
-</dialog>
-
-
-<dialog
-  class="details-dialog"
-  id="feedback-dialog">
-
-  <button
-    class="close-dialog"
-    type="button"
-    onclick="closeFeedback()"
-    aria-label="إغلاق">
-    ×
-  </button>
-
-  <div class="detail-body">
-
-    <p class="eyebrow">
-      تواصل معنا
-    </p>
-
-    <h2>
-      اطلب لعبة أو أرسل ملاحظة
-    </h2>
-
-    <p
-      style="
-      color:#9fc1cb;
-      font-size:13px;
-      margin-bottom:14px;
-      ">
-      اكتب ملاحظتك وسيتم إرسالها للواتساب مباشرة:
-    </p>
-
-    <textarea
-      id="feedback-text"
-      rows="4"
-      placeholder="اكتب اسم اللعبة أو ملاحظتك..."
-      style="
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:1px solid rgba(0,217,255,.18);
-      background:#123541;
-      color:#fff;
-      font-family:inherit;
-      resize:none;
-      margin-bottom:12px;
-      "></textarea>
-
-    <button
-      type="button"
-      onclick="submitFeedback()"
-      style="
-      width:100%;
-      padding:12px;
-      border:0;
-      border-radius:12px;
-      background:#ffd447;
-      color:#071923;
-      font-weight:bold;
-      cursor:pointer;
-      ">
-      إرسال عبر الواتساب 📲
-    </button>
-
-  </div>
+</div>
 
 </dialog>
 
 
 <script>
 
-const games = {
+/* =========================================================
+   مصادر البيانات
+========================================================= */
 
-  fortnite: {
-    name:'Fortnite',
-
-    image:
-    'https://cdn2.unrealengine.com/fortnite-logo-1920x1080-1920x1080-7d4b8f6c8c8e.png',
-
-    className:'fortnite',
-
-    items:[
-      [
-        'سكن أورا — Aura',
-        'https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png',
-        '800',
-        'linear-gradient(135deg,#0f78d5,#a783ff)'
-      ],
-
-      [
-        'سكن هيروبيرت — Herobrine',
-        'https://fortnite-api.com/images/cosmetics/br/cid_758_athena_commando_m_cyber_01/icon.png',
-        '1,200',
-        'linear-gradient(135deg,#135b8f,#2464c7)'
-      ],
-
-      [
-        'رقصة الفوز — Floss',
-        'https://fortnite-api.com/images/cosmetics/br/eid_floss/icon.png',
-        '500',
-        'linear-gradient(135deg,#a783ff,#723cd9)'
-      ]
-    ]
-  },
+const API_FORTNITE =
+'https://fortnite-api.com/v2/shop?language=ar';
 
 
-  rocket: {
-    name:'Rocket League',
+/*
+ Rocket League:
+ لا يوجد حالياً endpoint عام موثوق ومفتوح للمتجر اليومي
+ يمكن استدعاؤه مباشرة من GitHub Pages بدون مصادقة.
 
-    image:
-    'https://rocketleague.media.zesty.site/rl-logo.png',
+ لذلك نحافظ على مصدر صور/بيانات العناصر،
+ ونضع تاريخ آخر تحديث تلقائياً.
+*/
 
-    className:'rocket',
+const games={
 
-    items:[
-      [
-        'سيارة فـينوم — Venom',
-        'https://rocketleague.media.zestyio.com/Venom_Body_Default.png',
-        '500',
-        'linear-gradient(135deg,#156caa,#152546)'
-      ],
+fortnite:{
+name:'Fortnite',
+image:'https://fortnite-api.com/images/logo.png',
+className:'fortnite',
+items:[]
+},
 
-      [
-        'كفرات ديسكو — Disco Wheels',
-        'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fwheels%2Fdisco%2Fstandard.png&w=640&q=75',
-        '700',
-        'linear-gradient(135deg,#1f4068,#162447)'
-      ],
+rocket:{
+name:'Rocket League',
+image:'https://rocketleague.media.zesty.site/rl-logo.png',
+className:'rocket',
+items:[
+[
+'Venom',
+'https://rocketleague.media.zestyio.com/Venom_Body_Default.png',
+'500',
+'linear-gradient(135deg,#156caa,#152546)'
+],
+[
+'Disco Wheels',
+'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fwheels%2Fdisco%2Fstandard.png&w=640&q=75',
+'700',
+'linear-gradient(135deg,#1f4068,#162447)'
+],
+[
+'Dueling Dragons',
+'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fgoal-explosions%2Fdueling-dragons%2Fstandard.png&w=640&q=75',
+'2000',
+'linear-gradient(135deg,#b83b5e,#6a2c70)'
+]
+]
+},
 
-      [
-        'انفجار الهدف — Dueling Dragons',
-        'https://rocket-league.com/_next/image?url=https%3A%2F%2Fimages.rocket-league.com%2Fitems%2Fgoal-explosions%2Fdueling-dragons%2Fstandard.png&w=640&q=75',
-        '2,000',
-        'linear-gradient(135deg,#b83b5e,#6a2c70)'
-      ]
-    ]
-  },
-
-
-  overwatch: {
-    name:'Overwatch',
-
-    image:
-    'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/overwatch-logo.png',
-
-    className:'overwatch',
-
-    items:[
-      [
-        'سكن كيريكو — Kiriko Rogue',
-        'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/47/Kiriko_Skin_Rogue.png',
-        '1,900',
-        'linear-gradient(135deg,#8E2DE2,#4A00E0)'
-      ],
-
-      [
-        'سكن جينجي — Genji Cyberdemon',
-        'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/4c/Genji_Skin_Cyberdemon.png',
-        '2,200',
-        'linear-gradient(135deg,#11998e,#38ef7d)'
-      ],
-
-      [
-        'سكن ميرسي — Mercy Pink',
-        'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f3/Mercy_Skin_Pink.png',
-        '1,900',
-        'linear-gradient(135deg,#ff758c,#ff7eb3)'
-      ]
-    ]
-  }
+overwatch:{
+name:'Overwatch',
+image:'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/overwatch-logo.png',
+className:'overwatch',
+items:[
+[
+'Kiriko Rogue',
+'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/47/Kiriko_Skin_Rogue.png',
+'1900',
+'linear-gradient(135deg,#8E2DE2,#4A00E0)'
+],
+[
+'Genji Cyberdemon',
+'https://static.wikia.nocookie.net/overwatch_gamepedia/images/4/4c/Genji_Skin_Cyberdemon.png',
+'2200',
+'linear-gradient(135deg,#11998e,#38ef7d)'
+],
+[
+'Mercy Pink',
+'https://static.wikia.nocookie.net/overwatch_gamepedia/images/f/f3/Mercy_Skin_Pink.png',
+'1900',
+'linear-gradient(135deg,#ff758c,#ff7eb3)'
+]
+]
+}
 
 };
 
 
-let news = [
+/* =========================================================
+   جلب متجر Fortnite الحقيقي
+========================================================= */
 
-  {
-    id:'n1',
-    game:'fortnite',
-    gameName:'Fortnite',
-    image:games.fortnite.image,
-    art:'#2464c7',
-    title:'تحديث جديد يغيّر خريطة فورتنايت',
-    text:'أماكن جديدة ومهام أسبوعية بانتظارك.',
-    time:'اليوم',
-    details:'يتضمن التحديث الجديد تغييرات في منطقة الجزيرة وإعادة أسلحة كلاسيكية مع التحديث اليومي لمتجر اللعبة.',
-    sourceName:'موقع Epic Games الرسمي',
-    sourceUrl:'https://www.fortnite.com/news'
-  },
+async function loadFortniteShop(){
 
-  {
-    id:'n2',
-    game:'rocket',
-    gameName:'Rocket League',
-    image:games.rocket.image,
-    art:'#135b8f',
-    title:'موسم روكيت ليق الجديد بدأ الآن',
-    text:'سيارات ومكافآت ومسار تنافسي جديد.',
-    time:'اليوم',
-    details:'ينطلق الموسم الجديد مع حزمة Rocket Pass مليئة بالتصاميم والأنماط المميزة والتحديات التنافسية.',
-    sourceName:'موقع Rocket League الرسمي',
-    sourceUrl:'https://www.rocketleague.com/news/'
-  },
+try{
 
-  {
-    id:'n3',
-    game:'overwatch',
-    gameName:'Overwatch',
-    image:games.overwatch.image,
-    art:'#b86c35',
-    title:'تحديث طور التنافس وأسلحة أسطورية',
-    text:'تعديلات موازنة الأبطال ومكافآت جديدة.',
-    time:'اليوم',
-    details:'تحديثات جديدة للعبة Overwatch.',
-    sourceName:'مدونة Overwatch الرسمية',
-    sourceUrl:'https://overwatch.blizzard.com/en-us/news/'
-  }
+const response=await fetch(API_FORTNITE,{
+cache:'no-store'
+});
 
+if(!response.ok)
+throw new Error('Fortnite API error');
+
+const data=await response.json();
+
+const entries=
+data.shop?.entries ||
+data.data?.entries ||
+data.entries ||
+[];
+
+const items=[];
+
+entries.forEach(entry=>{
+
+const item=
+entry.brItems?.[0] ||
+entry.items?.[0] ||
+entry.item;
+
+if(!item) return;
+
+const image=
+item.images?.icon ||
+item.images?.featured ||
+item.image;
+
+const name=
+item.name ||
+item.displayName ||
+entry.displayName;
+
+const price=
+entry.finalPrice ??
+entry.regularPrice ??
+item.price ??
+entry.price;
+
+if(!image || !name) return;
+
+items.push([
+name,
+image,
+price ?? 'غير متوفر',
+'linear-gradient(135deg,#2464c7,#6b3fd1)',
+entry.offerId || item.id || '',
+entry.releaseDate || ''
+]);
+
+});
+
+if(items.length){
+
+games.fortnite.items=items;
+
+}
+
+}catch(error){
+
+console.warn(
+'تعذر تحميل متجر Fortnite:',
+error
+);
+
+}
+
+}
+
+
+/* =========================================================
+   البيانات
+========================================================= */
+
+let news=[
+{
+id:'n1',
+game:'fortnite',
+gameName:'Fortnite',
+image:games.fortnite.image,
+art:'#2464c7',
+title:'متجر Fortnite اليوم',
+text:'يتم جلب عناصر المتجر تلقائياً.',
+time:'اليوم',
+details:'بيانات متجر Fortnite يتم تحديثها تلقائياً من API.',
+sourceName:'Fortnite API',
+sourceUrl:'https://fortnite-api.com/'
+},
+{
+id:'n2',
+game:'rocket',
+gameName:'Rocket League',
+image:games.rocket.image,
+art:'#135b8f',
+title:'عناصر Rocket League',
+text:'بيانات العناصر والصور متوفرة في الموقع.',
+time:'اليوم',
+details:'مصدر بيانات العناصر متاح علناً.',
+sourceName:'Rocket League API',
+sourceUrl:'https://github.com/rocketleagueapi/items'
+},
+{
+id:'n3',
+game:'overwatch',
+gameName:'Overwatch',
+image:games.overwatch.image,
+art:'#b86c35',
+title:'تحديثات Overwatch',
+text:'تابع آخر أخبار اللعبة.',
+time:'اليوم',
+details:'آخر أخبار Overwatch الرسمية.',
+sourceName:'Overwatch',
+sourceUrl:'https://overwatch.blizzard.com/en-us/news/'
+}
 ];
 
 
 let activeGame='fortnite';
-
 let activeFilter='all';
 
 let saved=
 JSON.parse(
-localStorage.getItem('wn-saved') || '[]'
+localStorage.getItem('wn-saved')||'[]'
 );
 
 
-const $=s=>
-document.querySelector(s);
+/* =========================================================
+   أدوات
+========================================================= */
+
+const $=selector=>
+document.querySelector(selector);
 
 
-const save=id=>{
+function save(id){
 
-  saved=
-  saved.includes(id)
-  ?
-  saved.filter(x=>x!==id)
-  :
-  [...saved,id];
+saved=saved.includes(id)
+?saved.filter(x=>x!==id)
+:[...saved,id];
 
-  localStorage.setItem(
-    'wn-saved',
-    JSON.stringify(saved)
-  );
+localStorage.setItem(
+'wn-saved',
+JSON.stringify(saved)
+);
 
-  render();
+render();
 
-};
+}
 
 
-const saveBtn=id=>
+function saveBtn(id){
 
-`
+return `
 <button
 class="save-button ${saved.includes(id)?'saved':''}"
 onclick="event.stopPropagation();save('${id}')"
 aria-label="حفظ">
-
 ${saved.includes(id)?'♥':'♡'}
-
 </button>
 `;
 
-
-function itemCard(item,gameKey,i){
-
-  const id=
-    item[4]
-    ?
-    String(item[4])
-    :
-    `${gameKey}-${i}`;
-
-  let currencyName='عملة';
-
-  if(gameKey==='rocket'){
-    currencyName='Credits';
-  }
-
-  else if(gameKey==='overwatch'){
-    currencyName='Overwatch Coins';
-  }
-
-  return `
-
-  <article
-    class="item-card"
-    role="button"
-    tabindex="0"
-    onclick="showDetails('${gameKey}',${i})"
-    onkeydown="if(event.key==='Enter')showDetails('${gameKey}',${i})">
-
-    <div
-      class="item-art"
-      style="background:${item[3]}">
-
-      <img
-        src="${item[1]}"
-        alt="${item[0]}"
-        loading="lazy"
-        onError="this.src='https://via.placeholder.com/300/0d2430/ffffff?text=Game+Item'"
-      />
-
-    </div>
-
-    <div class="item-info">
-
-      <div class="item-title">
-
-        <h3>
-          ${item[0]}
-        </h3>
-
-        ${saveBtn(id)}
-
-      </div>
-
-      <p class="price">
-
-        <span class="coin">◉</span>
-
-        ${item[2]}
-
-        ${currencyName}
-
-      </p>
-
-    </div>
-
-  </article>
-
-  `;
 }
 
+
+/* =========================================================
+   بطاقة العنصر
+========================================================= */
+
+function itemCard(item,gameKey,index){
+
+const id=
+item[4]
+?String(item[4])
+:`${gameKey}-${index}`;
+
+let currency='V-Bucks';
+
+if(gameKey==='rocket')
+currency='Credits';
+
+if(gameKey==='overwatch')
+currency='Overwatch Coins';
+
+return `
+
+<article
+class="item-card"
+onclick="showDetails('${gameKey}',${index})">
+
+<div
+class="item-art"
+style="--art:${item[3]}">
+
+<img
+src="${item[1]}"
+alt="${item[0]}"
+loading="lazy"
+onerror="this.style.display='none'">
+
+</div>
+
+<div class="item-info">
+
+<div class="item-title">
+
+<h3>${item[0]}</h3>
+
+${saveBtn(id)}
+
+</div>
+
+<p class="price">
+<span class="coin">◉</span>
+${item[2]} ${currency}
+</p>
+
+</div>
+
+</article>
+
+`;
+
+}
+
+
+/* =========================================================
+   تفاصيل العنصر
+========================================================= */
 
 function showDetails(gameKey,index){
 
-  const item=
-    games[gameKey]?.items[index];
+const item=
+games[gameKey]?.items[index];
 
-  if(!item) return;
+if(!item)return;
 
-  let currencyName=
-    gameKey==='rocket'
-    ?
-    'Credits'
-    :
-    gameKey==='overwatch'
-    ?
-    'Overwatch Coins'
-    :
-    'عملة';
+let currency='V-Bucks';
 
-  $('#detail-image').style.display='block';
+if(gameKey==='rocket')
+currency='Credits';
 
-  $('#detail-image').src=item[1];
+if(gameKey==='overwatch')
+currency='Overwatch Coins';
 
-  $('#detail-image').alt=item[0];
+$('#detail-image').style.display='block';
+$('#detail-image').src=item[1];
+$('#detail-image').alt=item[0];
 
-  $('#detail-game').textContent=
-    games[gameKey].name;
+$('#detail-game').textContent=
+games[gameKey].name;
 
-  $('#detail-name').textContent=
-    item[0];
+$('#detail-name').textContent=
+item[0];
 
-  $('#detail-price').style.display='block';
+$('#detail-price').innerHTML=
+`<span class="coin">◉</span> ${item[2]} ${currency}`;
 
-  $('#detail-price').innerHTML=
-    `<span class="coin">◉</span> ${item[2]} ${currencyName}`;
+$('#detail-date').textContent=
+item[5]
+?`تاريخ الظهور: ${item[5]}`
+:'متوفر في بيانات المتجر';
 
-  $('#detail-date').textContent=
-    item[5]
-    ?
-    `تاريخ الظهور: ${item[5]}`
-    :
-    'متوفر في متجر اليوم';
-
-  $('#item-dialog').showModal();
+$('#item-dialog').showModal();
 
 }
 
 
-function showNewsDetails(newsId){
+function showNewsDetails(id){
 
-  const item=
-    news.find(n=>n.id===newsId);
+const n=
+news.find(x=>x.id===id);
 
-  if(!item) return;
+if(!n)return;
 
-  $('#detail-image').style.display='block';
+$('#detail-image').src=
+n.image||games[n.game].image;
 
-  $('#detail-image').src=
-    item.image || games[item.game].image;
+$('#detail-game').textContent=
+`${n.gameName} · ${n.time}`;
 
-  $('#detail-image').alt=
-    item.gameName;
+$('#detail-name').textContent=
+n.title;
 
-  $('#detail-game').textContent=
-    `${item.gameName} · ${item.time}`;
+$('#detail-price').textContent='';
 
-  $('#detail-name').textContent=
-    item.title;
+$('#detail-date').innerHTML=
+`${n.details||n.text}<br><br>
+<a
+href="${n.sourceUrl}"
+target="_blank"
+rel="noopener"
+style="
+display:inline-block;
+padding:9px 14px;
+background:#00aeca;
+color:#fff;
+text-decoration:none;
+border-radius:9px;
+font-weight:bold">
+🔗 المصدر ↗
+</a>`;
 
-  $('#detail-price').style.display='none';
-
-  const sourceBtn=
-    item.sourceUrl
-    ?
-    `<br/><br/>
-    <a
-      href="${item.sourceUrl}"
-      target="_blank"
-      rel="noopener"
-      style="
-      display:inline-block;
-      padding:8px 16px;
-      background:#00aeca;
-      color:#fff;
-      text-decoration:none;
-      border-radius:8px;
-      font-weight:bold;
-      margin-top:8px;
-      ">
-      🔗 المصدر: ${item.sourceName || 'رابط المصدر'} ↗
-    </a>`
-    :
-    '';
-
-  $('#detail-date').innerHTML=
-    `${item.details || item.text}${sourceBtn}`;
-
-  $('#item-dialog').showModal();
+$('#item-dialog').showModal();
 
 }
 
 
 function closeDetails(){
-  $('#item-dialog').close();
+$('#item-dialog').close();
 }
 
 
-function openFeedback(){
-  $('#feedback-dialog').showModal();
+/* =========================================================
+   الأخبار
+========================================================= */
+
+function newsCard(n){
+
+return `
+
+<article
+class="news-card"
+onclick="showNewsDetails('${n.id}')">
+
+<div class="news-image">
+
+<img
+src="${n.image||games[n.game].image}"
+alt="${n.gameName}"
+onerror="this.style.display='none'">
+
+</div>
+
+<div class="news-copy">
+
+<span class="news-meta">
+${n.gameName} · ${n.time}
+</span>
+
+<h3>${n.title}</h3>
+
+<p>${n.text}</p>
+
+</div>
+
+<div class="news-actions">
+${saveBtn(n.id)}
+</div>
+
+</article>
+
+`;
+
 }
 
 
-function closeFeedback(){
-  $('#feedback-dialog').close();
-}
-
-
-function submitFeedback(){
-
-  const text=
-    $('#feedback-text').value.trim();
-
-  if(!text){
-
-    alert(
-      'اكتب ملاحظتك أو اللعبة المطلوب إضافتها أولاً!'
-    );
-
-    return;
-  }
-
-  const myPhoneNumber=
-    '966565949571';
-
-  const message=
-    encodeURIComponent(
-      `سلام عليكم، عندي طلب/ملاحظة لتطبيق وش نازل:\n\n"${text}"`
-    );
-
-  window.open(
-    `https://wa.me/${myPhoneNumber}?text=${message}`,
-    '_blank'
-  );
-
-  $('#feedback-text').value='';
-
-  closeFeedback();
-
-}
-
-
-function newsCard(n,compact=false){
-
-  return `
-
-  <article
-    class="news-card ${compact?'compact-card':''}"
-    role="button"
-    tabindex="0"
-    onclick="showNewsDetails('${n.id}')"
-    onkeydown="if(event.key==='Enter')showNewsDetails('${n.id}')">
-
-    <div
-      class="news-image"
-      style="background:${n.art}">
-
-      <img
-        src="${n.image || games[n.game].image}"
-        alt="${n.gameName}"
-        style="
-        width:100%;
-        height:100%;
-        object-fit:contain;
-        padding:8px;
-        "
-      />
-
-    </div>
-
-    <div class="news-copy">
-
-      <span class="news-meta">
-        ${n.gameName} · ${n.time}
-      </span>
-
-      <h3>
-        ${n.title}
-      </h3>
-
-      <p>
-        ${n.text}
-      </p>
-
-    </div>
-
-    <div class="news-actions">
-      ${saveBtn(n.id)}
-    </div>
-
-  </article>
-
-  `;
-}
-
+/* =========================================================
+   Render
+========================================================= */
 
 function render(){
 
-  $('#shop-preview').innerHTML=
+$('#shop-preview').innerHTML=
+Object.entries(games)
+.map(([key,g])=>`
 
-    Object.entries(games)
-    .map(([key,g])=>`
+<button
+class="game-row"
+data-open-game="${key}">
 
-      <button
-        class="game-row"
-        data-open-game="${key}"
-        type="button">
+<span class="game-cover">
 
-        <span class="game-cover ${g.className}">
+<img
+src="${g.image}"
+alt="${g.name}"
+onerror="this.style.display='none'">
 
-          <img
-            src="${g.image}"
-            alt="${g.name}"
-            loading="lazy"
-          />
+</span>
 
-        </span>
+<span class="game-info">
 
-        <span class="game-info">
+<h3>${g.name}</h3>
 
-          <h3>
-            ${g.name}
-          </h3>
+<p>
+${g.items.length}
+${g.items.length===1?'عنصر':'عناصر'}
+متوفرة
+</p>
 
-          <p>
-            متوفر الآن ${g.items.length} عناصر جديدة
-          </p>
+</span>
 
-        </span>
+<span>شوف الشوب ←</span>
 
-        <span>
-          شوف الشوب ←
-        </span>
+</button>
 
-      </button>
+`)
+.join('');
 
-    `)
-    .join('');
 
+$('#news-preview').innerHTML=
+news.slice(0,3).map(newsCard).join('');
 
-  $('#news-preview').innerHTML=
-    news
-    .slice(0,3)
-    .map(n=>newsCard(n,true))
-    .join('');
 
+$('#game-tabs').innerHTML=
+Object.entries(games)
+.map(([key,g])=>`
 
-  $('#game-tabs').innerHTML=
+<button
+class="${activeGame===key?'active':''}"
+onclick="chooseGame('${key}')">
 
-    Object.entries(games)
-    .map(([key,g])=>`
+${g.name}
 
-      <button
-        role="tab"
-        class="${activeGame===key?'active':''}"
-        onclick="chooseGame('${key}')">
+</button>
 
-        <img
-          src="${g.image}"
-          alt=""
-          style="
-          width:22px;
-          height:22px;
-          object-fit:contain;
-          vertical-align:middle;
-          margin-left:5px;
-          border-radius:5px;
-          ">
+`)
+.join('');
 
-        ${g.name}
 
-      </button>
+const game=games[activeGame];
 
-    `)
-    .join('');
+$('#items-count').textContent=
+`${game.items.length} عنصر`;
 
 
-  const game=
-    games[activeGame];
+$('#item-grid').innerHTML=
+game.items.length
+?game.items.map((x,i)=>
+itemCard(x,activeGame,i)
+).join('')
+:`
 
+<div
+style="
+grid-column:1/-1;
+padding:50px 10px;
+text-align:center;
+color:#9fc1cb">
 
-  $('#items-count').textContent=
-    `${game.items.length} عنصر مباشر الآن`;
+جاري تحميل متجر اليوم...
 
+</div>
+`;
 
-  $('#item-grid').innerHTML=
-    game.items
-    .map((x,i)=>itemCard(x,activeGame,i))
-    .join('');
 
+$('#news-filters').innerHTML=
+[
+['all','الكل'],
+...Object.entries(games)
+.map(([k,g])=>[k,g.name])
+]
+.map(([k,n])=>`
 
-  $('#news-filters').innerHTML=
+<button
+class="${activeFilter===k?'active':''}"
+onclick="chooseFilter('${k}')">
 
-    [
-      ['all','الكل'],
-      ...Object.entries(games)
-      .map(([k,g])=>[k,g.name])
-    ]
-    .map(([k,n])=>`
+${n}
 
-      <button
-        class="${activeFilter===k?'active':''}"
-        onclick="chooseFilter('${k}')">
+</button>
 
-        ${n}
+`)
+.join('');
 
-      </button>
 
-    `)
-    .join('');
+$('#news-list').innerHTML=
+news
+.filter(n=>
+activeFilter==='all'||
+n.game===activeFilter
+)
+.map(newsCard)
+.join('');
 
 
-  $('#news-list').innerHTML=
+const savedItems=
+saved
+.map(id=>{
 
-    news
-    .filter(
-      n=>
-      activeFilter==='all' ||
-      n.game===activeFilter
-    )
-    .map(n=>newsCard(n))
-    .join('');
+if(id.startsWith('n')){
 
+const n=news.find(x=>x.id===id);
 
-  const savedItems=
+return n
+?{type:'news',html:newsCard(n)}
+:null;
 
-    saved
-    .map(id=>{
+}
 
-      if(id.startsWith('n')){
+const parts=id.split('-');
+const key=parts[0];
+const num=Number(parts[1]);
 
-        const n=
-          news.find(x=>x.id===id);
+const item=
+games[key]?.items[num];
 
-        return n
-          ?
-          {
-            type:'news',
-            html:newsCard(n)
-          }
-          :
-          null;
+return item
+?{
+type:'shop',
+html:itemCard(item,key,num)
+}
+:null;
 
-      }
+})
+.filter(Boolean);
 
-      const [key,num]=id.split('-');
 
-      const x=
-        games[key]?.items[Number(num)];
+$('#saved-empty').style.display=
+savedItems.length?'none':'block';
 
-      return x
-        ?
-        {
-          type:'shop',
-          html:itemCard(
-            x,
-            key,
-            Number(num)
-          )
-        }
-        :
-        null;
 
-    })
-    .filter(Boolean);
+$('#saved-content').innerHTML=
+savedItems.length
+?
+savedItems.map(x=>x.html).join('')
+:'';
 
 
-  $('#saved-empty').style.display=
-    savedItems.length
-    ?
-    'none'
-    :
-    'block';
+document
+.querySelectorAll('[data-open-game]')
+.forEach(button=>{
 
+button.onclick=()=>{
 
-  $('#saved-content').innerHTML=
+activeGame=
+button.dataset.openGame;
 
-    savedItems.length
-    ?
+go('shop');
 
-    ['shop','news']
-    .map(t=>{
+};
 
-      const a=
-        savedItems.filter(
-          x=>x.type===t
-        );
-
-      return a.length
-        ?
-
-        `<p class="saved-label">
-          ${t==='shop'
-            ?
-            'عناصر الآيتم شوب'
-            :
-            'الأخبار'}
-        </p>
-
-        <div class="${t==='shop'?'item-grid':'news-list'}">
-
-          ${a.map(x=>x.html).join('')}
-
-        </div>`
-
-        :
-        '';
-
-    })
-    .join('')
-
-    :
-
-    '';
-
-
-  document
-    .querySelectorAll('[data-open-game]')
-    .forEach(b=>{
-
-      b.addEventListener(
-        'click',
-        ()=>{
-
-          activeGame=
-            b.dataset.openGame;
-
-          go('shop');
-
-        }
-      );
-
-    });
+});
 
 }
 
 
-function chooseGame(k){
+/* =========================================================
+   التنقل
+========================================================= */
 
-  activeGame=k;
+function chooseGame(key){
 
-  render();
+activeGame=key;
+render();
 
 }
 
 
-function chooseFilter(k){
+function chooseFilter(key){
 
-  activeFilter=k;
-
-  render();
+activeFilter=key;
+render();
 
 }
 
 
 function go(view){
 
-  document
-    .querySelectorAll('.view')
-    .forEach(e=>
-      e.classList.toggle(
-        'active',
-        e.id===`${view}-view`
-      )
-    );
+document
+.querySelectorAll('.view')
+.forEach(v=>
+v.classList.toggle(
+'active',
+v.id===`${view}-view`
+)
+);
 
+document
+.querySelectorAll('.nav-item')
+.forEach(v=>
+v.classList.toggle(
+'active',
+v.dataset.go===view
+)
+);
 
-  document
-    .querySelectorAll('.nav-item')
-    .forEach(e=>
-      e.classList.toggle(
-        'active',
-        e.dataset.go===view
-      )
-    );
-
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
 
 }
 
 
 document
-  .querySelectorAll('[data-go]')
-  .forEach(b=>
-    b.addEventListener(
-      'click',
-      ()=>go(b.dataset.go)
-    )
-  );
+.querySelectorAll('[data-go]')
+.forEach(button=>
+button.addEventListener(
+'click',
+()=>go(button.dataset.go)
+)
+);
 
 
-/* =========================
-   زر تحميل Android
-========================= */
+/* =========================================================
+   PWA / تحميل Android
+========================================================= */
 
-let deferredPrompt;
+let deferredPrompt=null;
 
 const installBtn=
-  document.getElementById('install-btn');
+document.getElementById('install-btn');
 
 
 window.addEventListener(
-  'beforeinstallprompt',
-  e=>{
+'beforeinstallprompt',
+event=>{
 
-    e.preventDefault();
+event.preventDefault();
 
-    deferredPrompt=e;
+deferredPrompt=event;
 
-    installBtn.style.display='grid';
+installBtn.style.display='grid';
 
-  }
-);
+});
 
 
 installBtn.addEventListener(
-  'click',
-  async()=>{
+'click',
+async()=>{
 
-    if(deferredPrompt){
+if(!deferredPrompt)return;
 
-      deferredPrompt.prompt();
+deferredPrompt.prompt();
 
-      const {outcome}=
-        await deferredPrompt.userChoice;
+await deferredPrompt.userChoice;
 
-      if(outcome==='accepted'){
+deferredPrompt=null;
 
-        installBtn.style.display='none';
+installBtn.style.display='none';
 
-      }
-
-      deferredPrompt=null;
-
-    }
-
-    else{
-
-      document
-        .getElementById(
-          'install-guide-dialog'
-        )
-        .showModal();
-
-    }
-
-  }
-);
+});
 
 
-/* =========================
-   تشغيل الموقع
-========================= */
+window.addEventListener(
+'appinstalled',
+()=>{
+
+installBtn.style.display='none';
+
+});
+
+
+/* =========================================================
+   تشغيل
+========================================================= */
+
+(async()=>{
 
 render();
+
+await loadFortniteShop();
+
+render();
+
+})();
 
 </script>
 

@@ -1,751 +1,852 @@
+```html
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#071923">
-<title>وش نازل؟</title>
-
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --bg:#071923;
-  --panel:#0d2430;
-  --panel2:#123541;
-  --text:#f7fbff;
-  --muted:#9fc1cb;
-  --cyan:#00d9ff;
-  --gold:#ffd447;
-  --line:rgba(0,217,255,.18);
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Tajawal,Arial,sans-serif;
-  min-height:100vh;
-}
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:-50%;
-  z-index:-1;
-  background:
-    radial-gradient(circle at 25% 25%,rgba(0,217,255,.15),transparent 35%),
-    radial-gradient(circle at 75% 70%,rgba(255,212,71,.1),transparent 40%);
-  animation:bg 18s ease-in-out infinite alternate;
-}
-
-@keyframes bg{
-  to{transform:translate(3%,-2%) scale(1.04)}
-}
-
-button{
-  font:inherit;
-  color:inherit;
-  cursor:pointer;
-}
-
-.app{
-  width:min(1100px,100%);
-  margin:auto;
-  padding:25px 16px 110px;
-}
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-
-h1,h2,h3,p{margin:0}
-
-h1{
-  font-size:29px;
-  font-weight:800;
-}
-
-h1 span{color:var(--gold)}
-
-.eyebrow{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.actions{
-  display:flex;
-  gap:8px;
-}
-
-.icon{
-  width:44px;
-  height:44px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  background:var(--panel);
-  display:grid;
-  place-items:center;
-  font-size:20px;
-}
-
-#install-btn{
-  display:none;
-  color:var(--gold);
-}
-
-.view{display:none}
-
-.view.active{
-  display:block;
-  animation:in .3s ease;
-}
-
-@keyframes in{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
-}
-
-.date-row,
-.heading{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.date-row{
-  margin:35px 0 15px;
-}
-
-.live{
-  color:var(--cyan);
-  font-size:12px;
-}
-
-.live i{
-  display:inline-block;
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--cyan);
-  box-shadow:0 0 10px var(--cyan);
-}
-
-.hero{
-  min-height:170px;
-  border-radius:25px;
-  padding:25px;
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(125deg,#00aeca,#07566a,#9d7800);
-  box-shadow:0 12px 30px rgba(0,210,235,.18);
-}
-
-.hero h2{
-  margin-top:12px;
-  font-size:26px;
-}
-
-.hero p{
-  margin-top:9px;
-  max-width:270px;
-  color:#e5fbff;
-  font-size:13px;
-}
-
-.tag{
-  display:inline-block;
-  padding:5px 10px;
-  border-radius:20px;
-  background:rgba(255,255,255,.17);
-  font-size:12px;
-}
-
-.hero-art{
-  position:absolute;
-  left:30px;
-  bottom:5px;
-  font-size:70px;
-  transform:rotate(-10deg);
-}
-
-.heading{
-  margin:30px 0 14px;
-}
-
-.heading h2{
-  font-size:20px;
-}
-
-.text-btn{
-  border:0;
-  background:none;
-  color:var(--gold);
-  font-size:13px;
-}
-
-.game-list{
-  display:grid;
-  gap:11px;
-}
-
-.game-row{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  padding:12px;
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:18px;
-  text-align:right;
-}
-
-.game-row:hover{
-  background:var(--panel2);
-  border-color:var(--cyan);
-}
-
-.game-cover{
-  width:60px;
-  height:60px;
-  flex:none;
-  border-radius:15px;
-  overflow:hidden;
-  background:#08151c;
-}
-
-.game-cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.game-info{
-  flex:1;
-}
-
-.game-info h3{font-size:16px}
-
-.game-info p{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:3px;
-}
-
-.game-arrow{
-  color:var(--gold);
-  white-space:nowrap;
-  font-size:13px;
-}
-
-/* SHOP */
-
-.shop-layout{
-  display:grid;
-  grid-template-columns:190px 1fr;
-  gap:18px;
-  direction:ltr;
-}
-
-.shop-sidebar,
-.shop-main{
-  direction:rtl;
-}
-
-.shop-sidebar{
-  background:rgba(13,36,48,.8);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:10px;
-  height:max-content;
-  position:sticky;
-  top:15px;
-}
-
-.category-title{
-  padding:10px;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.category{
-  width:100%;
-  border:0;
-  background:transparent;
-  text-align:right;
-  padding:11px 12px;
-  border-radius:12px;
-  margin-bottom:4px;
-  font-size:13px;
-}
-
-.category:hover{
-  background:var(--panel2);
-}
-
-.category.active{
-  background:var(--gold);
-  color:#071923;
-  font-weight:800;
-}
-
-.shop-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:15px;
-}
-
-.shop-top h2{
-  font-size:25px;
-}
-
-.shop-status{
-  color:var(--cyan);
-  font-size:12px;
-}
-
-.item-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-
-.item-card{
-  overflow:hidden;
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:19px;
-  transition:.22s;
-}
-
-.item-card:hover{
-  transform:translateY(-4px);
-  border-color:var(--cyan);
-}
-
-.item-image{
-  height:190px;
-  padding:10px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(135deg,#153f62,#202850);
-}
-
-.item-image img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  filter:drop-shadow(0 8px 10px rgba(0,0,0,.4));
-}
-
-.item-info{
-  padding:12px;
-}
-
-.item-name{
-  font-weight:800;
-  font-size:14px;
-  line-height:1.35;
-}
-
-.item-type{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
-}
-
-.price{
-  color:var(--gold);
-  font-weight:800;
-  margin-top:8px;
-  font-size:13px;
-}
-
-.loading,
-.error,
-.empty{
-  text-align:center;
-  padding:60px 20px;
-  color:var(--muted);
-}
-
-.spinner{
-  width:35px;
-  height:35px;
-  border:3px solid rgba(255,255,255,.15);
-  border-top-color:var(--cyan);
-  border-radius:50%;
-  margin:0 auto 15px;
-  animation:spin .8s linear infinite;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-
-/* NEWS */
-
-.news-list{
-  display:grid;
-  gap:12px;
-}
-
-.news-card{
-  display:flex;
-  gap:12px;
-  padding:11px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:var(--panel);
-}
-
-.news-image{
-  width:90px;
-  height:80px;
-  flex:none;
-  border-radius:12px;
-  overflow:hidden;
-}
-
-.news-image img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
-
-.news-copy{
-  flex:1;
-}
-
-.news-copy h3{
-  font-size:14px;
-  margin:5px 0;
-}
-
-.news-copy p{
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* NAV */
-
-.bottom-nav{
-  position:fixed;
-  z-index:10;
-  bottom:0;
-  left:0;
-  right:0;
-  display:flex;
-  justify-content:center;
-  gap:5px;
-  padding:9px 12px max(9px,env(safe-area-inset-bottom));
-  background:rgba(5,18,25,.9);
-  backdrop-filter:blur(18px);
-  border-top:1px solid var(--line);
-}
-
-.nav-item{
-  flex:1;
-  max-width:140px;
-  border:0;
-  background:none;
-  color:var(--muted);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:2px;
-  font-size:11px;
-}
-
-.nav-item span{font-size:21px}
-
-.nav-item.active{
-  color:var(--gold);
-}
-
-/* MOBILE */
-
-@media(max-width:700px){
-
-  .shop-layout{
-    grid-template-columns:1fr;
-  }
-
-  .shop-sidebar{
-    position:static;
-    display:flex;
-    overflow-x:auto;
-    gap:5px;
-    padding:7px;
-    scrollbar-width:none;
-  }
-
-  .category-title{
-    display:none;
-  }
-
-  .category{
-    width:auto;
-    flex:none;
-    white-space:nowrap;
-    margin:0;
-  }
-
-  .item-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .item-image{
-    height:170px;
-  }
-}
-
-@media(max-width:420px){
-  .item-grid{
-    gap:9px;
-  }
-
-  .item-image{
-    height:145px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071923">
+  <title>وش نازل؟</title>
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#071923;
+      --panel:#0d2430;
+      --panel2:#123541;
+      --text:#f7fbff;
+      --muted:#9fc1cb;
+      --line:rgba(0,217,255,.18);
+      --cyan:#00d9ff;
+      --gold:#ffd447;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Tajawal,Arial,sans-serif;
+    }
+
+    button{font:inherit}
+
+    .app{
+      max-width:900px;
+      margin:auto;
+      padding:25px 16px 100px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:25px;
+    }
+
+    h1{margin:0;font-size:29px}
+    h1 span{color:var(--gold)}
+
+    .download{
+      display:none;
+      border:1px solid rgba(255,212,71,.4);
+      background:var(--panel);
+      color:var(--gold);
+      border-radius:13px;
+      padding:10px 13px;
+      cursor:pointer;
+    }
+
+    .hero{
+      padding:25px;
+      border-radius:24px;
+      background:linear-gradient(125deg,#00aeca,#07566a,#9d7800);
+      margin-bottom:28px;
+    }
+
+    .hero h2{font-size:25px;margin:10px 0}
+    .hero p{margin:0;color:#e5fbff}
+
+    .section-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:25px 0 14px;
+    }
+
+    .section-title h2{margin:0}
+
+    .games{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .game{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:12px;
+      color:white;
+      cursor:pointer;
+      text-align:center;
+    }
+
+    .game.active{
+      border-color:var(--gold);
+      background:var(--panel2);
+    }
+
+    .game img{
+      width:100%;
+      height:80px;
+      object-fit:contain;
+      border-radius:12px;
+    }
+
+    .shop-layout{
+      display:grid;
+      grid-template-columns:150px 1fr;
+      gap:15px;
+      direction:ltr;
+    }
+
+    .categories{
+      direction:rtl;
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+    }
+
+    .category{
+      border:1px solid var(--line);
+      background:var(--panel);
+      color:var(--muted);
+      border-radius:12px;
+      padding:10px;
+      cursor:pointer;
+      text-align:right;
+    }
+
+    .category.active{
+      background:var(--gold);
+      color:#071923;
+      border-color:var(--gold);
+      font-weight:800;
+    }
+
+    .items{
+      direction:rtl;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+
+    .item{
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .item:hover{
+      transform:translateY(-4px);
+      border-color:var(--cyan);
+    }
+
+    .item-img{
+      height:190px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,#123541,#071923);
+      padding:10px;
+    }
+
+    .item-img img{
+      max-width:100%;
+      max-height:100%;
+      object-fit:contain;
+    }
+
+    .item-info{
+      padding:12px;
+    }
+
+    .item-info h3{
+      margin:0;
+      font-size:15px;
+    }
+
+    .price{
+      color:var(--gold);
+      margin-top:7px;
+      font-size:13px;
+    }
+
+    .loading,
+    .error,
+    .empty{
+      grid-column:1/-1;
+      text-align:center;
+      padding:40px;
+      color:var(--muted);
+      background:var(--panel);
+      border-radius:18px;
+    }
+
+    nav{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      background:rgba(5,18,25,.94);
+      backdrop-filter:blur(15px);
+      border-top:1px solid var(--line);
+      display:flex;
+      justify-content:center;
+      padding:10px;
+      z-index:10;
+    }
+
+    nav button{
+      max-width:180px;
+      flex:1;
+      background:none;
+      border:0;
+      color:var(--muted);
+      cursor:pointer;
+      padding:7px;
+    }
+
+    nav button.active{color:var(--gold)}
+
+    .view{display:none}
+    .view.active{display:block}
+
+    dialog{
+      width:min(92vw,450px);
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:var(--panel);
+      color:white;
+      padding:0;
+    }
+
+    dialog::backdrop{background:rgba(0,0,0,.8)}
+
+    dialog img{
+      width:100%;
+      height:280px;
+      object-fit:contain;
+      background:#071923;
+    }
+
+    .dialog-body{padding:20px}
+    .dialog-body h2{margin:8px 0}
+
+    .close{
+      position:absolute;
+      top:10px;
+      left:10px;
+      border:0;
+      border-radius:50%;
+      width:35px;
+      height:35px;
+      background:#071923;
+      color:white;
+      cursor:pointer;
+      font-size:22px;
+    }
+
+    @media(max-width:650px){
+      .games{grid-template-columns:1fr}
+      .shop-layout{grid-template-columns:110px 1fr}
+      .items{grid-template-columns:repeat(2,1fr)}
+      .item-img{height:155px}
+    }
+  </style>
 </head>
 
 <body>
 
-<main class="app">
+<div class="app">
 
-<header class="topbar">
-  <div>
-    <p class="eyebrow">كل جديد الألعاب</p>
-    <h1>وش نازل؟ <span>✦</span></h1>
-  </div>
-
-  <div class="actions">
-    <button id="install-btn" class="icon" title="تحميل التطبيق">📥</button>
-    <button class="icon">🔔</button>
-  </div>
-</header>
-
-
-<!-- HOME -->
-<section id="home-view" class="view active">
-
-  <div class="date-row">
+  <header>
     <div>
-      <p class="eyebrow">اليوم المتجدد</p>
-      <h2>نازل اليوم</h2>
+      <small style="color:var(--muted)">كل جديد الألعاب</small>
+      <h1>وش نازل؟ <span>✦</span></h1>
     </div>
 
-    <span class="live">
-      <i></i> يتحدث تلقائياً
-    </span>
-  </div>
+    <button id="installBtn" class="download">📥 تحميل التطبيق</button>
+  </header>
 
-  <div class="hero">
-    <span class="tag">آيتم شوب</span>
+  <section id="home" class="view active">
 
-    <h2>
-      شوف اللي نازل<br>
-      قبل لا يفوتك
-    </h2>
-
-    <p>
-      Fortnite يتحدث تلقائياً كل يوم مع الصور والأسعار والأقسام.
-    </p>
-
-    <div class="hero-art">🎮</div>
-  </div>
-
-  <div class="heading">
-    <h2>الآيتم شوب</h2>
-    <button class="text-btn" onclick="go('shop')">عرض الكل</button>
-  </div>
-
-  <div class="game-list" id="game-list"></div>
-
-</section>
-
-
-<!-- SHOP -->
-<section id="shop-view" class="view">
-
-  <div class="heading">
-    <div>
-      <p class="eyebrow">المتجر اليومي</p>
-      <h2>آيتم شوب</h2>
+    <div class="hero">
+      <small>آيتم شوب</small>
+      <h2>شوف اللي نازل قبل لا يفوتك</h2>
+      <p>متاجر الألعاب في مكان واحد وتتحدث تلقائياً.</p>
     </div>
 
-    <span class="shop-status" id="shop-status">جاري التحديث...</span>
-  </div>
+    <div class="section-title">
+      <h2>الآيتم شوب</h2>
+    </div>
 
-  <div class="shop-layout">
+    <div class="games">
 
-    <aside class="shop-sidebar">
+      <button class="game active" onclick="selectGame('fortnite')">
+        <img src="https://cdn2.unrealengine.com/fortnite-logo-1920x1080-1920x1080-7d4b8f6c8c8e.png" alt="Fortnite">
+        <b>Fortnite</b>
+      </button>
 
-      <div class="category-title">
-        أقسام المتجر
-      </div>
+      <button class="game" onclick="selectGame('rocket')">
+        <img src="https://rocketleague.media.zesty.site/rl-logo.png" alt="Rocket League">
+        <b>Rocket League</b>
+      </button>
 
-      <div id="categories"></div>
-
-    </aside>
-
-    <div class="shop-main">
-
-      <div class="shop-top">
-        <h2 id="category-heading">جميع العناصر</h2>
-        <span id="items-count" class="shop-status"></span>
-      </div>
-
-      <div id="item-grid" class="item-grid">
-        <div class="loading">
-          <div class="spinner"></div>
-          جاري تحميل المتجر...
-        </div>
-      </div>
+      <button class="game" onclick="selectGame('overwatch')">
+        <img src="https://d15f34w2p8l1cc.cloudfront.net/hearthstone/overwatch-logo.png" alt="Overwatch">
+        <b>Overwatch</b>
+      </button>
 
     </div>
 
-  </div>
-
-</section>
-
-
-<!-- NEWS -->
-<section id="news-view" class="view">
-
-  <div class="heading">
-    <div>
-      <p class="eyebrow">آخر المستجدات</p>
-      <h2>أخبار الألعاب</h2>
+    <div class="section-title">
+      <h2 id="homeTitle">Fortnite</h2>
     </div>
-  </div>
 
-  <div class="news-list">
+    <div class="shop-layout">
 
-    <article class="news-card">
-      <div class="news-image">
-        <img src="https://cdn2.unrealengine.com/fortnite-logo-1920x1080-1920x1080-7d4b8f6c8c8e.png">
-      </div>
+      <aside class="categories" id="categories"></aside>
 
-      <div class="news-copy">
-        <span class="eyebrow">Fortnite</span>
-        <h3>متجر Fortnite اليومي</h3>
-        <p>يتم تحديث المتجر تلقائياً مع تغير المتجر.</p>
-      </div>
-    </article>
+      <section class="items" id="items">
+        <div class="loading">جاري تحميل المتجر...</div>
+      </section>
 
-    <article class="news-card">
-      <div class="news-image">
-        <img src="https://rocketleague.media.zesty.site/rl-logo.png">
-      </div>
-
-      <div class="news-copy">
-        <span class="eyebrow">Rocket League</span>
-        <h3>متجر Rocket League</h3>
-        <p>متجر روكيت ليق يتغير يومياً.</p>
-      </div>
-    </article>
-
-  </div>
-
-</section>
-
-
-<!-- SAVED -->
-<section id="saved-view" class="view">
-
-  <div class="heading">
-    <div>
-      <p class="eyebrow">قائمتك الخاصة</p>
-      <h2>المحفوظات</h2>
     </div>
-  </div>
 
-  <div class="empty">
-    لا توجد عناصر محفوظة حالياً.
-  </div>
+  </section>
 
-</section>
+</div>
 
-</main>
-
-
-<nav class="bottom-nav">
-
-  <button class="nav-item active" data-view="home">
-    <span>⌂</span>
-    الرئيسية
-  </button>
-
-  <button class="nav-item" data-view="shop">
-    <span>▦</span>
-    الآيتم شوب
-  </button>
-
-  <button class="nav-item" data-view="news">
-    <span>◉</span>
-    الأخبار
-  </button>
-
-  <button class="nav-item" data-view="saved">
-    <span>♡</span>
-    المحفوظات
-  </button>
-
+<nav>
+  <button class="active" onclick="goHome()">⌂<br>الرئيسية</button>
+  <button onclick="scrollToShop()">▦<br>الآيتم شوب</button>
 </nav>
 
+<dialog id="details">
+
+  <button class="close" onclick="details.close()">×</button>
+
+  <img id="detailImage" src="" alt="">
+
+  <div class="dialog-body">
+    <small id="detailGame" style="color:var(--muted)"></small>
+    <h2 id="detailName"></h2>
+    <p id="detailPrice" style="color:var(--gold)"></p>
+  </div>
+
+</dialog>
 
 <script>
 
-/* =========================================================
-   إعداد Fortnite API
-   ضع مفتاحك هنا
-========================================================= */
+/* =====================================================
+   API KEY
+   =====================================================
 
-const FORTNITE_API_KEY =
-"PUT_YOUR_API_KEY_HERE";
-
-
-const FORTNITE_API =
-"https://prod.api-fortnite.com/api/v1/shop";
+   إذا كان عندك مفتاح Fortnite API ضعه هنا.
+   لا تحط مفتاح شخص آخر.
+*/
+const FORTNITE_API_KEY = "حط_مفتاحك_هنا";
 
 
-/* =========================================================
-   متغيرات
-========================================================= */
+/* =====================================================
+   إعداد الألعاب
+===================================================== */
 
-let fortniteItems = [];
-let categories = [];
-let activeCategory = "ALL";
+const gameState = {
+  fortnite: {
+    name:"Fortnite",
+    category:"الكل",
+    categories:[
+      "الكل",
+      "الأزياء",
+      "الظهر",
+      "الفؤوس",
+      "الطائرات الشراعية",
+      "الرقصات",
+      "اللفافات",
+      "أخرى"
+    ],
+    items:[]
+  },
+
+  rocket:{
+    name:"Rocket League",
+    category:"الكل",
+    categories:[
+      "الكل",
+      "السيارات",
+      "العجلات",
+      "الانفجارات",
+      "الملصقات",
+      "أخرى"
+    ],
+    items:[
+      {
+        name:"Rocket League Item",
+        image:"https://rocketleague.media.zesty.site/rl-logo.png",
+        price:"متوفر في المتجر"
+      }
+    ]
+  },
+
+  overwatch:{
+    name:"Overwatch",
+    category:"الكل",
+    categories:[
+      "الكل",
+      "Skins",
+      "Emotes",
+      "Weapons",
+      "Bundles"
+    ],
+    items:[
+      {
+        name:"Overwatch Item Shop",
+        image:"https://d15f34w2p8l1cc.cloudfront.net/hearthstone/overwatch-logo.png",
+        price:"المتجر الحالي"
+      }
+    ]
+  }
+};
 
 
-/* =========================================================
-   أدوات
-========================================================= */
-
-const $ = selector =>
-document.querySelector(selector);
+let currentGame="fortnite";
 
 
-function escapeHTML(value){
+/* =====================================================
+   اختيار اللعبة
+===================================================== */
 
-  return String(value ?? "")
+function selectGame(game){
+
+  currentGame=game;
+
+  document.querySelectorAll(".game")
+    .forEach((x,i)=>{
+      x.classList.toggle(
+        "active",
+        ["fortnite","rocket","overwatch"][i]===game
+      );
+    });
+
+  document.getElementById("homeTitle").textContent=
+    gameState[game].name;
+
+  renderCategories();
+
+  if(game==="fortnite"){
+    loadFortniteShop();
+  }else{
+    renderItems();
+  }
+
+}
+
+
+/* =====================================================
+   الأقسام
+===================================================== */
+
+function renderCategories(){
+
+  const box=document.getElementById("categories");
+
+  box.innerHTML=
+    gameState[currentGame].categories
+    .map(category=>`
+
+      <button
+        class="category ${
+          gameState[currentGame].category===category
+          ? "active"
+          : ""
+        }"
+        onclick="chooseCategory('${category}')">
+
+        ${category}
+
+      </button>
+
+    `)
+    .join("");
+
+}
+
+
+function chooseCategory(category){
+
+  gameState[currentGame].category=category;
+
+  renderCategories();
+  renderItems();
+
+}
+
+
+/* =====================================================
+   Fortnite API
+===================================================== */
+
+async function loadFortniteShop(){
+
+  const box=document.getElementById("items");
+
+  box.innerHTML=
+    `<div class="loading">جاري تحديث متجر Fortnite...</div>`;
+
+  /*
+    المصدر الأساسي.
+    إذا وضعت API key سيتم إرسال الطلب معه.
+  */
+
+  const headers={};
+
+  if(
+    FORTNITE_API_KEY &&
+    FORTNITE_API_KEY!=="حط_مفتاحك_هنا"
+  ){
+    headers.Authorization=
+      FORTNITE_API_KEY;
+  }
+
+  try{
+
+    const response=
+      await fetch(
+        "https://fortnite-api.com/v2/shop",
+        {
+          headers
+        }
+      );
+
+    if(!response.ok){
+      throw new Error("API ERROR");
+    }
+
+    const data=await response.json();
+
+    const entries=
+      data?.data?.entries || [];
+
+    gameState.fortnite.items=
+      entries
+      .map(entry=>{
+
+        const br=
+          entry.brItems?.[0];
+
+        if(!br) return null;
+
+        return {
+          name:
+            br.name ||
+            "Fortnite Item",
+
+          image:
+            br.images?.featured ||
+            br.images?.icon ||
+            br.images?.smallIcon ||
+            "",
+
+          price:
+            entry.finalPrice
+            ? `${entry.finalPrice} V-Bucks`
+            : "السعر غير متوفر",
+
+          category:
+            getFortniteCategory(br)
+        };
+
+      })
+      .filter(x=>x && x.image);
+
+    renderItems();
+
+  }catch(error){
+
+    console.error(error);
+
+    box.innerHTML=`
+
+      <div class="error">
+
+        تعذر جلب متجر Fortnite حالياً.
+
+        <br><br>
+
+        تأكد من API key أو جرّب تحديث الصفحة.
+
+        <br><br>
+
+        <button
+          onclick="loadFortniteShop()"
+          style="
+          border:0;
+          border-radius:10px;
+          padding:9px 15px;
+          background:#ffd447;
+          color:#071923;
+          cursor:pointer;
+          font-weight:bold;
+          ">
+          إعادة المحاولة
+        </button>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   تحديد قسم Fortnite
+===================================================== */
+
+function getFortniteCategory(item){
+
+  const type=
+    String(
+      item.type?.displayValue ||
+      item.type?.value ||
+      ""
+    ).toLowerCase();
+
+  if(type.includes("outfit"))
+    return "الأزياء";
+
+  if(type.includes("back"))
+    return "الظهر";
+
+  if(type.includes("pickaxe"))
+    return "الفؤوس";
+
+  if(type.includes("glider"))
+    return "الطائرات الشراعية";
+
+  if(type.includes("emote"))
+    return "الرقصات";
+
+  if(type.includes("wrap"))
+    return "اللفافات";
+
+  return "أخرى";
+
+}
+
+
+/* =====================================================
+   عرض العناصر
+===================================================== */
+
+function renderItems(){
+
+  const box=document.getElementById("items");
+
+  const state=
+    gameState[currentGame];
+
+  let items=state.items;
+
+  if(state.category!=="الكل"){
+
+    items=
+      items.filter(
+        item=>
+          item.category===state.category
+      );
+
+  }
+
+  if(!items.length){
+
+    box.innerHTML=
+      `<div class="empty">
+        لا توجد عناصر في هذا القسم حالياً.
+      </div>`;
+
+    return;
+
+  }
+
+  box.innerHTML=
+    items
+    .map(
+      (item,index)=>`
+
+        <article
+          class="item"
+          onclick="showDetails(${index})">
+
+          <div class="item-img">
+
+            <img
+              src="${item.image}"
+              alt="${escapeHtml(item.name)}"
+              loading="lazy"
+              onerror="
+                this.src='https://via.placeholder.com/400x400/0d2430/ffffff?text=Item'
+              "
+            >
+
+          </div>
+
+          <div class="item-info">
+
+            <h3>
+              ${escapeHtml(item.name)}
+            </h3>
+
+            <div class="price">
+              ◉ ${escapeHtml(item.price)}
+            </div>
+
+          </div>
+
+        </article>
+
+      `
+    )
+    .join("");
+
+}
+
+
+/* =====================================================
+   التفاصيل
+===================================================== */
+
+function showDetails(index){
+
+  const state=
+    gameState[currentGame];
+
+  let items=state.items;
+
+  if(state.category!=="الكل"){
+
+    items=
+      items.filter(
+        item=>
+          item.category===state.category
+      );
+
+  }
+
+  const item=items[index];
+
+  if(!item) return;
+
+  document.getElementById("detailImage").src=
+    item.image;
+
+  document.getElementById("detailGame").textContent=
+    state.name;
+
+  document.getElementById("detailName").textContent=
+    item.name;
+
+  document.getElementById("detailPrice").textContent=
+    item.price;
+
+  document.getElementById("details").showModal();
+
+}
+
+
+/* =====================================================
+   تحميل التطبيق Android
+===================================================== */
+
+let deferredPrompt=null;
+
+window.addEventListener(
+  "beforeinstallprompt",
+  event=>{
+
+    event.preventDefault();
+
+    deferredPrompt=event;
+
+    document.getElementById(
+      "installBtn"
+    ).style.display="block";
+
+  }
+);
+
+
+document.getElementById("installBtn")
+.addEventListener(
+  "click",
+  async()=>{
+
+    if(!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+
+    await deferredPrompt.userChoice;
+
+    deferredPrompt=null;
+
+    document.getElementById(
+      "installBtn"
+    ).style.display="none";
+
+  }
+);
+
+
+/* =====================================================
+   التنقل
+===================================================== */
+
+function goHome(){
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+function scrollToShop(){
+
+  document.querySelector(".shop-layout")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+
+}
+
+
+/* =====================================================
+   حماية النصوص
+===================================================== */
+
+function escapeHtml(text){
+
+  return String(text)
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
@@ -755,696 +856,16 @@ function escapeHTML(value){
 }
 
 
-/* =========================================================
-   التنقل
-========================================================= */
-
-function go(view){
-
-  document
-    .querySelectorAll(".view")
-    .forEach(section => {
-
-      section.classList.toggle(
-        "active",
-        section.id === view + "-view"
-      );
-
-    });
-
-
-  document
-    .querySelectorAll(".nav-item")
-    .forEach(button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.view === view
-      );
-
-    });
-
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
-}
-
-
-document
-  .querySelectorAll(".nav-item")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => go(button.dataset.view)
-    );
-
-  });
-
-
-/* =========================================================
-   الصفحة الرئيسية
-========================================================= */
-
-function renderGames(){
-
-  $("#game-list").innerHTML = `
-
-    <button
-      class="game-row"
-      onclick="go('shop')">
-
-      <span class="game-cover">
-
-        <img
-          src="https://cdn2.unrealengine.com/fortnite-logo-1920x1080-1920x1080-7d4b8f6c8c8e.png"
-          alt="Fortnite">
-
-      </span>
-
-      <span class="game-info">
-
-        <h3>Fortnite</h3>
-
-        <p>
-          ${fortniteItems.length || "..."} عنصر اليوم
-        </p>
-
-      </span>
-
-      <span class="game-arrow">
-        شوف الشوب ←
-      </span>
-
-    </button>
-
-
-    <button
-      class="game-row"
-      onclick="window.open('https://www.rocketleague.com/news/','_blank')">
-
-      <span class="game-cover">
-
-        <img
-          src="https://rocketleague.media.zesty.site/rl-logo.png"
-          alt="Rocket League">
-
-      </span>
-
-      <span class="game-info">
-
-        <h3>Rocket League</h3>
-
-        <p>متجر Rocket League</p>
-
-      </span>
-
-      <span class="game-arrow">
-        ←
-      </span>
-
-    </button>
-
-
-    <button
-      class="game-row"
-      onclick="window.open('https://overwatch.blizzard.com/en-us/news/','_blank')">
-
-      <span class="game-cover">
-
-        <img
-          src="https://d15f34w2p8l1cc.cloudfront.net/hearthstone/overwatch-logo.png"
-          alt="Overwatch">
-
-      </span>
-
-      <span class="game-info">
-
-        <h3>Overwatch</h3>
-
-        <p>آخر أخبار ومتجر اللعبة</p>
-
-      </span>
-
-      <span class="game-arrow">
-        ←
-      </span>
-
-    </button>
-
-  `;
-
-}
-
-
-/* =========================================================
-   تحميل Fortnite
-========================================================= */
-
-async function loadFortniteShop(){
-
-  $("#shop-status").textContent =
-    "جاري التحديث...";
-
-
-  if(
-    !FORTNITE_API_KEY ||
-    FORTNITE_API_KEY === "PUT_YOUR_API_KEY_HERE"
-  ){
-
-    $("#shop-status").textContent =
-      "ضع API Key";
-
-    $("#item-grid").innerHTML = `
-
-      <div class="error">
-
-        <h3 style="color:white;margin-bottom:8px">
-          مفتاح Fortnite API غير موجود
-        </h3>
-
-        <p>
-          افتح الكود وضع مفتاحك مكان
-          PUT_YOUR_API_KEY_HERE
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  try{
-
-    const response =
-      await fetch(
-        FORTNITE_API + "?lang=ar",
-        {
-          headers:{
-            "x-api-key":FORTNITE_API_KEY
-          },
-          cache:"no-store"
-        }
-      );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "API ERROR " + response.status
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    /*
-      API قد ترجع البيانات داخل data
-      أو shop
-      أو products حسب الإصدار.
-    */
-
-    let rawItems =
-      data.items ||
-      data.shop ||
-      data.data ||
-      data.products ||
-      [];
-
-
-    if(!Array.isArray(rawItems)){
-
-      if(
-        rawItems &&
-        Array.isArray(rawItems.entries)
-      ){
-
-        rawItems =
-          rawItems.entries;
-
-      }else{
-
-        rawItems = [];
-
-      }
-
-    }
-
-
-    fortniteItems =
-      rawItems
-      .map(normalizeFortniteItem)
-      .filter(item =>
-        item.name &&
-        item.image
-      );
-
-
-    buildCategories();
-
-    renderShop();
-
-
-    const now =
-      new Date();
-
-    $("#shop-status").textContent =
-      `آخر تحديث ${now.toLocaleTimeString(
-        "ar-SA",
-        {
-          hour:"2-digit",
-          minute:"2-digit"
-        }
-      )}`;
-
-
-  }catch(error){
-
-    console.error(error);
-
-    $("#shop-status").textContent =
-      "تعذر التحديث";
-
-    $("#item-grid").innerHTML = `
-
-      <div class="error">
-
-        <h3 style="color:white;margin-bottom:8px">
-          ما قدرنا نحمل المتجر
-        </h3>
-
-        <p>
-          تأكد من API Key واتصال الإنترنت.
-        </p>
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* =========================================================
-   توحيد بيانات API
-========================================================= */
-
-function normalizeFortniteItem(item){
-
-  const section =
-    item.section?.displayName ||
-    item.section?.name ||
-    item.sectionName ||
-    item.section ||
-    item.displayType ||
-    "أخرى";
-
-
-  const name =
-    item.name ||
-    item.displayName ||
-    item.title ||
-    item.item?.name ||
-    item.item?.displayName ||
-    "";
-
-
-  const image =
-    item.images?.featured ||
-    item.images?.icon ||
-    item.images?.smallIcon ||
-    item.image ||
-    item.icon ||
-    item.item?.images?.featured ||
-    item.item?.images?.icon ||
-    "";
-
-
-  const price =
-    item.price?.finalPrice ??
-    item.price?.regularPrice ??
-    item.finalPrice ??
-    item.vbucks ??
-    item.vbucksPrice ??
-    item.item?.price?.finalPrice ??
-    "";
-
-
-  const type =
-    item.type?.displayValue ||
-    item.type?.displayName ||
-    item.type ||
-    item.item?.type?.displayValue ||
-    "";
-
-
-  return {
-    name,
-    image,
-    price,
-    type,
-    section
-  };
-
-}
-
-
-/* =========================================================
-   الأقسام
-========================================================= */
-
-function buildCategories(){
-
-  const set =
-    new Set();
-
-
-  fortniteItems.forEach(item => {
-
-    if(item.section){
-
-      set.add(item.section);
-
-    }
-
-  });
-
-
-  categories =
-    Array.from(set);
-
-
-  /*
-    ترتيب تقريبي للأقسام المعروفة
-    ثم بقية الأقسام التي تأتي من API.
-  */
-
-  const preferred = [
-
-    "Today's Best Sellers",
-    "أفضل المبيعات اليوم",
-    "Front Page",
-    "الصفحة الرئيسية",
-    "Special Offers & Bundles",
-    "العروض الخاصة والحزم",
-    "Featured",
-    "مميز",
-    "Daily",
-    "يومي"
-
-  ];
-
-
-  categories.sort((a,b)=>{
-
-    const ai =
-      preferred.indexOf(a);
-
-    const bi =
-      preferred.indexOf(b);
-
-    if(ai === -1 && bi === -1)
-      return a.localeCompare(b);
-
-    if(ai === -1)
-      return 1;
-
-    if(bi === -1)
-      return -1;
-
-    return ai-bi;
-
-  });
-
-
-  renderCategories();
-
-}
-
-
-/* =========================================================
-   قائمة الأقسام
-========================================================= */
-
-function renderCategories(){
-
-  const allButton = `
-
-    <button
-      class="category ${activeCategory==="ALL"?"active":""}"
-      onclick="chooseCategory('ALL')">
-
-      جميع العناصر
-
-    </button>
-
-  `;
-
-
-  const buttons =
-    categories
-    .map(category => `
-
-      <button
-        class="category ${
-          activeCategory === category
-          ? "active"
-          : ""
-        }"
-        onclick='chooseCategory(${JSON.stringify(category)})'>
-
-        ${escapeHTML(category)}
-
-      </button>
-
-    `)
-    .join("");
-
-
-  $("#categories").innerHTML =
-    allButton + buttons;
-
-}
-
-
-/* =========================================================
-   اختيار القسم
-========================================================= */
-
-function chooseCategory(category){
-
-  activeCategory =
-    category;
-
-  renderCategories();
-
-  renderShop();
-
-}
-
-
-/* =========================================================
-   عرض العناصر
-========================================================= */
-
-function renderShop(){
-
-  let items =
-    fortniteItems;
-
-
-  if(activeCategory !== "ALL"){
-
-    items =
-      items.filter(item =>
-        item.section === activeCategory
-      );
-
-  }
-
-
-  $("#category-heading").textContent =
-    activeCategory === "ALL"
-    ? "جميع العناصر"
-    : activeCategory;
-
-
-  $("#items-count").textContent =
-    `${items.length} عنصر`;
-
-
-  if(!items.length){
-
-    $("#item-grid").innerHTML = `
-
-      <div class="empty">
-        لا توجد عناصر في هذا القسم.
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  $("#item-grid").innerHTML =
-    items
-    .map(item => `
-
-      <article class="item-card">
-
-        <div class="item-image">
-
-          <img
-            src="${escapeHTML(item.image)}"
-            alt="${escapeHTML(item.name)}"
-            loading="lazy"
-            onerror="this.style.display='none'">
-
-        </div>
-
-        <div class="item-info">
-
-          <div class="item-name">
-            ${escapeHTML(item.name)}
-          </div>
-
-          ${
-            item.type
-            ?
-            `<div class="item-type">
-              ${escapeHTML(item.type)}
-            </div>`
-            :
-            ""
-          }
-
-          <div class="price">
-            ◉ ${
-              item.price !== ""
-              ? escapeHTML(
-                  Number(item.price)
-                  .toLocaleString("en-US")
-                )
-              : "—"
-            }
-            V-Bucks
-          </div>
-
-        </div>
-
-      </article>
-
-    `)
-    .join("");
-
-}
-
-
-/* =========================================================
-   تحديث تلقائي
-========================================================= */
-
-/*
-  نعيد الطلب كل 30 دقيقة.
-  إذا تغير متجر Fortnite أثناء فتح الموقع
-  سيظهر التحديث بدون إعادة تحميل الصفحة.
-*/
-
-setInterval(
-  loadFortniteShop,
-  30 * 60 * 1000
-);
-
-
-/*
-  أول تحميل
-*/
-
-renderGames();
+/* =====================================================
+   التشغيل
+===================================================== */
+
+renderCategories();
 
 loadFortniteShop();
-
-
-/* =========================================================
-   PWA / زر التحميل Android
-========================================================= */
-
-let deferredPrompt = null;
-
-const installBtn =
-  document.getElementById(
-    "install-btn"
-  );
-
-
-window.addEventListener(
-  "beforeinstallprompt",
-  event => {
-
-    event.preventDefault();
-
-    deferredPrompt =
-      event;
-
-    installBtn.style.display =
-      "grid";
-
-  }
-);
-
-
-installBtn.addEventListener(
-  "click",
-  async()=>{
-
-    if(!deferredPrompt){
-
-      alert(
-        "إذا لم يظهر التثبيت، افتح قائمة Chrome واختر إضافة إلى الشاشة الرئيسية."
-      );
-
-      return;
-
-    }
-
-
-    deferredPrompt.prompt();
-
-    await deferredPrompt.userChoice;
-
-    deferredPrompt =
-      null;
-
-    installBtn.style.display =
-      "none";
-
-  }
-);
-
-
-window.addEventListener(
-  "appinstalled",
-  ()=>{
-
-    installBtn.style.display =
-      "none";
-
-  }
-);
 
 </script>
 
 </body>
 </html>
+```

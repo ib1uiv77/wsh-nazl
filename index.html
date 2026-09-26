@@ -1,484 +1,447 @@
-"use client"
-
-import React, { useState, useEffect } from "react"
-
-const GAMES = {
-  fortnite: {
-    name: "Fortnite",
-    image: "/games/fortnite.png",
-  },
-  rocket: {
-    name: "Rocket League",
-    image: "/games/rocket.png",
-  },
-  overwatch: {
-    name: "Overwatch",
-    image: "/games/overwatch.png",
-  },
-}
-
-const FORTNITE_CATEGORIES = [
-  ["all", "الكل"],
-  ["outfit", "الأزياء"],
-  ["emote", "الرقصات"],
-  ["pickaxe", "الفؤوس"],
-  ["glider", "الطائرات"],
-  ["backpack", "الحقائب"],
-  ["wrap", "اللفافات"],
-  ["bundle", "الحزم"],
-]
-
-const ROCKET_CATEGORIES = [
-  ["all", "الكل"],
-  ["cars", "السيارات"],
-  ["wheels", "العجلات"],
-  ["decals", "الديكلات"],
-  ["boost", "التعزيزات"],
-  ["goal", "انفجارات الهدف"],
-]
-
-export function WeshApp() {
-  const [currentView, setCurrentView] = useState("home")
-  const [activeGame, setActiveGame] = useState("fortnite")
-  const [activeCategory, setActiveCategory] = useState("all")
-  const [activeNewsFilter, setActiveNewsFilter] = useState("all")
-  
-  const [shopData, setShopData] = useState<{ [key: string]: any[] }>({
-    fortnite: [],
-    rocket: [
-      ["Fennec (Titanium White)", "https://rocketleague.media.zesty.site/Fennec_TitaniumWhite_300x300.png", "1,000", "linear-gradient(135deg,#744c18,#282018)", "cars"],
-      ["Dueling Dragons", "https://rocketleague.media.zesty.site/Dueling_Dragons_300x300.png", "2,000", "linear-gradient(135deg,#b83b5e,#6a2c70)", "goal"],
-      ["Zomba (Black)", "https://rocketleague.media.zesty.site/Zomba_Black_300x300.png", "900", "linear-gradient(135deg,#3a0ca3,#4361ee)", "wheels"],
-      ["Draco (Crimson)", "https://rocketleague.media.zesty.site/Draco_Crimson_300x300.png", "900", "linear-gradient(135deg,#e63946,#1d3557)", "wheels"],
-      ["Heatwave", "https://rocketleague.media.zesty.site/Heatwave_300x300.png", "2,000", "linear-gradient(135deg,#f77f00,#d62828)", "decals"],
-      ["Standard (Titanium White)", "https://rocketleague.media.zesty.site/Standard_White_300x300.png", "600", "linear-gradient(135deg,#1f4068,#162447)", "boost"]
-    ],
-    overwatch: [
-      ["Cyberdemon Genji", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-genji.png", "2,200", "linear-gradient(135deg,#11998e,#38ef7d)", "skins"],
-      ["Rogue Kiriko", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-kiriko.png", "1,900", "linear-gradient(135deg,#8e2de2,#4a00e0)", "skins"],
-      ["Pink Mercy", "https://images.blizzard.com/blizzard/news/2018/may/mercy-pink.png", "1,900", "linear-gradient(135deg,#ff758c,#ff7eb3)", "skins"],
-      ["Minotaur Reinhardt", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-reinhardt.png", "1,900", "linear-gradient(135deg,#b22222,#480000)", "skins"],
-      ["Comic Book Tracer", "https://images.blizzard.com/blizzard/news/2020/august/tracer-comic.png", "1,500", "linear-gradient(135deg,#ff8c00,#ff4500)", "skins"]
-    ]
-  })
-
-  const [newsList, setNewsList] = useState([
-    {
-      id: "n1",
-      game: "fortnite",
-      gameName: "Fortnite",
-      image: GAMES.fortnite.image,
-      art: "#2464c7",
-      title: "متجر Fortnite اليوم",
-      text: "يتم تحديث متجر Fortnite آلياً من السيرفرات الرسمية.",
-      time: "اليوم",
-      url: "https://www.fortnite.com/item-shop"
-    },
-    {
-      id: "n2",
-      game: "rocket",
-      gameName: "Rocket League",
-      image: GAMES.rocket.image,
-      art: "#135b8f",
-      title: "متجر Rocket League",
-      text: "استعراض أحدث عناصر وعروض متجر روكيت ليغ.",
-      time: "اليوم",
-      url: "https://www.rocketleague.com/"
-    },
-    {
-      id: "n3",
-      game: "overwatch",
-      gameName: "Overwatch",
-      image: GAMES.overwatch.image,
-      art: "#b86c35",
-      title: "آخر أخبار Overwatch",
-      text: "تابع التحديثات والأحداث الجديدة في أوفرواتش.",
-      time: "اليوم",
-      url: "https://overwatch.blizzard.com/en-us/news/"
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>وش نازل؟ | كل جديد الألعاب</title>
+  <style>
+    :root {
+      --wn-bg: #071923;
+      --wn-panel: #0d2430;
+      --wn-panel2: #123541;
+      --wn-text: #f7fbff;
+      --wn-muted: #9fc1cb;
+      --wn-line: rgba(0, 217, 255, 0.18);
+      --wn-cyan: #00d9ff;
+      --wn-gold: #ffd447;
     }
-  ])
-
-  const [saved, setSaved] = useState<string[]>([])
-  const [isLoadingFortnite, setIsLoadingFortnite] = useState(false)
-  const [selectedItem, setSelectedItem] = useState<{ item: any; game: string } | null>(null)
-
-  useEffect(() => {
-    const localSaved = localStorage.getItem("wn-saved")
-    if (localSaved) {
-      try { setSaved(JSON.parse(localSaved)) } catch (e) {}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--wn-bg);
+      color: var(--wn-text);
+      font-family: system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    fetchFortniteShop()
-  }, [])
+    .app-shell { max-width: 680px; margin: auto; padding: 25px 18px 120px; }
+    .topbar, .date-row, .section-heading, .shop-date { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    h1 { font-size: 29px; font-weight: 800; }
+    h1 span { color: var(--wn-gold); }
+    h2 { font-size: 22px; }
+    .eyebrow { color: var(--wn-muted); font-size: 13px; }
+    .icon-button { width: 43px; height: 43px; border: 1px solid var(--wn-line); border-radius: 14px; background: var(--wn-panel); display: grid; place-items: center; font-size: 19px; cursor: pointer; color: #fff; }
+    .date-row { margin: 34px 0 15px; }
+    .live-label { color: var(--wn-cyan); font-size: 12px; display: flex; align-items: center; }
+    .live-label i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--wn-cyan); margin-left: 5px; box-shadow: 0 0 10px var(--wn-cyan); }
+    .hero-card { min-height: 178px; padding: 24px; border-radius: 25px; background: linear-gradient(125deg, #00aeca, #07566a, #9d7800); position: relative; overflow: hidden; }
+    .tag { display: inline-block; padding: 5px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.18); font-size: 12px; }
+    .hero-card h3 { margin-top: 12px; font-size: 25px; color: #fff; }
+    .hero-card p { margin-top: 9px; max-width: 220px; color: #e5fbff; font-size: 13px; }
+    .hero-art { position: absolute; left: 25px; bottom: 12px; font-size: 68px; transform: rotate(-12deg); }
+    .section-heading { margin: 30px 0 14px; }
+    .text-button { border: 0; background: none; color: var(--wn-gold); font-size: 13px; cursor: pointer; }
+    .game-list { display: grid; gap: 11px; }
+    .game-row { display: flex; align-items: center; gap: 13px; padding: 12px; border: 1px solid var(--wn-line); background: var(--wn-panel); border-radius: 18px; width: 100%; text-align: right; cursor: pointer; color: #fff; }
+    .game-row:hover { border-color: var(--wn-cyan); background: var(--wn-panel2); }
+    .game-cover { width: 58px; height: 58px; border-radius: 15px; overflow: hidden; background: #08151c; flex: none; }
+    .game-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .game-info { flex: 1; }
+    .game-info h3 { font-size: 16px; }
+    .game-info p { color: var(--wn-muted); font-size: 12px; margin-top: 3px; }
+    .game-row > span:last-child { color: var(--wn-gold); font-size: 12px; }
+    .page-heading { margin: 14px 0 23px; }
+    .page-heading h2 { font-size: 27px; margin: 5px 0 7px; color: #fff; }
+    .game-tabs, .filter-row, .category-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+    .game-tabs button, .filter-row button, .category-bar button { flex: none; border: 1px solid var(--wn-line); background: var(--wn-panel); border-radius: 12px; padding: 9px 13px; font-size: 13px; cursor: pointer; color: #fff; display: flex; align-items: center; gap: 6px; }
+    .game-tabs button.active, .filter-row button.active { background: var(--wn-gold); color: #071923; border-color: var(--wn-gold); font-weight: 700; }
+    .category-bar button.active { background: var(--wn-cyan); color: #071923; border-color: var(--wn-cyan); font-weight: 700; }
+    .shop-date { margin: 12px 0; color: var(--wn-muted); font-size: 13px; }
+    .count { color: var(--wn-cyan); }
+    .item-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    @media (min-width: 580px) { .item-grid { grid-template-columns: repeat(3, 1fr); } }
+    .item-card { background: var(--wn-panel); border-radius: 20px; border: 1px solid var(--wn-line); overflow: hidden; cursor: pointer; }
+    .item-card:hover { border-color: var(--wn-cyan); box-shadow: 0 12px 25px rgba(0,0,0,0.4); }
+    .item-art { height: 180px; display: flex; align-items: center; justify-content: center; padding: 10px; }
+    .item-art img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .item-info { position: relative; padding: 12px 12px 12px 40px; background: var(--wn-panel); }
+    .item-title h3 { font-size: 15px; color: #fff; }
+    .price { margin-top: 7px; color: var(--wn-muted); font-size: 12px; font-weight: bold; }
+    .coin { color: var(--wn-gold); }
+    .save-button { position: absolute; left: 10px; top: 10px; border: 0; background: none; color: var(--wn-muted); font-size: 22px; cursor: pointer; }
+    .save-button.saved { color: var(--wn-gold); }
+    .news-list { display: grid; gap: 12px; }
+    .news-card { display: flex; gap: 12px; padding: 11px; border: 1px solid var(--wn-line); border-radius: 18px; background: var(--wn-panel); cursor: pointer; align-items: center; }
+    .news-image { width: 96px; height: 82px; border-radius: 13px; display: grid; place-items: center; overflow: hidden; flex: none; }
+    .news-image img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+    .news-copy { flex: 1; }
+    .news-meta { color: var(--wn-muted); font-size: 11px; }
+    .news-copy h3 { font-size: 14px; margin: 5px 0; color: #fff; }
+    .news-copy p { color: var(--wn-muted); font-size: 12px; }
+    .empty-state { text-align: center; padding: 70px 20px; color: var(--wn-muted); }
+    .empty-state span { display: grid; place-items: center; margin: auto auto 16px; width: 62px; height: 62px; border-radius: 50%; background: var(--wn-panel); font-size: 36px; color: var(--wn-cyan); }
+    .bottom-nav { position: fixed; z-index: 50; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; gap: 3px; padding: 10px 16px; background: rgba(5, 18, 25, 0.9); border-top: 1px solid var(--wn-line); backdrop-filter: blur(20px); }
+    .nav-item { flex: 1; max-width: 140px; border: 0; background: none; color: var(--wn-muted); padding: 5px; display: flex; flex-direction: column; gap: 2px; align-items: center; font-size: 11px; cursor: pointer; }
+    .nav-item span { font-size: 22px; }
+    .nav-item.active { color: var(--wn-gold); }
+    .view { display: none; }
+    .view.active { display: block; }
+    .wn-overlay { position: fixed; inset: 0; z-index: 100; display: none; place-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); padding: 20px; }
+    .wn-overlay.active { display: grid; }
+    .details-dialog { position: relative; width: min(92vw, 440px); border: 1px solid var(--wn-line); border-radius: 24px; color: #fff; background: var(--wn-panel); overflow: hidden; }
+    .details-dialog img { width: 100%; height: 280px; object-fit: contain; padding: 15px; background: #071923; }
+    .detail-body { padding: 20px; }
+    .close-dialog { position: absolute; top: 12px; left: 12px; z-index: 2; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #071923; color: #fff; font-size: 26px; cursor: pointer; }
+  </style>
+</head>
+<body>
 
-  const fetchFortniteShop = async () => {
-    setIsLoadingFortnite(true)
-    try {
-      const res = await fetch("https://fortnite-api.com/v2/shop?language=ar")
-      if (!res.ok) throw new Error("API failed")
-      const data = await res.json()
-      const entries = data?.data?.entries || []
-      const converted: any[] = []
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">كل جديد الألعاب</p>
+        <h1>وش نازل؟ <span>✦</span></h1>
+      </div>
+      <div class="top-actions">
+        <button class="icon-button" onclick="fetchFortniteShop()" title="تحديث السيرفرات">🔄</button>
+      </div>
+    </header>
 
-      entries.forEach((entry: any) => {
-        const br = entry.brItems?.[0]
-        if (!br) return
-        let type = "outfit"
-        if (br.type?.value) type = br.type.value
-
-        converted.push([
-          br.name || "عنصر فورتنايت",
-          br.images?.icon || br.images?.featured || "https://via.placeholder.com/500/0d2430/ffffff?text=Item",
-          String(entry.finalPrice || entry.regularPrice || 0),
-          "linear-gradient(135deg,#2464c7,#633fc0)",
-          type
-        ])
-      })
-
-      if (converted.length > 0) {
-        setShopData(prev => ({ ...prev, fortnite: converted }))
-      }
-    } catch (err) {
-      console.log("Fallback to static fortnite data")
-      setShopData(prev => ({
-        ...prev,
-        fortnite: [
-          ["أورا — Aura", "https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png", "800", "linear-gradient(135deg,#146fc1,#713bc7)", "outfit"],
-          ["ريد نايت — Red Knight", "https://fortnite-api.com/images/cosmetics/br/cid_017_athena_commando_f/icon.png", "2,000", "linear-gradient(135deg,#a52b35,#40151c)", "outfit"],
-          ["فلوس — Floss", "https://fortnite-api.com/images/cosmetics/br/eid_floss/icon.png", "500", "linear-gradient(135deg,#7044c4,#24245e)", "emote"]
-        ]
-      }))
-    } finally {
-      setIsLoadingFortnite(false)
-    }
-  }
-
-  const toggleSave = (id: string) => {
-    const nextSaved = saved.includes(id) ? saved.filter(x => x !== id) : [...saved, id]
-    setSaved(nextSaved)
-    localStorage.setItem("wn-saved", JSON.stringify(nextSaved))
-  }
-
-  const navigateTo = (view: string) => {
-    setCurrentView(view)
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
-
-  const filteredShopItems = () => {
-    const items = shopData[activeGame] || []
-    if (activeCategory === "all") return items
-
-    return items.filter(x => {
-      const type = String(x[4] || "").toLowerCase()
-      if (activeGame === "fortnite") {
-        if (activeCategory === "outfit") return type.includes("outfit") || type.includes("character")
-        if (activeCategory === "emote") return type.includes("emote") || type.includes("emoji")
-        if (activeCategory === "pickaxe") return type.includes("pickaxe")
-        if (activeCategory === "glider") return type.includes("glider")
-        if (activeCategory === "backpack") return type.includes("backpack")
-        if (activeCategory === "wrap") return type.includes("wrap")
-        if (activeCategory === "bundle") return type.includes("bundle")
-      }
-      return type === activeCategory
-    })
-  }
-
-  const getCurrencyName = (game: string) => {
-    if (game === "fortnite") return "V-Bucks"
-    if (game === "rocket") return "Credits"
-    return "Overwatch Coins"
-  }
-
-  return (
-    <main className="app-shell">
-      {/* Topbar */}
-      <header className="topbar">
+    <!-- الواجهة الرئيسية -->
+    <section id="view-home" class="view active">
+      <div class="date-row">
         <div>
-          <p className="eyebrow">كل جديد الألعاب</p>
-          <h1>وش نازل؟ <span>✦</span></h1>
+          <p class="eyebrow">اليوم المتجدد</p>
+          <h2>نازل اليوم</h2>
         </div>
-        <div className="top-actions">
-          <button className="icon-button" type="button" onClick={() => fetchFortniteShop()} title="تحديث السيرفرات">🔄</button>
+        <span class="live-label"><i></i> يتحدث تلقائياً</span>
+      </div>
+
+      <article class="hero-card">
+        <div>
+          <span class="tag">آيتم شوب</span>
+          <h3>شوف اللي نازل<br>قبل لا يفوتك</h3>
+          <p>ألعابك المفضلة. كل شيء جديد في مكان واحد.</p>
         </div>
-      </header>
+        <div class="hero-art">🎮</div>
+      </article>
 
-      {/* Home View */}
-      {currentView === "home" && (
-        <section className="view">
-          <div className="date-row">
-            <div>
-              <p className="eyebrow">اليوم المتجدد</p>
-              <h2>نازل اليوم</h2>
-            </div>
-            <span className="live-label"><i></i> يتحدث تلقائياً</span>
-          </div>
+      <div style="margin-top: 15px; padding: 16px 18px; border: 1px solid rgba(255,212,71,.2); border-radius: 18px; background: rgba(18,53,65,.75); text-align: center; line-height: 1.8; font-size: 14px;">
+        ﷽<br>
+        <span style="color: #ffd447">سُبْحَانَ اللَّهِ وَبِحَمْدِهِ</span>
+      </div>
 
-          <article className="hero-card">
-            <div>
-              <span className="tag">آيتم شوب</span>
-              <h3>شوف اللي نازل<br />قبل لا يفوتك</h3>
-              <p>ألعابك المفضلة. كل شيء جديد في مكان واحد.</p>
-            </div>
-            <div className="hero-art">🎮</div>
-          </article>
+      <div class="section-heading">
+        <h2>الآيتم شوب</h2>
+        <button class="text-button" onclick="switchView('shop')">عرض الكل</button>
+      </div>
 
-          <div style={{
-            marginTop: "15px", padding: "16px 18px", border: "1px solid rgba(255,212,71,.2)",
-            borderRadius: "18px", background: "rgba(18,53,65,.75)", textAlign: "center",
-            lineHeight: 1.8, color: "#fff", fontSize: "14px"
-          }}>
-            ﷽<br />
-            <span style={{ color: "#ffd447" }}>سُبْحَانَ اللَّهِ وَبِحَمْدِهِ</span>
-          </div>
-
-          <div className="section-heading">
-            <h2>الآيتم شوب</h2>
-            <button className="text-button" onClick={() => navigateTo("shop")}>عرض الكل</button>
-          </div>
-
-          <div className="game-list">
-            {Object.entries(GAMES).map(([key, g]) => (
-              <button 
-                key={key} 
-                className="game-row" 
-                onClick={() => { setActiveGame(key); setActiveCategory("all"); navigateTo("shop"); }}
-              >
-                <span className="game-cover">
-                  <img src={g.image} alt={g.name} />
-                </span>
-                <span className="game-info">
-                  <h3>{g.name}</h3>
-                  <p>{shopData[key]?.length || 0} عناصر متاحة</p>
-                </span>
-                <span>شوف الشوب ←</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="section-heading">
-            <h2>آخر الأخبار</h2>
-            <button className="text-button" onClick={() => navigateTo("news")}>عرض الكل</button>
-          </div>
-
-          <div className="news-list">
-            {newsList.map(n => (
-              <article key={n.id} className="news-card" onClick={() => n.url && window.open(n.url, '_blank')}>
-                <div className="news-image" style={{ background: n.art }}>
-                  <img src={n.image} alt={n.gameName} />
-                </div>
-                <div className="news-copy">
-                  <span className="news-meta">{n.gameName} · {n.time}</span>
-                  <h3>{n.title}</h3>
-                  <p>{n.text}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Shop View */}
-      {currentView === "shop" && (
-        <section className="view">
-          <div className="page-heading">
-            <p className="eyebrow">يتم التحديث تلقائياً</p>
-            <h2>آيتم شوب اليوم</h2>
-            <p>اختر اللعبة ثم اختر القسم المناسب.</p>
-          </div>
-
-          <div className="game-tabs">
-            {Object.entries(GAMES).map(([key, g]) => (
-              <button 
-                key={key} 
-                className={activeGame === key ? "active" : ""} 
-                onClick={() => { setActiveGame(key); setActiveCategory("all"); }}
-              >
-                <img src={g.image} alt={g.name} />
-                {g.name}
-              </button>
-            ))}
-          </div>
-
-          {activeGame === "fortnite" && (
-            <div className="category-bar">
-              {FORTNITE_CATEGORIES.map(([key, name]) => (
-                <button key={key} className={activeCategory === key ? "active" : ""} onClick={() => setActiveCategory(key)}>
-                  {name}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {activeGame === "rocket" && (
-            <div className="category-bar">
-              {ROCKET_CATEGORIES.map(([key, name]) => (
-                <button key={key} className={activeCategory === key ? "active" : ""} onClick={() => setActiveCategory(key)}>
-                  {name}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div className="shop-date">
-            <span>متجر اليوم</span>
-            <span className="count">{filteredShopItems().length} عنصر</span>
-          </div>
-
-          {isLoadingFortnite && activeGame === "fortnite" ? (
-            <div className="wn-loading">جاري جلب الآيتم شوب الحقيقي من السيرفرات...</div>
-          ) : (
-            <div className="item-grid">
-              {filteredShopItems().length > 0 ? (
-                filteredShopItems().map((item, index) => {
-                  const originalIndex = shopData[activeGame].indexOf(item)
-                  const id = `${activeGame}-${originalIndex}`
-                  const isSaved = saved.includes(id)
-
-                  return (
-                    <article key={index} className="item-card" onClick={() => setSelectedItem({ item, game: activeGame })}>
-                      <div className="item-art" style={{ "--art": item[3] } as any}>
-                        <img src={item[1]} alt={item[0]} loading="lazy" onError={(e: any) => { e.target.src = "https://via.placeholder.com/500/0d2430/ffffff?text=Item" }} />
-                      </div>
-                      <div className="item-info">
-                        <div className="item-title">
-                          <h3>{item[0]}</h3>
-                          <button 
-                            className={`save-button ${isSaved ? "saved" : ""}`}
-                            onClick={(e) => { e.stopPropagation(); toggleSave(id); }}
-                          >
-                            {isSaved ? "♥" : "♡"}
-                          </button>
-                        </div>
-                        <p className="price">
-                          <span className="coin">◉</span> {item[2]} {getCurrencyName(activeGame)}
-                        </p>
-                      </div>
-                    </article>
-                  )
-                })
-              ) : (
-                <div style={{ gridColumn: "1/-1", textAlign: "center", padding: "50px", color: "#9fc1cb" }}>
-                  لا توجد عناصر متاحة في هذا القسم حالياً.
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* News View */}
-      {currentView === "news" && (
-        <section className="view">
-          <div className="page-heading">
-            <p className="eyebrow">آخر المستجدات</p>
-            <h2>أخبار الألعاب</h2>
-          </div>
-
-          <div className="filter-row">
-            <button className={activeNewsFilter === "all" ? "active" : ""} onClick={() => setActiveNewsFilter("all")}>الكل</button>
-            {Object.entries(GAMES).map(([k, g]) => (
-              <button key={k} className={activeNewsFilter === k ? "active" : ""} onClick={() => setActiveNewsFilter(k)}>
-                {g.name}
-              </button>
-            ))}
-          </div>
-
-          <div className="news-list" style={{ marginTop: "15px" }}>
-            {newsList.filter(n => activeNewsFilter === "all" || n.game === activeNewsFilter).map(n => (
-              <article key={n.id} className="news-card" onClick={() => n.url && window.open(n.url, '_blank')}>
-                <div className="news-image" style={{ background: n.art }}>
-                  <img src={n.image} alt={n.gameName} />
-                </div>
-                <div className="news-copy">
-                  <span className="news-meta">{n.gameName} · {n.time}</span>
-                  <h3>{n.title}</h3>
-                  <p>{n.text}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Saved View */}
-      {currentView === "saved" && (
-        <section className="view">
-          <div className="page-heading">
-            <p className="eyebrow">قائمتك الخاصة</p>
-            <h2>المحفوظات</h2>
-          </div>
-
-          {saved.length === 0 ? (
-            <div className="empty-state">
-              <span>♡</span>
-              <h3>ما حفظت شيء إلى الآن</h3>
-              <p>اضغط على القلب بجانب أي عنصر لإضافته هنا.</p>
-            </div>
-          ) : (
-            <div className="item-grid">
-              {saved.map(id => {
-                const [game, indexStr] = id.split("-")
-                const index = Number(indexStr)
-                const item = shopData[game]?.[index]
-                if (!item) return null
-
-                return (
-                  <article key={id} className="item-card" onClick={() => setSelectedItem({ item, game })}>
-                    <div className="item-art" style={{ "--art": item[3] } as any}>
-                      <img src={item[1]} alt={item[0]} />
-                    </div>
-                    <div className="item-info">
-                      <div className="item-title">
-                        <h3>{item[0]}</h3>
-                        <button className="save-button saved" onClick={(e) => { e.stopPropagation(); toggleSave(id); }}>
-                          ♥
-                        </button>
-                      </div>
-                      <p className="price">
-                        <span className="coin">◉</span> {item[2]} {getCurrencyName(game)}
-                      </p>
-                    </div>
-                  </article>
-                )
-              })}
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* Bottom Nav */}
-      <nav className="bottom-nav">
-        <button className={`nav-item ${currentView === "home" ? "active" : ""}`} onClick={() => navigateTo("home")}>
-          <span>⌂</span><b>الرئيسية</b>
+      <div class="game-list">
+        <button class="game-row" onclick="selectGame('fortnite')">
+          <span class="game-cover"><img src="/games/fortnite.png" alt="Fortnite" onerror="this.src='https://via.placeholder.com/100'"></span>
+          <span class="game-info">
+            <h3>Fortnite</h3>
+            <p id="fn-count">جاري التحميل...</p>
+          </span>
+          <span>شوف الشوب ←</span>
         </button>
-        <button className={`nav-item ${currentView === "shop" ? "active" : ""}`} onClick={() => navigateTo("shop")}>
-          <span>▦</span><b>الآيتم شوب</b>
+        <button class="game-row" onclick="selectGame('rocket')">
+          <span class="game-cover"><img src="/games/rocket.png" alt="Rocket League" onerror="this.src='https://via.placeholder.com/100'"></span>
+          <span class="game-info">
+            <h3>Rocket League</h3>
+            <p>6 عناصر متاحة</p>
+          </span>
+          <span>شوف الشوب ←</span>
         </button>
-        <button className={`nav-item ${currentView === "news" ? "active" : ""}`} onClick={() => navigateTo("news")}>
-          <span>◉</span><b>الأخبار</b>
+        <button class="game-row" onclick="selectGame('overwatch')">
+          <span class="game-cover"><img src="/games/overwatch.png" alt="Overwatch" onerror="this.src='https://via.placeholder.com/100'"></span>
+          <span class="game-info">
+            <h3>Overwatch</h3>
+            <p>5 عناصر متاحة</p>
+          </span>
+          <span>شوف الشوب ←</span>
         </button>
-        <button className={`nav-item ${currentView === "saved" ? "active" : ""}`} onClick={() => navigateTo("saved")}>
-          <span>♡</span><b>المحفوظات</b>
-        </button>
-      </nav>
+      </div>
 
-      {/* Details Dialog */}
-      {selectedItem && (
-        <div className="wn-overlay" onClick={() => setSelectedItem(null)}>
-          <div className="details-dialog" onClick={(e) => e.stopPropagation()}>
-            <button className="close-dialog" onClick={() => setSelectedItem(null)}>×</button>
-            <img src={selectedItem.item[1]} alt={selectedItem.item[0]} />
-            <div className="detail-body">
-              <p className="eyebrow">{GAMES[selectedItem.game as keyof typeof GAMES]?.name}</p>
-              <h2>{selectedItem.item[0]}</h2>
-              <p className="detail-price">
-                <span className="coin">◉</span> {selectedItem.item[2]} {getCurrencyName(selectedItem.game)}
-              </p>
-              <hr style={{ border: 0, borderTop: "1px solid var(--wn-line)", margin: "18px 0" }} />
-              <p className="detail-date">متوفر في متجر اليوم</p>
-            </div>
+      <div class="section-heading">
+        <h2>آخر الأخبار</h2>
+        <button class="text-button" onclick="switchView('news')">عرض الكل</button>
+      </div>
+
+      <div class="news-list">
+        <article class="news-card" onclick="window.open('https://www.fortnite.com/item-shop', '_blank')">
+          <div class="news-image" style="background: #2464c7;"><img src="/games/fortnite.png" alt="Fortnite"></div>
+          <div class="news-copy">
+            <span class="news-meta">Fortnite · اليوم</span>
+            <h3>متجر Fortnite اليوم</h3>
+            <p>يتم تحديث متجر Fortnite آلياً من السيرفرات الرسمية.</p>
           </div>
-        </div>
-      )}
-    </main>
-  )
-}
+        </article>
+      </div>
+    </section>
+
+    <!-- واجهة الآيتم شوب -->
+    <section id="view-shop" class="view">
+      <div class="page-heading">
+        <p class="eyebrow">يتم التحديث تلقائياً</p>
+        <h2>آيتم شوب اليوم</h2>
+        <p>اختر اللعبة ثم اختر القسم المناسب.</p>
+      </div>
+
+      <div class="game-tabs">
+        <button id="tab-fn" onclick="selectGame('fortnite')"><img src="/games/fortnite.png" width="22"> Fortnite</button>
+        <button id="tab-rl" onclick="selectGame('rocket')"><img src="/games/rocket.png" width="22"> Rocket League</button>
+        <button id="tab-ow" onclick="selectGame('overwatch')"><img src="/games/overwatch.png" width="22"> Overwatch</button>
+      </div>
+
+      <div id="category-container" class="category-bar" style="margin-top: 10px;"></div>
+
+      <div class="shop-date">
+        <span>متجر اليوم</span>
+        <span id="items-count" class="count">0 عنصر</span>
+      </div>
+
+      <div id="item-grid" class="item-grid">
+        <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #9fc1cb;">جاري تحميل العناصر...</div>
+      </div>
+    </section>
+
+    <!-- واجهة الأخبار -->
+    <section id="view-news" class="view">
+      <div class="page-heading">
+        <p class="eyebrow">آخر المستجدات</p>
+        <h2>أخبار الألعاب</h2>
+      </div>
+      <div class="news-list">
+        <article class="news-card" onclick="window.open('https://www.fortnite.com/item-shop', '_blank')">
+          <div class="news-image" style="background: #2464c7;"><img src="/games/fortnite.png"></div>
+          <div class="news-copy">
+            <span class="news-meta">Fortnite · اليوم</span>
+            <h3>متجر Fortnite اليوم</h3>
+            <p>يتم تحديث متجر Fortnite آلياً.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- واجهة المحفوظات -->
+    <section id="view-saved" class="view">
+      <div class="page-heading">
+        <p class="eyebrow">قائمتك الخاصة</p>
+        <h2>المحفوظات</h2>
+      </div>
+      <div id="saved-grid" class="item-grid"></div>
+    </section>
+
+    <!-- شريط التنقل السفلي -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" onclick="switchView('home')"><span>⌂</span><b>الرئيسية</b></button>
+      <button class="nav-item" onclick="switchView('shop')"><span>▦</span><b>الآيتم شوب</b></button>
+      <button class="nav-item" onclick="switchView('news')"><span>◉</span><b>الأخبار</b></button>
+      <button class="nav-item" onclick="switchView('saved')"><span>♡</span><b>المحفوظات</b></button>
+    </nav>
+  </div>
+
+  <!-- صندوق التفاصيل -->
+  <div id="wn-overlay" class="wn-overlay" onclick="closeDetails()">
+    <div class="details-dialog" onclick="event.stopPropagation()">
+      <button class="close-dialog" onclick="closeDetails()">×</button>
+      <img id="detail-img" src="" alt="">
+      <div class="detail-body">
+        <p id="detail-game" class="eyebrow"></p>
+        <h2 id="detail-title" style="margin: 5px 0 12px;"></h2>
+        <p id="detail-price" class="price"><span class="coin">◉</span> <span></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentView = 'home';
+    let activeGame = 'fortnite';
+    let activeCategory = 'all';
+    let shopData = {
+      fortnite: [],
+      rocket: [
+        ["Fennec (Titanium White)", "https://rocketleague.media.zesty.site/Fennec_TitaniumWhite_300x300.png", "1,000", "linear-gradient(135deg,#744c18,#282018)", "cars"],
+        ["Dueling Dragons", "https://rocketleague.media.zesty.site/Dueling_Dragons_300x300.png", "2,000", "linear-gradient(135deg,#b83b5e,#6a2c70)", "goal"],
+        ["Zomba (Black)", "https://rocketleague.media.zesty.site/Zomba_Black_300x300.png", "900", "linear-gradient(135deg,#3a0ca3,#4361ee)", "wheels"],
+        ["Draco (Crimson)", "https://rocketleague.media.zesty.site/Draco_Crimson_300x300.png", "900", "linear-gradient(135deg,#e63946,#1d3557)", "wheels"],
+        ["Heatwave", "https://rocketleague.media.zesty.site/Heatwave_300x300.png", "2,000", "linear-gradient(135deg,#f77f00,#d62828)", "decals"],
+        ["Standard (Titanium White)", "https://rocketleague.media.zesty.site/Standard_White_300x300.png", "600", "linear-gradient(135deg,#1f4068,#162447)", "boost"]
+      ],
+      overwatch: [
+        ["Cyberdemon Genji", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-genji.png", "2,200", "linear-gradient(135deg,#11998e,#38ef7d)", "skins"],
+        ["Rogue Kiriko", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-kiriko.png", "1,900", "linear-gradient(135deg,#8e2de2,#4a00e0)", "skins"],
+        ["Pink Mercy", "https://images.blizzard.com/blizzard/news/2018/may/mercy-pink.png", "1,900", "linear-gradient(135deg,#ff758c,#ff7eb3)", "skins"],
+        ["Minotaur Reinhardt", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-reinhardt.png", "1,900", "linear-gradient(135deg,#b22222,#480000)", "skins"],
+        ["Comic Book Tracer", "https://images.blizzard.com/blizzard/news/2020/august/tracer-comic.png", "1,500", "linear-gradient(135deg,#ff8c00,#ff4500)", "skins"]
+      ]
+    };
+    let savedItems = JSON.parse(localStorage.getItem('wn-saved') || '[]');
+
+    const fnCategories = [
+      ['all', 'الكل'], ['outfit', 'الأزياء'], ['emote', 'الرقصات'],
+      ['pickaxe', 'الفؤوس'], ['glider', 'الطائرات'], ['backpack', 'الحقائب']
+    ];
+    const rlCategories = [
+      ['all', 'الكل'], ['cars', 'السيارات'], ['wheels', 'العجلات'],
+      ['decals', 'الديكلات'], ['boost', 'التعزيزات'], ['goal', 'انفجارات الهدف']
+    ];
+
+    function switchView(view) {
+      currentView = view;
+      document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+      document.getElementById('view-' + view).classList.add('active');
+      
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      event && event.currentTarget && event.currentTarget.classList.add('active');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (view === 'shop') renderShop();
+      if (view === 'saved') renderSaved();
+    }
+
+    function selectGame(game) {
+      activeGame = game;
+      activeCategory = 'all';
+      switchView('shop');
+      renderShop();
+    }
+
+    async function fetchFortniteShop() {
+      try {
+        const res = await fetch('https://fortnite-api.com/v2/shop?language=ar');
+        const data = await res.json();
+        const entries = data?.data?.entries || [];
+        let converted = [];
+        entries.forEach(entry => {
+          const br = entry.brItems?.[0];
+          if (!br) return;
+          let type = br.type?.value || 'outfit';
+          converted.push([
+            br.name || 'عنصر فورتنايت',
+            br.images?.icon || br.images?.featured || 'https://via.placeholder.com/300',
+            String(entry.finalPrice || entry.regularPrice || 0),
+            'linear-gradient(135deg,#2464c7,#633fc0)',
+            type
+          ]);
+        });
+        if (converted.length > 0) {
+          shopData.fortnite = converted;
+          document.getElementById('fn-count').innerText = converted.length + ' عناصر متاحة';
+          if (currentView === 'shop') renderShop();
+        }
+      } catch (e) {
+        shopData.fortnite = [
+          ["أورا — Aura", "https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png", "800", "linear-gradient(135deg,#146fc1,#713bc7)", "outfit"]
+        ];
+        document.getElementById('fn-count').innerText = shopData.fortnite.length + ' عناصر متاحة';
+      }
+    }
+
+    function renderShop() {
+      document.querySelectorAll('.game-tabs button').forEach(b => b.classList.remove('active'));
+      if (activeGame === 'fortnite') document.getElementById('tab-fn').classList.add('active');
+      if (activeGame === 'rocket') document.getElementById('tab-rl').classList.add('active');
+      if (activeGame === 'overwatch') document.getElementById('tab-ow').classList.add('active');
+
+      const catContainer = document.getElementById('category-container');
+      catContainer.innerHTML = '';
+      let cats = activeGame === 'fortnite' ? fnCategories : (activeGame === 'rocket' ? rlCategories : []);
+      
+      cats.forEach(([key, name]) => {
+        let btn = document.createElement('button');
+        btn.innerText = name;
+        if (activeCategory === key) btn.classList.add('active');
+        btn.onclick = () => { activeCategory = key; renderShop(); };
+        catContainer.appendChild(btn);
+      });
+
+      let items = shopData[activeGame] || [];
+      if (activeCategory !== 'all') {
+        items = items.filter(x => String(x[4]).toLowerCase().includes(activeCategory));
+      }
+
+      document.getElementById('items-count').innerText = items.length + ' عنصر';
+      let grid = document.getElementById('item-grid');
+      grid.innerHTML = '';
+
+      if (items.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #9fc1cb;">لا توجد عناصر متاحة حالياً.</div>';
+        return;
+      }
+
+      items.forEach((item, index) => {
+        let id = `${activeGame}-${index}`;
+        let isSaved = savedItems.includes(id);
+
+        let card = document.createElement('article');
+        card.className = 'item-card';
+        card.onclick = () => openDetails(item);
+        card.innerHTML = `
+          <div class="item-art" style="background: ${item[3]};">
+            <img src="${item[1]}" loading="lazy" onerror="this.src='https://via.placeholder.com/300'">
+          </div>
+          <div class="item-info">
+            <div class="item-title"><h3>${item[0]}</h3></div>
+            <p class="price"><span class="coin">◉</span> ${item[2]} ${activeGame === 'fortnite' ? 'V-Bucks' : (activeGame === 'rocket' ? 'Credits' : 'Coins')}</p>
+            <button class="save-button ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSave('${id}')">${isSaved ? '♥' : '♡'}</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleSave(id) {
+      if (savedItems.includes(id)) {
+        savedItems = savedItems.filter(x => x !== id);
+      } else {
+        savedItems.push(id);
+      }
+      localStorage.setItem('wn-saved', JSON.stringify(savedItems));
+      if (currentView === 'shop') renderShop();
+      if (currentView === 'saved') renderSaved();
+    }
+
+    function renderSaved() {
+      let grid = document.getElementById('saved-grid');
+      grid.innerHTML = '';
+      if (savedItems.length === 0) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span>♡</span><h3>ما حفظت شيء إلى الآن</h3><p>اضغط على القلب بجانب أي عنصر لإضافته هنا.</p></div>';
+        return;
+      }
+      savedItems.forEach(id => {
+        let [game, idxStr] = id.split('-');
+        let item = shopData[game]?.[Number(idxStr)];
+        if (!item) return;
+
+        let card = document.createElement('article');
+        card.className = 'item-card';
+        card.onclick = () => openDetails(item);
+        card.innerHTML = `
+          <div class="item-art" style="background: ${item[3]};"><img src="${item[1]}"></div>
+          <div class="item-info">
+            <div class="item-title"><h3>${item[0]}</h3></div>
+            <p class="price"><span class="coin">◉</span> ${item[2]}</p>
+            <button class="save-button saved" onclick="event.stopPropagation(); toggleSave('${id}')">♥</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openDetails(item) {
+      document.getElementById('detail-img').src = item[1];
+      document.getElementById('detail-title').innerText = item[0];
+      document.getElementById('detail-price').querySelector('span:last-child').innerText = item[2];
+      document.getElementById('detail-game').innerText = activeGame.toUpperCase();
+      document.getElementById('wn-overlay').classList.add('active');
+    }
+
+    function closeDetails() {
+      document.getElementById('wn-overlay').classList.remove('active');
+    }
+
+    fetchFortniteShop();
+  </script>
+</body>
+</html>

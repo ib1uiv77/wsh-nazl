@@ -53,8 +53,7 @@
     .page-heading h2 { font-size: 27px; margin: 5px 0 7px; color: #fff; }
     .game-tabs, .filter-row, .category-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
     .game-tabs button, .filter-row button, .category-bar button { flex: none; border: 1px solid var(--wn-line); background: var(--wn-panel); border-radius: 12px; padding: 9px 13px; font-size: 13px; cursor: pointer; color: #fff; display: flex; align-items: center; gap: 6px; }
-    .game-tabs button.active, .filter-row button.active { background: var(--wn-gold); color: #071923; border-color: var(--wn-gold); font-weight: 700; }
-    .category-bar button.active { background: var(--wn-cyan); color: #071923; border-color: var(--wn-cyan); font-weight: 700; }
+    .game-tabs button.active { background: var(--wn-gold); color: #071923; border-color: var(--wn-gold); font-weight: 700; }
     .shop-date { margin: 12px 0; color: var(--wn-muted); font-size: 13px; }
     .count { color: var(--wn-cyan); }
     .item-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -85,12 +84,11 @@
     .nav-item.active { color: var(--wn-gold); }
     .view { display: none; }
     .view.active { display: block; }
-    .wn-overlay { position: fixed; inset: 0; z-index: 100; display: none; place-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); padding: 20px; }
-    .wn-overlay.active { display: grid; }
-    .details-dialog { position: relative; width: min(92vw, 440px); border: 1px solid var(--wn-line); border-radius: 24px; color: #fff; background: var(--wn-panel); overflow: hidden; }
-    .details-dialog img { width: 100%; height: 280px; object-fit: contain; padding: 15px; background: #071923; }
-    .detail-body { padding: 20px; }
-    .close-dialog { position: absolute; top: 12px; left: 12px; z-index: 2; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #071923; color: #fff; font-size: 26px; cursor: pointer; }
+    .notice-box { grid-column: 1 / -1; background: var(--wn-panel); border: 1px solid var(--wn-line); border-radius: 20px; padding: 35px 20px; text-align: center; color: var(--wn-muted); line-height: 1.7; }
+    .notice-box h3 { color: #fff; font-size: 19px; margin-bottom: 10px; }
+    .notice-box p { font-size: 14px; margin-bottom: 20px; color: var(--wn-muted); }
+    .external-btn { display: inline-block; background: var(--wn-cyan); color: #071923; padding: 10px 22px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 14px; transition: 0.2s; }
+    .external-btn:hover { opacity: 0.9; }
   </style>
 </head>
 <body>
@@ -148,7 +146,7 @@
           <span class="game-cover"><img src="/games/rocket.png" alt="Rocket League" onerror="this.src='https://via.placeholder.com/100'"></span>
           <span class="game-info">
             <h3>Rocket League</h3>
-            <p>6 عناصر متاحة</p>
+            <p>الانتقال للموقع الرسمي</p>
           </span>
           <span>شوف الشوب ←</span>
         </button>
@@ -156,7 +154,7 @@
           <span class="game-cover"><img src="/games/overwatch.png" alt="Overwatch" onerror="this.src='https://via.placeholder.com/100'"></span>
           <span class="game-info">
             <h3>Overwatch</h3>
-            <p>5 عناصر متاحة</p>
+            <p>الانتقال للموقع الرسمي</p>
           </span>
           <span>شوف الشوب ←</span>
         </button>
@@ -184,7 +182,7 @@
       <div class="page-heading">
         <p class="eyebrow">يتم التحديث تلقائياً</p>
         <h2>آيتم شوب اليوم</h2>
-        <p>اختر اللعبة ثم اختر القسم المناسب.</p>
+        <p>اختر اللعبة لاستعراض متجرها.</p>
       </div>
 
       <div class="game-tabs">
@@ -193,16 +191,12 @@
         <button id="tab-ow" onclick="selectGame('overwatch')"><img src="/games/overwatch.png" width="22"> Overwatch</button>
       </div>
 
-      <div id="category-container" class="category-bar" style="margin-top: 10px;"></div>
-
       <div class="shop-date">
-        <span>متجر اليوم</span>
-        <span id="items-count" class="count">0 عنصر</span>
+        <span id="shop-title-label">متجر اليوم</span>
+        <span id="items-count" class="count"></span>
       </div>
 
-      <div id="item-grid" class="item-grid">
-        <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #9fc1cb;">جاري تحميل العناصر...</div>
-      </div>
+      <div id="item-grid" class="item-grid"></div>
     </section>
 
     <!-- واجهة الأخبار -->
@@ -236,56 +230,16 @@
     <nav class="bottom-nav">
       <button class="nav-item active" onclick="switchView('home')"><span>⌂</span><b>الرئيسية</b></button>
       <button class="nav-item" onclick="switchView('shop')"><span>▦</span><b>الآيتم شوب</b></button>
-      <button class="nav-item" onclick="switchView('news')"><span>◉</span><b>الأخبار</b></button>
+      <button class="nav-item" onclick="switchView('news')"><span><span>◉</span></span><b>الأخبار</b></button>
       <button class="nav-item" onclick="switchView('saved')"><span>♡</span><b>المحفوظات</b></button>
     </nav>
-  </div>
-
-  <!-- صندوق التفاصيل -->
-  <div id="wn-overlay" class="wn-overlay" onclick="closeDetails()">
-    <div class="details-dialog" onclick="event.stopPropagation()">
-      <button class="close-dialog" onclick="closeDetails()">×</button>
-      <img id="detail-img" src="" alt="">
-      <div class="detail-body">
-        <p id="detail-game" class="eyebrow"></p>
-        <h2 id="detail-title" style="margin: 5px 0 12px;"></h2>
-        <p id="detail-price" class="price"><span class="coin">◉</span> <span></span></p>
-      </div>
-    </div>
   </div>
 
   <script>
     let currentView = 'home';
     let activeGame = 'fortnite';
-    let activeCategory = 'all';
-    let shopData = {
-      fortnite: [],
-      rocket: [
-        ["Fennec (Titanium White)", "https://rocketleague.media.zesty.site/Fennec_TitaniumWhite_300x300.png", "1,000", "linear-gradient(135deg,#744c18,#282018)", "cars"],
-        ["Dueling Dragons", "https://rocketleague.media.zesty.site/Dueling_Dragons_300x300.png", "2,000", "linear-gradient(135deg,#b83b5e,#6a2c70)", "goal"],
-        ["Zomba (Black)", "https://rocketleague.media.zesty.site/Zomba_Black_300x300.png", "900", "linear-gradient(135deg,#3a0ca3,#4361ee)", "wheels"],
-        ["Draco (Crimson)", "https://rocketleague.media.zesty.site/Draco_Crimson_300x300.png", "900", "linear-gradient(135deg,#e63946,#1d3557)", "wheels"],
-        ["Heatwave", "https://rocketleague.media.zesty.site/Heatwave_300x300.png", "2,000", "linear-gradient(135deg,#f77f00,#d62828)", "decals"],
-        ["Standard (Titanium White)", "https://rocketleague.media.zesty.site/Standard_White_300x300.png", "600", "linear-gradient(135deg,#1f4068,#162447)", "boost"]
-      ],
-      overwatch: [
-        ["Cyberdemon Genji", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-genji.png", "2,200", "linear-gradient(135deg,#11998e,#38ef7d)", "skins"],
-        ["Rogue Kiriko", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-kiriko.png", "1,900", "linear-gradient(135deg,#8e2de2,#4a00e0)", "skins"],
-        ["Pink Mercy", "https://images.blizzard.com/blizzard/news/2018/may/mercy-pink.png", "1,900", "linear-gradient(135deg,#ff758c,#ff7eb3)", "skins"],
-        ["Minotaur Reinhardt", "https://images.blizzard.com/blizzard/news/2022/september/ow2-season-1-hero-reinhardt.png", "1,900", "linear-gradient(135deg,#b22222,#480000)", "skins"],
-        ["Comic Book Tracer", "https://images.blizzard.com/blizzard/news/2020/august/tracer-comic.png", "1,500", "linear-gradient(135deg,#ff8c00,#ff4500)", "skins"]
-      ]
-    };
+    let shopData = { fortnite: [] };
     let savedItems = JSON.parse(localStorage.getItem('wn-saved') || '[]');
-
-    const fnCategories = [
-      ['all', 'الكل'], ['outfit', 'الأزياء'], ['emote', 'الرقصات'],
-      ['pickaxe', 'الفؤوس'], ['glider', 'الطائرات'], ['backpack', 'الحقائب']
-    ];
-    const rlCategories = [
-      ['all', 'الكل'], ['cars', 'السيارات'], ['wheels', 'العجلات'],
-      ['decals', 'الديكلات'], ['boost', 'التعزيزات'], ['goal', 'انفجارات الهدف']
-    ];
 
     function switchView(view) {
       currentView = view;
@@ -302,7 +256,6 @@
 
     function selectGame(game) {
       activeGame = game;
-      activeCategory = 'all';
       switchView('shop');
       renderShop();
     }
@@ -316,23 +269,21 @@
         entries.forEach(entry => {
           const br = entry.brItems?.[0];
           if (!br) return;
-          let type = br.type?.value || 'outfit';
           converted.push([
             br.name || 'عنصر فورتنايت',
             br.images?.icon || br.images?.featured || 'https://via.placeholder.com/300',
             String(entry.finalPrice || entry.regularPrice || 0),
-            'linear-gradient(135deg,#2464c7,#633fc0)',
-            type
+            'linear-gradient(135deg,#2464c7,#633fc0)'
           ]);
         });
         if (converted.length > 0) {
           shopData.fortnite = converted;
           document.getElementById('fn-count').innerText = converted.length + ' عناصر متاحة';
-          if (currentView === 'shop') renderShop();
+          if (currentView === 'shop' && activeGame === 'fortnite') renderShop();
         }
       } catch (e) {
         shopData.fortnite = [
-          ["أورا — Aura", "https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png", "800", "linear-gradient(135deg,#146fc1,#713bc7)", "outfit"]
+          ["أورا — Aura", "https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png", "800", "linear-gradient(135deg,#146fc1,#713bc7)"]
         ];
         document.getElementById('fn-count').innerText = shopData.fortnite.length + ' عناصر متاحة';
       }
@@ -344,51 +295,60 @@
       if (activeGame === 'rocket') document.getElementById('tab-rl').classList.add('active');
       if (activeGame === 'overwatch') document.getElementById('tab-ow').classList.add('active');
 
-      const catContainer = document.getElementById('category-container');
-      catContainer.innerHTML = '';
-      let cats = activeGame === 'fortnite' ? fnCategories : (activeGame === 'rocket' ? rlCategories : []);
-      
-      cats.forEach(([key, name]) => {
-        let btn = document.createElement('button');
-        btn.innerText = name;
-        if (activeCategory === key) btn.classList.add('active');
-        btn.onclick = () => { activeCategory = key; renderShop(); };
-        catContainer.appendChild(btn);
-      });
-
-      let items = shopData[activeGame] || [];
-      if (activeCategory !== 'all') {
-        items = items.filter(x => String(x[4]).toLowerCase().includes(activeCategory));
-      }
-
-      document.getElementById('items-count').innerText = items.length + ' عنصر';
       let grid = document.getElementById('item-grid');
       grid.innerHTML = '';
 
-      if (items.length === 0) {
-        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #9fc1cb;">لا توجد عناصر متاحة حالياً.</div>';
-        return;
-      }
+      if (activeGame === 'fortnite') {
+        document.getElementById('shop-title-label').innerText = 'متجر اليوم';
+        let items = shopData.fortnite;
+        document.getElementById('items-count').innerText = items.length + ' عنصر';
 
-      items.forEach((item, index) => {
-        let id = `${activeGame}-${index}`;
-        let isSaved = savedItems.includes(id);
+        if (items.length === 0) {
+          grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #9fc1cb;">جاري تحميل العناصر...</div>';
+          return;
+        }
 
-        let card = document.createElement('article');
-        card.className = 'item-card';
-        card.onclick = () => openDetails(item);
-        card.innerHTML = `
-          <div class="item-art" style="background: ${item[3]};">
-            <img src="${item[1]}" loading="lazy" onerror="this.src='https://via.placeholder.com/300'">
-          </div>
-          <div class="item-info">
-            <div class="item-title"><h3>${item[0]}</h3></div>
-            <p class="price"><span class="coin">◉</span> ${item[2]} ${activeGame === 'fortnite' ? 'V-Bucks' : (activeGame === 'rocket' ? 'Credits' : 'Coins')}</p>
-            <button class="save-button ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSave('${id}')">${isSaved ? '♥' : '♡'}</button>
+        items.forEach((item, index) => {
+          let id = `fortnite-${index}`;
+          let isSaved = savedItems.includes(id);
+
+          let card = document.createElement('article');
+          card.className = 'item-card';
+          card.innerHTML = `
+            <div class="item-art" style="background: ${item[3]};">
+              <img src="${item[1]}" loading="lazy" onerror="this.src='https://via.placeholder.com/300'">
+            </div>
+            <div class="item-info">
+              <div class="item-title"><h3>${item[0]}</h3></div>
+              <p class="price"><span class="coin">◉</span> ${item[2]} V-Bucks</p>
+              <button class="save-button ${isSaved ? 'saved' : ''}" onclick="toggleSave('${id}')">${isSaved ? '♥' : '♡'}</button>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+      } else if (activeGame === 'rocket') {
+        document.getElementById('shop-title-label').innerText = 'حالة المتجر';
+        document.getElementById('items-count').innerText = '';
+        grid.innerHTML = `
+          <div class="notice-box">
+            <h3>متجر Rocket League غير متوفر هنا</h3>
+            <p>لا توفر شركة Psyonix واجهة برمجية عامة (API) رسمية ومحدثة باستمرار لسحب عناصر المتجر اليومي بشكل مباشر مثل فورتنايت. تقدر تشيك الأغراض مباشرة من موقعهم الرسمي:</p>
+            <a href="https://www.rocketleague.com" target="_blank" class="external-btn">زيارة موقع Rocket League ↗</a>
           </div>
         `;
-        grid.appendChild(card);
-      });
+
+      } else if (activeGame === 'overwatch') {
+        document.getElementById('shop-title-label').innerText = 'حالة المتجر';
+        document.getElementById('items-count').innerText = '';
+        grid.innerHTML = `
+          <div class="notice-box">
+            <h3>متجر Overwatch غير متوفر هنا</h3>
+            <p>شركة Blizzard لا تتيح نظام API خارجي ومفتوح لعرض عروض متجر أوفرواتش وأزياء السيزون الحالي بشكل مباشر. يمكنك متابعة التحديثات عبر موقعهم الرسمي:</p>
+            <a href="https://overwatch.blizzard.com" target="_blank" class="external-btn">زيارة موقع Overwatch ↗</a>
+          </div>
+        `;
+      }
     }
 
     function toggleSave(id) {
@@ -416,29 +376,16 @@
 
         let card = document.createElement('article');
         card.className = 'item-card';
-        card.onclick = () => openDetails(item);
         card.innerHTML = `
           <div class="item-art" style="background: ${item[3]};"><img src="${item[1]}"></div>
           <div class="item-info">
             <div class="item-title"><h3>${item[0]}</h3></div>
             <p class="price"><span class="coin">◉</span> ${item[2]}</p>
-            <button class="save-button saved" onclick="event.stopPropagation(); toggleSave('${id}')">♥</button>
+            <button class="save-button saved" onclick="toggleSave('${id}')">♥</button>
           </div>
         `;
         grid.appendChild(card);
       });
-    }
-
-    function openDetails(item) {
-      document.getElementById('detail-img').src = item[1];
-      document.getElementById('detail-title').innerText = item[0];
-      document.getElementById('detail-price').querySelector('span:last-child').innerText = item[2];
-      document.getElementById('detail-game').innerText = activeGame.toUpperCase();
-      document.getElementById('wn-overlay').classList.add('active');
-    }
-
-    function closeDetails() {
-      document.getElementById('wn-overlay').classList.remove('active');
     }
 
     fetchFortniteShop();

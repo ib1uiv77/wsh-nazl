@@ -51,8 +51,8 @@
     .game-row > span:last-child { color: var(--wn-gold); font-size: 12px; }
     .page-heading { margin: 14px 0 23px; }
     .page-heading h2 { font-size: 27px; margin: 5px 0 7px; color: #fff; }
-    .game-tabs, .filter-row, .category-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
-    .game-tabs button, .filter-row button, .category-bar button { flex: none; border: 1px solid var(--wn-line); background: var(--wn-panel); border-radius: 12px; padding: 9px 13px; font-size: 13px; cursor: pointer; color: #fff; display: flex; align-items: center; gap: 6px; }
+    .game-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+    .game-tabs button { flex: none; border: 1px solid var(--wn-line); background: var(--wn-panel); border-radius: 12px; padding: 9px 13px; font-size: 13px; cursor: pointer; color: #fff; display: flex; align-items: center; gap: 6px; }
     .game-tabs button.active { background: var(--wn-gold); color: #071923; border-color: var(--wn-gold); font-weight: 700; }
     .shop-date { margin: 12px 0; color: var(--wn-muted); font-size: 13px; }
     .count { color: var(--wn-cyan); }
@@ -87,8 +87,7 @@
     .notice-box { grid-column: 1 / -1; background: var(--wn-panel); border: 1px solid var(--wn-line); border-radius: 20px; padding: 35px 20px; text-align: center; color: var(--wn-muted); line-height: 1.7; }
     .notice-box h3 { color: #fff; font-size: 19px; margin-bottom: 10px; }
     .notice-box p { font-size: 14px; margin-bottom: 20px; color: var(--wn-muted); }
-    .external-btn { display: inline-block; background: var(--wn-cyan); color: #071923; padding: 10px 22px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 14px; transition: 0.2s; }
-    .external-btn:hover { opacity: 0.9; }
+    .external-btn { display: inline-block; background: var(--wn-cyan); color: #071923; padding: 10px 22px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -100,11 +99,11 @@
         <h1>وش نازل؟ <span>✦</span></h1>
       </div>
       <div class="top-actions">
-        <button class="icon-button" onclick="fetchFortniteShop()" title="تحديث السيرفرات">🔄</button>
+        <button class="icon-button" onclick="fetchFortniteShop()" title="تحديث">🔄</button>
       </div>
     </header>
 
-    <!-- الواجهة الرئيسية -->
+    <!-- الرئيسية -->
     <section id="view-home" class="view active">
       <div class="date-row">
         <div>
@@ -162,12 +161,11 @@
 
       <div class="section-heading">
         <h2>آخر الأخبار</h2>
-        <button class="text-button" onclick="switchView('news')">عرض الكل</button>
       </div>
 
       <div class="news-list">
         <article class="news-card" onclick="window.open('https://www.fortnite.com/item-shop', '_blank')">
-          <div class="news-image" style="background: #2464c7;"><img src="/games/fortnite.png" alt="Fortnite"></div>
+          <div class="news-image" style="background: #2464c7;"><img src="/games/fortnite.png"></div>
           <div class="news-copy">
             <span class="news-meta">Fortnite · اليوم</span>
             <h3>متجر Fortnite اليوم</h3>
@@ -177,18 +175,17 @@
       </div>
     </section>
 
-    <!-- واجهة الآيتم شوب -->
+    <!-- الآيتم شوب -->
     <section id="view-shop" class="view">
       <div class="page-heading">
         <p class="eyebrow">يتم التحديث تلقائياً</p>
         <h2>آيتم شوب اليوم</h2>
-        <p>اختر اللعبة لاستعراض متجرها.</p>
       </div>
 
       <div class="game-tabs">
-        <button id="tab-fn" onclick="selectGame('fortnite')"><img src="/games/fortnite.png" width="22"> Fortnite</button>
-        <button id="tab-rl" onclick="selectGame('rocket')"><img src="/games/rocket.png" width="22"> Rocket League</button>
-        <button id="tab-ow" onclick="selectGame('overwatch')"><img src="/games/overwatch.png" width="22"> Overwatch</button>
+        <button id="tab-fn" onclick="selectGame('fortnite')">Fortnite</button>
+        <button id="tab-rl" onclick="selectGame('rocket')">Rocket League</button>
+        <button id="tab-ow" onclick="selectGame('overwatch')">Overwatch</button>
       </div>
 
       <div class="shop-date">
@@ -199,7 +196,7 @@
       <div id="item-grid" class="item-grid"></div>
     </section>
 
-    <!-- واجهة الأخبار -->
+    <!-- الأخبار -->
     <section id="view-news" class="view">
       <div class="page-heading">
         <p class="eyebrow">آخر المستجدات</p>
@@ -217,7 +214,7 @@
       </div>
     </section>
 
-    <!-- واجهة المحفوظات -->
+    <!-- المحفوظات -->
     <section id="view-saved" class="view">
       <div class="page-heading">
         <p class="eyebrow">قائمتك الخاصة</p>
@@ -226,12 +223,12 @@
       <div id="saved-grid" class="item-grid"></div>
     </section>
 
-    <!-- شريط التنقل السفلي -->
+    <!-- التنقل السفلي -->
     <nav class="bottom-nav">
-      <button class="nav-item active" onclick="switchView('home')"><span>⌂</span><b>الرئيسية</b></button>
-      <button class="nav-item" onclick="switchView('shop')"><span>▦</span><b>الآيتم شوب</b></button>
-      <button class="nav-item" onclick="switchView('news')"><span><span>◉</span></span><b>الأخبار</b></button>
-      <button class="nav-item" onclick="switchView('saved')"><span>♡</span><b>المحفوظات</b></button>
+      <button class="nav-item active" onclick="switchView('home', this)"><span>⌂</span><b>الرئيسية</b></button>
+      <button class="nav-item" onclick="switchView('shop', this)"><span>▦</span><b>الآيتم شوب</b></button>
+      <button class="nav-item" onclick="switchView('news', this)"><span>◉</span><b>الأخبار</b></button>
+      <button class="nav-item" onclick="switchView('saved', this)"><span>♡</span><b>المحفوظات</b></button>
     </nav>
   </div>
 
@@ -239,15 +236,26 @@
     let currentView = 'home';
     let activeGame = 'fortnite';
     let shopData = { fortnite: [] };
-    let savedItems = JSON.parse(localStorage.getItem('wn-saved') || '[]');
+    
+    // حماية التخزين المحلي من التلف أو الأخطاء
+    let savedItems = [];
+    try {
+      savedItems = JSON.parse(localStorage.getItem('wn-saved') || '[]');
+      if (!Array.isArray(savedItems)) savedItems = [];
+    } catch(e) {
+      savedItems = [];
+    }
 
-    function switchView(view) {
+    function switchView(view, btnElement) {
       currentView = view;
       document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-      document.getElementById('view-' + view).classList.add('active');
+      const targetView = document.getElementById('view-' + view);
+      if (targetView) targetView.classList.add('active');
       
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      event && event.currentTarget && event.currentTarget.classList.add('active');
+      if (btnElement) {
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        btnElement.classList.add('active');
+      }
       
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (view === 'shop') renderShop();
@@ -256,7 +264,8 @@
 
     function selectGame(game) {
       activeGame = game;
-      switchView('shop');
+      const shopBtn = document.querySelectorAll('.nav-item')[1];
+      switchView('shop', shopBtn);
       renderShop();
     }
 
@@ -276,26 +285,39 @@
             'linear-gradient(135deg,#2464c7,#633fc0)'
           ]);
         });
+        
         if (converted.length > 0) {
           shopData.fortnite = converted;
-          document.getElementById('fn-count').innerText = converted.length + ' عناصر متاحة';
+          const countEl = document.getElementById('fn-count');
+          if (countEl) countEl.innerText = converted.length + ' عناصر متاحة';
           if (currentView === 'shop' && activeGame === 'fortnite') renderShop();
         }
       } catch (e) {
         shopData.fortnite = [
           ["أورا — Aura", "https://fortnite-api.com/images/cosmetics/br/cid_512_athena_commando_f_sharp_0fnbu/icon.png", "800", "linear-gradient(135deg,#146fc1,#713bc7)"]
         ];
-        document.getElementById('fn-count').innerText = shopData.fortnite.length + ' عناصر متاحة';
+        const countEl = document.getElementById('fn-count');
+        if (countEl) countEl.innerText = shopData.fortnite.length + ' عناصر متاحة';
       }
     }
 
     function renderShop() {
       document.querySelectorAll('.game-tabs button').forEach(b => b.classList.remove('active'));
-      if (activeGame === 'fortnite') document.getElementById('tab-fn').classList.add('active');
-      if (activeGame === 'rocket') document.getElementById('tab-rl').classList.add('active');
-      if (activeGame === 'overwatch') document.getElementById('tab-ow').classList.add('active');
+      if (activeGame === 'fortnite') {
+        const t = document.getElementById('tab-fn');
+        if(t) t.classList.add('active');
+      }
+      if (activeGame === 'rocket') {
+        const t = document.getElementById('tab-rl');
+        if(t) t.classList.add('active');
+      }
+      if (activeGame === 'overwatch') {
+        const t = document.getElementById('tab-ow');
+        if(t) t.classList.add('active');
+      }
 
       let grid = document.getElementById('item-grid');
+      if(!grid) return;
       grid.innerHTML = '';
 
       if (activeGame === 'fortnite') {
@@ -333,7 +355,7 @@
         grid.innerHTML = `
           <div class="notice-box">
             <h3>متجر Rocket League غير متوفر هنا</h3>
-            <p>لا توفر شركة Psyonix واجهة برمجية عامة (API) رسمية ومحدثة باستمرار لسحب عناصر المتجر اليومي بشكل مباشر مثل فورتنايت. تقدر تشيك الأغراض مباشرة من موقعهم الرسمي:</p>
+            <p>لا توفر شركة Psyonix واجهة برمجية (API) رسمية ومحدثة باستمرار لسحب عناصر المتجر اليومي بشكل مباشر مثل فورتنايت. تقدر تشيك الأغراض مباشرة من موقعهم الرسمي:</p>
             <a href="https://www.rocketleague.com" target="_blank" class="external-btn">زيارة موقع Rocket League ↗</a>
           </div>
         `;
@@ -357,20 +379,25 @@
       } else {
         savedItems.push(id);
       }
-      localStorage.setItem('wn-saved', JSON.stringify(savedItems));
+      try {
+        localStorage.setItem('wn-saved', JSON.stringify(savedItems));
+      } catch(e) {}
       if (currentView === 'shop') renderShop();
       if (currentView === 'saved') renderSaved();
     }
 
     function renderSaved() {
       let grid = document.getElementById('saved-grid');
+      if(!grid) return;
       grid.innerHTML = '';
       if (savedItems.length === 0) {
         grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><span>♡</span><h3>ما حفظت شيء إلى الآن</h3><p>اضغط على القلب بجانب أي عنصر لإضافته هنا.</p></div>';
         return;
       }
       savedItems.forEach(id => {
-        let [game, idxStr] = id.split('-');
+        let parts = id.split('-');
+        let game = parts[0];
+        let idxStr = parts[1];
         let item = shopData[game]?.[Number(idxStr)];
         if (!item) return;
 
@@ -388,7 +415,10 @@
       });
     }
 
-    fetchFortniteShop();
+    // جلب البيانات بعد التحميل بسلاسة
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchFortniteShop();
+    });
   </script>
 </body>
 </html>

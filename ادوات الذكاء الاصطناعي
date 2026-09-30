@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI Hub | دليل أدوات الذكاء الاصطناعي</title>
+  <meta name="description" content="AI Hub - اكتشف أفضل أدوات الذكاء الاصطناعي المجانية والمدفوعة في مكان واحد.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #061018;
+      --bg-2: #091923;
+      --card: rgba(13, 31, 43, .82);
+      --card-hover: #102c3b;
+      --text: #f5fbff;
+      --muted: #91abb7;
+      --cyan: #00dcff;
+      --cyan-2: #00a8c7;
+      --gold: #ffd447;
+      --green: #42e6a4;
+      --purple: #9b7cff;
+      --line: rgba(255,255,255,.09);
+      --shadow: 0 20px 60px rgba(0,0,0,.3);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(0,220,255,.13), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(255,212,71,.10), transparent 25%),
+        linear-gradient(145deg, var(--bg), var(--bg-2));
+      color: var(--text);
+      font-family: "Tajawal", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--line);
+      background: rgba(6,16,24,.78);
+      backdrop-filter: blur(20px);
+    }
+
+    .nav {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 900;
+      font-size: 22px;
+      white-space: nowrap;
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--cyan), #087e9b);
+      box-shadow: 0 0 28px rgba(0,220,255,.2);
+      font-size: 21px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 10px 13px;
+      border-radius: 12px;
+      transition: .2s;
+    }
+
+    .nav-links button:hover,
+    .nav-links button.active {
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+    }
+
+    .pro-button {
+      border: 1px solid rgba(255,212,71,.35) !important;
+      color: var(--gold) !important;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 82px 0 45px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(0,220,255,.2);
+      background: rgba(0,220,255,.06);
+      color: var(--cyan);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(38px, 7vw, 72px);
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -2px;
+    }
+
+    .hero h1 span {
+      color: var(--cyan);
+      text-shadow: 0 0 35px rgba(0,220,255,.22);
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 22px auto 30px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.9;
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 66px;
+      padding: 8px 19px;
+      border: 1px solid rgba(0,220,255,.25);
+      background: rgba(9,29,40,.9);
+      border-radius: 20px;
+      box-shadow:
+        0 0 0 5px rgba(0,220,255,.025),
+        0 20px 55px rgba(0,0,0,.25);
+      transition: .25s;
+    }
+
+    .search-box:focus-within {
+      border-color: rgba(0,220,255,.65);
+      box-shadow:
+        0 0 0 5px rgba(0,220,255,.07),
+        0 20px 60px rgba(0,0,0,.3);
+    }
+
+    .search-icon {
+      color: var(--cyan);
+      font-size: 22px;
+      flex: 0 0 auto;
+    }
+
+    #searchInput {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    #searchInput::placeholder {
+      color: #6f8995;
+    }
+
+    .clear-search {
+      display: none;
+      border: 0;
+      background: rgba(255,255,255,.07);
+      color: var(--muted);
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .clear-search.show {
+      display: block;
+    }
+
+    /* CATEGORIES */
+    .categories {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin: 27px 0 50px;
+    }
+
+    .category-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.035);
+      color: var(--muted);
+      padding: 10px 15px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: .2s;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .category-btn:hover,
+    .category-btn.active {
+      color: #00141b;
+      background: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    /* SECTION */
+    .section {
+      padding: 15px 0 55px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .section-title h2 {
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .section-badge {
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .free-badge {
+      color: var(--green);
+      background: rgba(66,230,164,.08);
+      border: 1px solid rgba(66,230,164,.2);
+    }
+
+    .paid-badge {
+      color: var(--gold);
+      background: rgba(255,212,71,.08);
+      border: 1px solid rgba(255,212,71,.2);
+    }
+
+    /* GRID */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    .tool-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 250px;
+      padding: 20px;
+      background: linear-gradient(145deg, rgba(15,37,50,.9), rgba(8,25,35,.88));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+
+    .tool-card::after {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      top: -65px;
+      left: -65px;
+      border-radius: 50%;
+      background: var(--cyan);
+      opacity: .035;
+      pointer-events: none;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0,220,255,.3);
+      box-shadow: 0 18px 45px rgba(0,0,0,.25);
+    }
+
+    .tool-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .tool-logo {
+      width: 55px;
+      height: 55px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(0,220,255,.14), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.07);
+      font-size: 27px;
+    }
+
+    .availability {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 6px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .availability.free {
+      color: var(--green);
+      background: rgba(66,230,164,.08);
+    }
+
+    .availability.paid {
+      color: var(--gold);
+      background: rgba(255,212,71,.08);
+    }
+
+    .tool-card h3 {
+      margin-top: 17px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .tool-card .description {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 47px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 13px;
+    }
+
+    .tag {
+      color: #8eabb7;
+      font-size: 10px;
+      padding: 5px 8px;
+      border-radius: 7px;
+      background: rgba(255,255,255,.045);
+    }
+
+    .open-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      margin-top: auto;
+      padding: 11px 13px;
+      border-radius: 12px;
+      background: rgba(0,220,255,.09);
+      border: 1px solid rgba(0,220,255,.15);
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .open-btn:hover {
+      background: var(--cyan);
+      color: #00141a;
+    }
+
+    /* EMPTY */
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      border: 1px dashed var(--line);
+      border-radius: 20px;
+      color: var(--muted);
+    }
+
+    .empty.show {
+      display: block;
+    }
+
+    .empty-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    /* CTA */
+    .cta {
+      margin: 20px 0 70px;
+      padding: 35px;
+      text-align: center;
+      border: 1px solid rgba(255,212,71,.15);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at center, rgba(255,212,71,.08), transparent 55%),
+        rgba(255,255,255,.025);
+    }
+
+    .cta h2 {
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .cta p {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    footer strong {
+      color: var(--cyan);
+    }
+
+    /* MOBILE */
+    @media (max-width: 950px) {
+      .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 55px;
+      }
+
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tool-card {
+        min-height: 245px;
+      }
+
+      .section-heading {
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: min(100% - 22px, 1180px);
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-card {
+        min-height: 220px;
+      }
+
+      .categories {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 5px;
+      }
+
+      .category-btn {
+        flex: 0 0 auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container nav">
+
+      <a href="#" class="brand">
+        <span class="brand-icon">✦</span>
+        <span>AI Hub</span>
+      </a>
+
+      <nav class="nav-links">
+        <button class="active" onclick="scrollToSection('all')">الرئيسية</button>
+        <button onclick="scrollToSection('free')">مجاني</button>
+        <button class="pro-button" onclick="scrollToSection('paid')">👑 Pro</button>
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+
+        <div class="eyebrow">
+          <span>✦</span>
+          <span>دليل أدوات الذكاء الاصطناعي</span>
+        </div>
+
+        <h1>
+          كل أدوات الـ <span>AI</span><br>
+          في مكان واحد
+        </h1>
+
+        <p>
+          ابحث عن أدوات الذكاء الاصطناعي التي تحتاجها للأفكار،
+          الصور، الفيديو، البرمجة، الكتابة والمزيد.
+        </p>
+
+        <div class="search-wrap">
+          <div class="search-box">
+            <span class="search-icon">⌕</span>
+
+            <input
+              id="searchInput"
+              type="search"
+              autocomplete="off"
+              placeholder="اكتب اسم الأداة... مثل ChatGPT أو Canva"
+              aria-label="البحث عن أدوات الذكاء الاصطناعي"
+            >
+
+            <button
+              id="clearSearch"
+              class="clear-search"
+              onclick="clearSearch()"
+              aria-label="مسح البحث"
+            >×</button>
+          </div>
+        </div>
+
+        <div class="categories">
+          <button class="category-btn active" data-category="all">الكل</button>
+          <button class="category-btn" data-category="ideas">💡 أفكار</button>
+          <button class="category-btn" data-category="writing">✍️ كتابة</button>
+          <button class="category-btn" data-category="image">🖼️ صور</button>
+          <button class="category-btn" data-category="video">🎬 فيديو</button>
+          <button class="category-btn" data-category="web">🌐 مواقع</button>
+          <button class="category-btn" data-category="code">💻 برمجة</button>
+          <button class="category-btn" data-category="study">📚 دراسة</button>
+          <button class="category-btn" data-category="design">🎨 تصميم</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FREE -->
+    <section class="section" id="free">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="section-title">
+            <div>
+              <h2>🆓 الأدوات المجانية</h2>
+              <p>أدوات يمكنك البدء باستخدامها بدون اشتراك مدفوع.</p>
+            </div>
+          </div>
+
+          <span class="section-badge free-badge">FREE</span>
+        </div>
+
+        <div class="tools-grid" id="freeGrid"></div>
+
+      </div>
+    </section>
+
+    <!-- PAID -->
+    <section class="section" id="paid">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="section-title">
+            <div>
+              <h2>👑 أدوات Pro</h2>
+              <p>أدوات لديها خطط أو مزايا مدفوعة.</p>
+            </div>
+          </div>
+
+          <span class="section-badge paid-badge">PRO</span>
+        </div>
+
+        <div class="tools-grid" id="paidGrid"></div>
+
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="empty" id="emptyState">
+        <div class="empty-icon">🔎</div>
+        <h3>ما لقينا أداة بهذا الاسم</h3>
+        <p>جرّب اسم أداة ثانية أو ابحث عن تصنيف مثل الصور أو الفيديو.</p>
+      </div>
+    </div>
+
+    <section class="container">
+      <div class="cta">
+        <h2>🚀 اكتشف أداة الذكاء الاصطناعي المناسبة لك</h2>
+        <p>
+          ابحث، اختر الأداة، ثم اضغط "فتح الأداة" للانتقال إلى موقعها الرسمي.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <strong>AI Hub</strong> — دليل أدوات الذكاء الاصطناعي
+      <br>
+      <span>الروابط تنقلك إلى المواقع الرسمية للأدوات.</span>
+    </div>
+  </footer>
+
+
+  <script>
+
+    /*
+      ==========================================
+      قائمة أدوات الذكاء الاصطناعي
+      ==========================================
+
+      لتضيف أداة جديدة:
+      1. انسخ أحد العناصر.
+      2. غيّر الاسم والوصف والرابط.
+      3. غيّر التصنيف إذا أردت.
+    */
+
+    const tools = [
+
+      /* =========================
+         FREE
+         ========================= */
+
+      {
+        name: "ChatGPT",
+        icon: "🤖",
+        description: "مساعد ذكي للكتابة والأفكار والدراسة والبرمجة.",
+        category: ["ideas", "writing", "study", "code"],
+        tags: ["محادثة", "أفكار", "كتابة"],
+        type: "free",
+        url: "https://chatgpt.com/"
+      },
+
+      {
+        name: "Gemini",
+        icon: "✦",
+        description: "مساعد ذكاء اصطناعي من Google للبحث والكتابة والأفكار.",
+        category: ["ideas", "writing", "study"],
+        tags: ["Google", "مساعد AI"],
+        type: "free",
+        url: "https://gemini.google.com/"
+      },
+
+      {
+        name: "Microsoft Copilot",
+        icon: "◈",
+        description: "مساعد AI للكتابة والأفكار والبحث وإنجاز المهام.",
+        category: ["ideas", "writing", "study"],
+        tags: ["Microsoft", "AI"],
+        type: "free",
+        url: "https://copilot.microsoft.com/"
+      },
+
+      {
+        name: "Perplexity",
+        icon: "⌕",
+        description: "محرك بحث يعتمد على الذكاء الاصطناعي للبحث والإجابات.",
+        category: ["ideas", "study", "writing"],
+        tags: ["بحث", "معلومات"],
+        type: "free",
+        url: "https://www.perplexity.ai/"
+      },
+
+      {
+        name: "Canva",
+        icon: "🎨",
+        description: "تصميم منشورات وصور وعروض باستخدام أدوات AI.",
+        category: ["design", "image", "writing"],
+        tags: ["تصميم", "صور"],
+        type: "free",
+        url: "https://www.canva.com/"
+      },
+
+      {
+        name: "Leonardo AI",
+        icon: "🖼️",
+        description: "إنشاء الصور والأعمال الفنية بالذكاء الاصطناعي.",
+        category: ["image", "design"],
+        tags: ["صور", "فن"],
+        type: "free",
+        url: "https://leonardo.ai/"
+      },
+
+      {
+        name: "Ideogram",
+        icon: "✨",
+        description: "إنشاء صور وتصاميم بالذكاء الاصطناعي مع دعم قوي للنصوص.",
+        category: ["image", "design"],
+        tags: ["صور", "تصميم"],
+        type: "free",
+        url: "https://ideogram.ai/"
+      },
+
+      {
+        name: "GitHub Copilot",
+        icon: "💻",
+        description: "مساعد برمجة يساعدك على كتابة وفهم الأكواد.",
+        category: ["code", "web"],
+        tags: ["برمجة", "كود"],
+        type: "free",
+        url: "https://github.com/features/copilot"
+      },
+
+      {
+        name: "Google AI Studio",
+        icon: "🧪",
+        description: "بيئة من Google لتجربة نماذج الذكاء الاصطناعي وبناء التطبيقات.",
+        category: ["code", "ideas"],
+        tags: ["Google", "تطوير"],
+        type: "free",
+        url: "https://aistudio.google.com/"
+      },
+
+      {
+        name: "Hugging Face",
+        icon: "🤗",
+        description: "منصة ضخمة لنماذج وأدوات الذكاء الاصطناعي.",
+        category: ["code", "image", "ideas"],
+        tags: ["نماذج", "AI"],
+        type: "free",
+        url: "https://huggingface.co/"
+      },
+
+
+      /* =========================
+         PAID / PRO
+         ========================= */
+
+      {
+        name: "Midjourney",
+        icon: "🌌",
+        description: "منصة متخصصة في إنشاء الصور والأعمال الفنية بالذكاء الاصطناعي.",
+        category: ["image", "design"],
+        tags: ["صور", "فن", "Pro"],
+        type: "paid",
+        url: "https://www.midjourney.com/"
+      },
+
+      {
+        name: "Runway",
+        icon: "🎬",
+        description: "أدوات متقدمة لإنشاء وتعديل الفيديو باستخدام AI.",
+        category: ["video", "image"],
+        tags: ["فيديو", "توليد"],
+        type: "paid",
+        url: "https://runwayml.com/"
+      },
+
+      {
+        name: "Adobe Firefly",
+        icon: "🔥",
+        description: "أدوات Adobe لإنشاء الصور والتصاميم والمحتوى بالذكاء الاصطناعي.",
+        category: ["image", "design"],
+        tags: ["Adobe", "تصميم"],
+        type: "paid",
+        url: "https://firefly.adobe.com/"
+      },
+
+      {
+        name: "Jasper",
+        icon: "✍️",
+        description: "منصة ذكاء اصطناعي مخصصة لإنشاء المحتوى والكتابة.",
+        category: ["writing", "ideas"],
+        tags: ["كتابة", "محتوى"],
+        type: "paid",
+        url: "https://www.jasper.ai/"
+      },
+
+      {
+        name: "Copy.ai",
+        icon: "📝",
+        description: "إنشاء المحتوى والتسويق والنصوص باستخدام الذكاء الاصطناعي.",
+        category: ["writing", "ideas"],
+        tags: ["كتابة", "تسويق"],
+        type: "paid",
+        url: "https://www.copy.ai/"
+      },
+
+      {
+        name: "Cursor",
+        icon: "⌨️",
+        description: "محرر أكواد مبني حول الذكاء الاصطناعي للمطورين.",
+        category: ["code", "web"],
+        tags: ["برمجة", "تطوير"],
+        type: "paid",
+        url: "https://www.cursor.com/"
+      },
+
+      {
+        name: "Lovable",
+        icon: "💜",
+        description: "إنشاء تطبيقات ومواقع من وصف تكتبه بالذكاء الاصطناعي.",
+        category: ["web", "code"],
+        tags: ["مواقع", "تطبيقات"],
+        type: "paid",
+        url: "https://lovable.dev/"
+      },
+
+      {
+        name: "Framer AI",
+        icon: "▲",
+        description: "إنشاء مواقع وتصاميم صفحات الويب بمساعدة الذكاء الاصطناعي.",
+        category: ["web", "design"],
+        tags: ["مواقع", "تصميم"],
+        type: "paid",
+        url: "https://www.framer.com/"
+      },
+
+      {
+        name: "Synthesia",
+        icon: "🎥",
+        description: "إنشاء فيديوهات تقديمية باستخدام شخصيات وأصوات AI.",
+        category: ["video"],
+        tags: ["فيديو", "أفاتار"],
+        type: "paid",
+        url: "https://www.synthesia.io/"
+      },
+
+      {
+        name: "ElevenLabs",
+        icon: "🔊",
+        description: "توليد أصوات وتحويل النص إلى كلام باستخدام AI.",
+        category: ["video", "writing"],
+        tags: ["صوت", "تعليق صوتي"],
+        type: "paid",
+        url: "https://elevenlabs.io/"
+      }
+
+    ];
+
+
+    const freeGrid = document.getElementById("freeGrid");
+    const paidGrid = document.getElementById("paidGrid");
+    const searchInput = document.getElementById("searchInput");
+    const clearBtn = document.getElementById("clearSearch");
+    const emptyState = document.getElementById("emptyState");
+
+    let selectedCategory = "all";
+
+
+    function createCard(tool) {
+
+      const typeText = tool.type === "free"
+        ? "مجاني"
+        : "Pro";
+
+      const typeClass = tool.type === "free"
+        ? "free"
+        : "paid";
+
+      return `
+        <article
+          class="tool-card"
+          data-name="${tool.name.toLowerCase()}"
+          data-category="${tool.category.join(" ")}"
+        >
+
+          <div class="tool-top">
+
+            <div class="tool-logo">
+              ${tool.icon}
+            </div>
+
+            <span class="availability ${typeClass}">
+              ${typeText}
+            </span>
+
+          </div>
+
+          <h3>${tool.name}</h3>
+
+          <p class="description">
+            ${tool.description}
+          </p>
+
+          <div class="tags">
+            ${tool.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
+          </div>
+
+          <a
+            class="open-btn"
+            href="${tool.url}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            فتح الأداة
+            <span>↗</span>
+          </a>
+
+        </article>
+      `;
+    }
+
+
+    function renderTools() {
+
+      const freeTools = tools.filter(tool => tool.type === "free");
+      const paidTools = tools.filter(tool => tool.type === "paid");
+
+      freeGrid.innerHTML = freeTools.map(createCard).join("");
+      paidGrid.innerHTML = paidTools.map(createCard).join("");
+
+      filterTools();
+
+    }
+
+
+    function filterTools() {
+
+      const query = searchInput.value.trim().toLowerCase();
+
+      const cards = document.querySelectorAll(".tool-card");
+
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+
+        const name = card.dataset.name;
+        const categories = card.dataset.category;
+
+        const matchesSearch =
+          !query ||
+          name.includes(query) ||
+          categories.includes(query);
+
+        const matchesCategory =
+          selectedCategory === "all" ||
+          categories.includes(selectedCategory);
+
+        const show = matchesSearch && matchesCategory;
+
+        card.style.display = show ? "flex" : "none";
+
+        if (show) {
+          visibleCount++;
+        }
+
+      });
+
+      emptyState.classList.toggle("show", visibleCount === 0);
+
+      clearBtn.classList.toggle(
+        "show",
+        searchInput.value.length > 0
+      );
+
+    }
+
+
+    searchInput.addEventListener("input", filterTools);
+
+
+    function clearSearch() {
+
+      searchInput.value = "";
+      selectedCategory = "all";
+
+      document.querySelectorAll(".category-btn").forEach(btn => {
+        btn.classList.remove("active");
+
+        if (btn.dataset.category === "all") {
+          btn.classList.add("active");
+        }
+      });
+
+      filterTools();
+      searchInput.focus();
+
+    }
+
+
+    document.querySelectorAll(".category-btn").forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        document.querySelectorAll(".category-btn")
+          .forEach(btn => btn.classList.remove("active"));
+
+        button.classList.add("active");
+
+        selectedCategory = button.dataset.category;
+
+        filterTools();
+
+      });
+
+    });
+
+
+    function scrollToSection(section) {
+
+      if (section === "all") {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+        return;
+      }
+
+      const element = document.getElementById(section);
+
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+
+    }
+
+
+    renderTools();
+
+  </script>
+
+</body>
+</html>
